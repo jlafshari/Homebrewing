@@ -15,12 +15,16 @@ namespace CreateBeerDatabase
             {
                 connection.Open();
                 
+                // run create table commands
                 foreach (string tableCommandString in s_createTableCommands)
                 {
                     DbCommand createTablecommand = connection.CreateCommand();
                     createTablecommand.CommandText = tableCommandString;
                     createTablecommand.ExecuteNonQuery();
                 }
+
+                // add generic beer data to database
+
                 connection.Close();
             }
         }
@@ -33,11 +37,18 @@ namespace CreateBeerDatabase
             "CREATE TABLE Yeasts (id INTEGER PRIMARY KEY, name VARCHAR(40), version INT, type VARCHAR(30), form VARCHAR(10), amount NUMERIC, amountIsWeight INT, laboratory VARCHAR(30), productId VARCHAR(30), minTemperature NUMERIC, maxTemperature NUMERIC, flocculation VARCHAR(10), attenuation NUMERIC, notes VARCHAR(100), bestFor VARCHAR(100))",
             "CREATE TABLE Styles (id INTEGER PRIMARY KEY, name VARCHAR(40), version INT, category VARCHAR(100), categoryNumber INT, styleLetter VARCHAR(1), styleGuide VARCHAR(30), type VARCHAR(10), ogMin NUMERIC, ogMax NUMERIC, fgMin NUMERIC, fgMax NUMERIC, ibuMin NUMERIC, ibuMax NUMERIC, colorMin NUMERIC, colorMax NUMERIC, carbMin NUMERIC, carbMax NUMERIC, abvMin NUMERIC, abvMax NUMERIC, notes TEXT, profile TEXT, ingredients TEXT, examples TEXT)",
             "CREATE TABLE MiscellaneousIngredients (id INTEGER PRIMARY KEY, name VARCHAR(40), version INT, type VARCHAR(10), use VARCHAR(20), useFor VARCHAR(40), notes TEXT)",
-            "CREATE TABLE HopsInRecipe (id INTEGER PRIMARY KEY, amount NUMERIC, time NUMERIC, type VARCHAR(10), form VARCHAR(10), hopsInfo INTEGER, FOREIGN KEY(hopsInfo) REFERENCES Hops(id))",
-            "CREATE TABLE FermentableInRecipe (id INTEGER PRIMARY KEY, amount NUMERIC, time NUMERIC, type VARCHAR(10), form VARCHAR(10), fermentableInfo INTEGER, FOREIGN KEY(fermentableInfo) REFERENCES Fermentables(id))",
+            
+            "CREATE TABLE HopsIngredients (id INTEGER PRIMARY KEY, amount NUMERIC, time NUMERIC, type VARCHAR(10), form VARCHAR(10), hopsInfo INTEGER, FOREIGN KEY(hopsInfo) REFERENCES Hops(id))",
+            "CREATE TABLE FermentableIngredients (id INTEGER PRIMARY KEY, amount NUMERIC, time NUMERIC, type VARCHAR(10), form VARCHAR(10), fermentableInfo INTEGER, FOREIGN KEY(fermentableInfo) REFERENCES Fermentables(id))",
             "CREATE TABLE MiscellaneousIngredientInRecipe (id INTEGER PRIMARY KEY, time NUMERIC, amount NUMERIC, amountIsWeight INT, miscellaneousIngredientInfo INTEGER, FOREIGN KEY(miscellaneousIngredientInfo) REFERENCES MiscellaneousIngredients(id))",
+            
+            // junction tables
+            "CREATE TABLE HopsInRecipe (id INTEGER PRIMARY KEY, hopsIngredient INTEGER, recipe INTEGER, FOREIGN KEY(hopsIngredient) REFERENCES HopsIngredients(id), FOREIGN KEY(recipe) REFERENCES Recipes(id))",
+            "CREATE TABLE FermentablesInRecipe (id INTEGER PRIMARY KEY, fermentableIngredient INTEGER, recipe INTEGER, FOREIGN KEY(fermentableIngredient) REFERENCES FermentableIngredients(id), FOREIGN KEY(recipe) REFERENCES Recipes(id))",
+            "CREATE TABLE MiscellaneousIngredientsInRecipe (id INTEGER PRIMARY KEY, miscellaneousIngredient INTEGER, recipe INTEGER, FOREIGN KEY(miscellaneousIngredient) REFERENCES MiscellaneousIngredientInRecipe(id), FOREIGN KEY(recipe) REFERENCES Recipes(id))",
+
             // TODO: add mash profile table?
-            "CREATE TABLE Recipes (id INTEGER PRIMARY KEY, size NUMERIC, boilTime NUMERIC)",
+            "CREATE TABLE Recipes (id INTEGER PRIMARY KEY, size NUMERIC, boilTime NUMERIC, beerStyleInfo INTEGER, FOREIGN KEY(beerStyleInfo) REFERENCES Styles(id))",
             "CREATE TABLE Batches (id INTEGER PRIMARY KEY, brewerName TEXT, assistantBrewerName TEXT, date TEXT, recipeInfo INTEGER, FOREIGN KEY(recipeInfo) REFERENCES Recipes(id))"
         };
     }
