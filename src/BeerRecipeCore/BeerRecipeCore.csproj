@@ -57,6 +57,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BeerXmlObject.cs" />
+    <Compile Include="EnumConverter.cs" />
+    <Compile Include="Fermentable.cs" />
+    <Compile Include="Hops.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="HopsFlavorType.cs" />
+    <Compile Include="HopsForm.cs" />
+    <Compile Include="HopsIngredient.cs" />
+    <Compile Include="HopsUse.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
