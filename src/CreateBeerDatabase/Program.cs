@@ -98,6 +98,10 @@ namespace CreateBeerDatabase
             }
         }
 
+        private static void AddYeastData(SQLiteConnection connection)
+        {
+        }
+
         const string c_beerDataLocation = @"C:\Beer data";
         const string c_connectionString = @"Data Source=" + c_beerDataLocation + @"\Beer.db";
         static readonly string[] s_createTableCommands = new string[]
