@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Data.Common;
 using System.Data.SQLite;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Xml.Linq;
+using BeerRecipeCore;
 
 namespace CreateBeerDatabase
 {
@@ -24,12 +27,79 @@ namespace CreateBeerDatabase
                 }
 
                 // add generic beer data to database
+                AddHopsData(connection);
+                AddFermentableData(connection);
 
                 connection.Close();
             }
         }
 
-        const string c_connectionString = @"Data Source=C:\Beer data\Beer.db";
+        private static void AddFermentableData(SQLiteConnection connection)
+        {
+            XDocument fermentables = XDocument.Load(Path.Combine(c_beerDataLocation, @"grain.xml"));
+            List<XElement> fermentableEntries = fermentables.Descendants("FERMENTABLE").ToList();
+            foreach (XElement fermentableEntry in fermentableEntries)
+            {
+                string name = fermentableEntry.Element("NAME").Value;
+                int version = Convert.ToInt32(fermentableEntry.Element("VERSION").Value);
+                string origin = fermentableEntry.Element("ORIGIN").Value;
+                string notes = fermentableEntry.Element("NOTES").Value;
+                float yield = (float) Convert.ToDouble(fermentableEntry.Element("YIELD").Value);
+                float color = (float) Convert.ToDouble(fermentableEntry.Element("COLOR").Value);
+                //float diastaticPower = (float) Convert.ToDouble(fermentableEntry.Element("DIASTATIC_POWER").Value);
+                float diastaticPowerParsed;
+                bool diastaticPowerIsntNull = float.TryParse(fermentableEntry.Element("DIASTATIC_POWER").Value, out diastaticPowerParsed);
+                float? diastaticPower = diastaticPowerIsntNull ? (float?) diastaticPowerParsed : null;
+                Fermentable fermentableInfo = new Fermentable(0, name, version, notes, yield, color, origin, diastaticPower);
+
+                SQLiteCommand insertCommand = connection.CreateCommand();
+                insertCommand.CommandText = "INSERT INTO Fermentables (name, version, yield, color, origin, notes, diastaticPower)"
+                    + "VALUES (@name, @version, @yield, @color, @origin, @notes, @diastaticPower)";
+                insertCommand.Parameters.AddWithValue("name", fermentableInfo.Name);
+                insertCommand.Parameters.AddWithValue("version", fermentableInfo.Version);
+                insertCommand.Parameters.AddWithValue("yield", fermentableInfo.Yield);
+                insertCommand.Parameters.AddWithValue("color", fermentableInfo.Color);
+                insertCommand.Parameters.AddWithValue("origin", fermentableInfo.Origin);
+                insertCommand.Parameters.AddWithValue("notes", fermentableInfo.Notes);
+                insertCommand.Parameters.AddWithValue("diastaticPower", fermentableInfo.DiastaticPower);
+                insertCommand.ExecuteNonQuery();
+            }
+        }
+
+        private static void AddHopsData(SQLiteConnection connection)
+        {
+            XDocument hops = XDocument.Load(Path.Combine(c_beerDataLocation, @"hops.xml"));
+            List<XElement> hopEntries = hops.Descendants("HOP").ToList();
+            foreach (XElement hopEntry in hopEntries)
+            {
+                string name = hopEntry.Element("NAME").Value;
+                int version = Convert.ToInt32(hopEntry.Element("VERSION").Value);
+                string origin = hopEntry.Element("ORIGIN").Value;
+                float alphaAcid = (float) Convert.ToDouble(hopEntry.Element("ALPHA").Value);
+                float betaAcid = (float) Convert.ToDouble(hopEntry.Element("BETA").Value);
+                string use = hopEntry.Element("USE").Value;
+                HopsUse hopsUse = (HopsUse) EnumConverter.Parse(typeof(HopsUse), use);
+                string notes = hopEntry.Element("NOTES").Value;
+                float hsi = (float) Convert.ToDouble(hopEntry.Element("HSI").Value);
+                Hops hopsInfo = new Hops(0, name, version, alphaAcid, betaAcid, use, notes, hsi, origin);
+
+                SQLiteCommand insertCommand = connection.CreateCommand();
+                insertCommand.CommandText = "INSERT INTO Hops (name, version, alpha, use, notes, beta, hsi, origin)"
+                    + "VALUES (@name, @version, @alpha, @use, @notes, @beta, @hsi, @origin)";
+                insertCommand.Parameters.AddWithValue("name", hopsInfo.Name);
+                insertCommand.Parameters.AddWithValue("version", hopsInfo.Version);
+                insertCommand.Parameters.AddWithValue("alpha", hopsInfo.AlphaAcid);
+                insertCommand.Parameters.AddWithValue("use", hopsInfo.Use.SaveToString());
+                insertCommand.Parameters.AddWithValue("notes", hopsInfo.Notes);
+                insertCommand.Parameters.AddWithValue("beta", hopsInfo.BetaAcid);
+                insertCommand.Parameters.AddWithValue("hsi", hopsInfo.Hsi);
+                insertCommand.Parameters.AddWithValue("origin", hopsInfo.Origin);
+                insertCommand.ExecuteNonQuery();
+            }
+        }
+
+        const string c_beerDataLocation = @"C:\Beer data";
+        const string c_connectionString = @"Data Source=" + c_beerDataLocation + @"\Beer.db";
         static readonly string[] s_createTableCommands = new string[]
         {
             "CREATE TABLE Hops (id INTEGER PRIMARY KEY, name VARCHAR(40), version INT, alpha NUMERIC, use VARCHAR(10), notes TEXT, beta NUMERIC, hsi NUMERIC, origin VARCHAR(30))",
