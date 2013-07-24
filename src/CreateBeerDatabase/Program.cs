@@ -29,6 +29,7 @@ namespace CreateBeerDatabase
                 // add generic beer data to database
                 AddHopsData(connection);
                 AddFermentableData(connection);
+                AddYeastData(connection);
 
                 connection.Close();
             }
@@ -50,7 +51,7 @@ namespace CreateBeerDatabase
                 float diastaticPowerParsed;
                 bool diastaticPowerIsntNull = float.TryParse(fermentableEntry.Element("DIASTATIC_POWER").Value, out diastaticPowerParsed);
                 float? diastaticPower = diastaticPowerIsntNull ? (float?) diastaticPowerParsed : null;
-                Fermentable fermentableInfo = new Fermentable(0, name, version, notes, yield, color, origin, diastaticPower);
+                Fermentable fermentableInfo = new Fermentable(name, version, notes, yield, color, origin, diastaticPower);
 
                 SQLiteCommand insertCommand = connection.CreateCommand();
                 insertCommand.CommandText = "INSERT INTO Fermentables (name, version, yield, color, origin, notes, diastaticPower)"
@@ -78,10 +79,9 @@ namespace CreateBeerDatabase
                 float alphaAcid = (float) Convert.ToDouble(hopEntry.Element("ALPHA").Value);
                 float betaAcid = (float) Convert.ToDouble(hopEntry.Element("BETA").Value);
                 string use = hopEntry.Element("USE").Value;
-                HopsUse hopsUse = (HopsUse) EnumConverter.Parse(typeof(HopsUse), use);
                 string notes = hopEntry.Element("NOTES").Value;
                 float hsi = (float) Convert.ToDouble(hopEntry.Element("HSI").Value);
-                Hops hopsInfo = new Hops(0, name, version, alphaAcid, betaAcid, use, notes, hsi, origin);
+                Hops hopsInfo = new Hops(name, version, alphaAcid, betaAcid, use, notes, hsi, origin);
 
                 SQLiteCommand insertCommand = connection.CreateCommand();
                 insertCommand.CommandText = "INSERT INTO Hops (name, version, alpha, use, notes, beta, hsi, origin)"
@@ -100,6 +100,47 @@ namespace CreateBeerDatabase
 
         private static void AddYeastData(SQLiteConnection connection)
         {
+            XDocument yeasts = XDocument.Load(Path.Combine(c_beerDataLocation, @"yeast.xml"));
+            List<XElement> yeastEntries = yeasts.Descendants("YEAST").ToList();
+            foreach (XElement yeastEntry in yeastEntries)
+            {
+                string name = yeastEntry.Element("NAME").Value;
+                int version = Convert.ToInt32(yeastEntry.Element("VERSION").Value);
+                string type = yeastEntry.Element("TYPE").Value;
+                string form = yeastEntry.Element("FORM").Value;
+                float amount = (float) Convert.ToDouble(yeastEntry.Element("AMOUNT").Value);
+                int amountIsWeight = bool.Parse(yeastEntry.Element("AMOUNT_IS_WEIGHT").Value) ? 1 : 0;
+                string laboratory = yeastEntry.Element("LABORATORY").Value;
+                string productId = yeastEntry.Element("PRODUCT_ID").Value;
+                float minTemperature = (float) Convert.ToDouble(yeastEntry.Element("MIN_TEMPERATURE").Value);
+                float maxTemperature = (float) Convert.ToDouble(yeastEntry.Element("MAX_TEMPERATURE").Value);
+                string flocculation = yeastEntry.Element("FLOCCULATION").Value;
+                float attenuation = (float) Convert.ToDouble(yeastEntry.Element("ATTENUATION").Value);
+                string notes = yeastEntry.Element("NOTES").Value;
+                string bestFor = yeastEntry.Element("BEST_FOR").Value;
+
+                Yeast yeastInfo = new Yeast(name, version, notes, type, form, amount, amountIsWeight == 0, laboratory, productId, minTemperature, maxTemperature,
+                    flocculation, attenuation, bestFor);
+
+                SQLiteCommand insertCommand = connection.CreateCommand();
+                insertCommand.CommandText = "INSERT INTO Yeasts (name, version, type, form, amount, amountIsWeight, laboratory, productId, minTemperature, maxTemperature, flocculation, attenuation, notes, bestFor)"
+                    + "VALUES (@name, @version, @type, @form, @amount, @amountIsWeight, @laboratory, @productId, @minTemperature, @maxTemperature, @flocculation, @attenuation, @notes, @bestFor)";
+                insertCommand.Parameters.AddWithValue("name", yeastInfo.Name);
+                insertCommand.Parameters.AddWithValue("version", yeastInfo.Version);
+                insertCommand.Parameters.AddWithValue("type", yeastInfo.Type.SaveToString());
+                insertCommand.Parameters.AddWithValue("form", yeastInfo.Form.SaveToString());
+                insertCommand.Parameters.AddWithValue("amount", yeastInfo.Amount);
+                insertCommand.Parameters.AddWithValue("amountIsWeight", yeastInfo.AmountIsWeight ? 1 : 0);
+                insertCommand.Parameters.AddWithValue("laboratory", yeastInfo.Laboratory);
+                insertCommand.Parameters.AddWithValue("productId", yeastInfo.ProductId);
+                insertCommand.Parameters.AddWithValue("minTemperature", yeastInfo.MinTemperature);
+                insertCommand.Parameters.AddWithValue("maxTemperature", yeastInfo.MaxTemperature);
+                insertCommand.Parameters.AddWithValue("flocculation", yeastInfo.Flocculation.SaveToString());
+                insertCommand.Parameters.AddWithValue("attenuation", yeastInfo.Attenuation);
+                insertCommand.Parameters.AddWithValue("notes", yeastInfo.Notes);
+                insertCommand.Parameters.AddWithValue("bestFor", yeastInfo.BestFor);
+                insertCommand.ExecuteNonQuery();
+            }
         }
 
         const string c_beerDataLocation = @"C:\Beer data";
