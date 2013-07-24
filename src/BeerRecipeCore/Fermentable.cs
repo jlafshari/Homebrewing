@@ -8,8 +8,8 @@ namespace BeerRecipeCore
 {
     public class Fermentable : BeerXmlObject
     {
-        public Fermentable(int id, string name, int version, string notes, float yield, float color, string origin, float? diastaticPower)
-            : base(id, name, version, notes)
+        public Fermentable(string name, int version, string notes, float yield, float color, string origin, float? diastaticPower)
+            : base(name, version, notes)
         {
             m_yield = yield;
             m_color = color;

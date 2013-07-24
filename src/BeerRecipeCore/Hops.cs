@@ -2,9 +2,8 @@
 {
     public class Hops : BeerXmlObject
     {
-        public Hops(int id, string name, int version, float alphaAcid, float betaAcid, string use, string notes,
-            float hsi, string origin)
-            : base(id, name, version, notes)
+        public Hops(string name, int version, float alphaAcid, float betaAcid, string use, string notes, float hsi, string origin)
+            : base(name, version, notes)
         {
             m_alphaAcid = alphaAcid;
             m_betaAcid = betaAcid;
