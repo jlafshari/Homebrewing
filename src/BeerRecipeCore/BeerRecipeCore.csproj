@@ -60,6 +60,7 @@
     <Compile Include="BeerXmlObject.cs" />
     <Compile Include="EnumConverter.cs" />
     <Compile Include="Fermentable.cs" />
+    <Compile Include="Flocculation.cs" />
     <Compile Include="Hops.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -70,6 +71,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Yeast.cs" />
+    <Compile Include="YeastForm.cs" />
+    <Compile Include="YeastType.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
