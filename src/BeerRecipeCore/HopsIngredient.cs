@@ -7,12 +7,6 @@
             m_hopsInfo = hopsInfo;
         }
 
-        public int Id
-        {
-            get { return m_id; }
-            set { m_id = value; }
-        }
-
         public float Amount
         {
             get { return m_amount; }
@@ -42,7 +36,6 @@
             get { return m_hopsInfo; }
         }
 
-        private int m_id;
         private float m_amount;
         private float m_time;
         private HopsFlavorType m_flavorType;
