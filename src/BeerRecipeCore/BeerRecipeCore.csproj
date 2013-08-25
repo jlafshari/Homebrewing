@@ -58,7 +58,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BeerXmlObject.cs" />
-    <Compile Include="EnumConverter.cs" />
     <Compile Include="Fermentable.cs" />
     <Compile Include="Flocculation.cs" />
     <Compile Include="Hops.cs">
@@ -76,6 +75,12 @@
     <Compile Include="Yeast.cs" />
     <Compile Include="YeastForm.cs" />
     <Compile Include="YeastType.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Utility\Utility.csproj">
+      <Project>{5f77a9fe-5df3-4127-a1c0-5acb2ee1d0a7}</Project>
+      <Name>Utility</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

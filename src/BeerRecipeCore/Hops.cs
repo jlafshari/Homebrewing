@@ -1,4 +1,6 @@
-﻿namespace BeerRecipeCore
+﻿using Utility;
+
+namespace BeerRecipeCore
 {
     public class Hops : BeerXmlObject
     {

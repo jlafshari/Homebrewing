@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Xml.Linq;
 using BeerRecipeCore;
+using Utility;
 
 namespace CreateBeerDatabase
 {
