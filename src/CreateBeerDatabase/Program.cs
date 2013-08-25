@@ -30,6 +30,7 @@ namespace CreateBeerDatabase
                 AddHopsData(connection);
                 AddFermentableData(connection);
                 AddYeastData(connection);
+                AddStylesData(connection);
 
                 connection.Close();
             }
@@ -140,6 +141,38 @@ namespace CreateBeerDatabase
                 insertCommand.Parameters.AddWithValue("notes", yeastInfo.Notes);
                 insertCommand.Parameters.AddWithValue("bestFor", yeastInfo.BestFor);
                 insertCommand.ExecuteNonQuery();
+            }
+        }
+
+        private static void AddStylesData(SQLiteConnection connection)
+        {
+            XDocument styles = XDocument.Load(Path.Combine(c_beerDataLocation, "style.xml"));
+            List<XElement> styleEntries = styles.Descendants("STYLE").ToList();
+            foreach (XElement styleEntry in styleEntries)
+            {
+                string name = styleEntry.Element("NAME").Value;
+                int version = Convert.ToInt32(styleEntry.Element("VERSION").Value);
+                string category = styleEntry.Element("CATEGORY").Value;
+                int categoryNumber = Convert.ToInt32(styleEntry.Element("CATEGORY_NUMBER").Value);
+                string styleLetter = styleEntry.Element("STYLE_LETTER").Value;
+                string styleGuide = styleEntry.Element("STYLE_GUIDE").Value;
+                string type = styleEntry.Element("TYPE").Value;
+                float ogMin = (float) Convert.ToDouble(styleEntry.Element("OG_MIN").Value);
+                float ogMax = (float) Convert.ToDouble(styleEntry.Element("OG_MAX").Value);
+                float fgMin = (float) Convert.ToDouble(styleEntry.Element("FG_MIN").Value);
+                float fgMax = (float) Convert.ToDouble(styleEntry.Element("FG_MAX").Value);
+                float ibuMin = (float) Convert.ToDouble(styleEntry.Element("IBU_MIN").Value);
+                float ibuMax = (float) Convert.ToDouble(styleEntry.Element("IBU_MAX").Value);
+                float colorMin = (float) Convert.ToDouble(styleEntry.Element("COLOR_MIN").Value);
+                float colorMax = (float) Convert.ToDouble(styleEntry.Element("COLOR_MAX").Value);
+                float carbMin = (float) Convert.ToDouble(styleEntry.Element("CARB_MIN").Value);
+                float carbMax = (float) Convert.ToDouble(styleEntry.Element("CARB_MAX").Value);
+                float abvMin = (float) Convert.ToDouble(styleEntry.Element("ABV_MIN").Value);
+                float abvMax = (float) Convert.ToDouble(styleEntry.Element("ABV_MAX").Value);
+                string notes = styleEntry.Element("NOTES").Value;
+                string profile = styleEntry.Element("PROFILE").Value;
+                string ingredients = styleEntry.Element("INGREDIENTS").Value;
+                string examples = styleEntry.Element("EXAMPLES").Value;
             }
         }
 
