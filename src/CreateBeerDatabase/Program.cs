@@ -83,18 +83,19 @@ namespace CreateBeerDatabase
                 string use = hopEntry.Element("USE").Value;
                 string notes = hopEntry.Element("NOTES").Value;
                 float hsi = (float) Convert.ToDouble(hopEntry.Element("HSI").Value);
-                Hops hopsInfo = new Hops(name, version, alphaAcid, betaAcid, use, notes, hsi, origin);
+                HopsCharacteristics hopsCharacteristics = new HopsCharacteristics(alphaAcid, betaAcid) { Hsi = hsi };
+                Hops hopsInfo = new Hops(name, hopsCharacteristics, version, use, notes, origin);
 
                 SQLiteCommand insertCommand = connection.CreateCommand();
                 insertCommand.CommandText = "INSERT INTO Hops (name, version, alpha, use, notes, beta, hsi, origin)"
                     + "VALUES (@name, @version, @alpha, @use, @notes, @beta, @hsi, @origin)";
                 insertCommand.Parameters.AddWithValue("name", hopsInfo.Name);
                 insertCommand.Parameters.AddWithValue("version", hopsInfo.Version);
-                insertCommand.Parameters.AddWithValue("alpha", hopsInfo.AlphaAcid);
+                insertCommand.Parameters.AddWithValue("alpha", hopsInfo.Characteristics.AlphaAcid);
                 insertCommand.Parameters.AddWithValue("use", hopsInfo.Use.SaveToString());
                 insertCommand.Parameters.AddWithValue("notes", hopsInfo.Notes);
-                insertCommand.Parameters.AddWithValue("beta", hopsInfo.BetaAcid);
-                insertCommand.Parameters.AddWithValue("hsi", hopsInfo.Hsi);
+                insertCommand.Parameters.AddWithValue("beta", hopsInfo.Characteristics.BetaAcid);
+                insertCommand.Parameters.AddWithValue("hsi", hopsInfo.Characteristics.Hsi);
                 insertCommand.Parameters.AddWithValue("origin", hopsInfo.Origin);
                 insertCommand.ExecuteNonQuery();
             }
