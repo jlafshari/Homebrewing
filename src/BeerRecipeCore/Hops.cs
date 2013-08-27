@@ -4,8 +4,8 @@ namespace BeerRecipeCore
 {
     public class Hops : BeerXmlObject
     {
-        public Hops(string name, HopsCharacteristics characteristics, int version, string use, string notes, string origin)
-            : base(name, version, notes)
+        public Hops(string name, HopsCharacteristics characteristics, string use, string notes, string origin)
+            : base(name, notes)
         {
             m_characteristics = characteristics;
             m_use = (HopsUse) EnumConverter.Parse(typeof(HopsUse), use);

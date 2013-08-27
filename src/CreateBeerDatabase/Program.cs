@@ -44,7 +44,6 @@ namespace CreateBeerDatabase
             foreach (XElement fermentableEntry in fermentableEntries)
             {
                 string name = fermentableEntry.Element("NAME").Value;
-                int version = Convert.ToInt32(fermentableEntry.Element("VERSION").Value);
                 string origin = fermentableEntry.Element("ORIGIN").Value;
                 string notes = fermentableEntry.Element("NOTES").Value;
                 float yield = (float) Convert.ToDouble(fermentableEntry.Element("YIELD").Value);
@@ -53,18 +52,18 @@ namespace CreateBeerDatabase
                 float diastaticPowerParsed;
                 bool diastaticPowerIsntNull = float.TryParse(fermentableEntry.Element("DIASTATIC_POWER").Value, out diastaticPowerParsed);
                 float? diastaticPower = diastaticPowerIsntNull ? (float?) diastaticPowerParsed : null;
-                Fermentable fermentableInfo = new Fermentable(name, version, notes, yield, color, origin, diastaticPower);
+                FermentableCharacteristics characteristics = new FermentableCharacteristics(yield, color, diastaticPower);
+                Fermentable fermentableInfo = new Fermentable(name, characteristics, notes, origin);
 
                 SQLiteCommand insertCommand = connection.CreateCommand();
-                insertCommand.CommandText = "INSERT INTO Fermentables (name, version, yield, color, origin, notes, diastaticPower)"
-                    + "VALUES (@name, @version, @yield, @color, @origin, @notes, @diastaticPower)";
+                insertCommand.CommandText = "INSERT INTO Fermentables (name, yield, color, origin, notes, diastaticPower)"
+                    + "VALUES (@name, @yield, @color, @origin, @notes, @diastaticPower)";
                 insertCommand.Parameters.AddWithValue("name", fermentableInfo.Name);
-                insertCommand.Parameters.AddWithValue("version", fermentableInfo.Version);
-                insertCommand.Parameters.AddWithValue("yield", fermentableInfo.Yield);
-                insertCommand.Parameters.AddWithValue("color", fermentableInfo.Color);
+                insertCommand.Parameters.AddWithValue("yield", fermentableInfo.Characteristics.Yield);
+                insertCommand.Parameters.AddWithValue("color", fermentableInfo.Characteristics.Color);
                 insertCommand.Parameters.AddWithValue("origin", fermentableInfo.Origin);
                 insertCommand.Parameters.AddWithValue("notes", fermentableInfo.Notes);
-                insertCommand.Parameters.AddWithValue("diastaticPower", fermentableInfo.DiastaticPower);
+                insertCommand.Parameters.AddWithValue("diastaticPower", fermentableInfo.Characteristics.DiastaticPower);
                 insertCommand.ExecuteNonQuery();
             }
         }
@@ -76,7 +75,6 @@ namespace CreateBeerDatabase
             foreach (XElement hopEntry in hopEntries)
             {
                 string name = hopEntry.Element("NAME").Value;
-                int version = Convert.ToInt32(hopEntry.Element("VERSION").Value);
                 string origin = hopEntry.Element("ORIGIN").Value;
                 float alphaAcid = (float) Convert.ToDouble(hopEntry.Element("ALPHA").Value);
                 float betaAcid = (float) Convert.ToDouble(hopEntry.Element("BETA").Value);
@@ -84,13 +82,12 @@ namespace CreateBeerDatabase
                 string notes = hopEntry.Element("NOTES").Value;
                 float hsi = (float) Convert.ToDouble(hopEntry.Element("HSI").Value);
                 HopsCharacteristics hopsCharacteristics = new HopsCharacteristics(alphaAcid, betaAcid) { Hsi = hsi };
-                Hops hopsInfo = new Hops(name, hopsCharacteristics, version, use, notes, origin);
+                Hops hopsInfo = new Hops(name, hopsCharacteristics, use, notes, origin);
 
                 SQLiteCommand insertCommand = connection.CreateCommand();
-                insertCommand.CommandText = "INSERT INTO Hops (name, version, alpha, use, notes, beta, hsi, origin)"
-                    + "VALUES (@name, @version, @alpha, @use, @notes, @beta, @hsi, @origin)";
+                insertCommand.CommandText = "INSERT INTO Hops (name, alpha, use, notes, beta, hsi, origin)"
+                    + "VALUES (@name, @alpha, @use, @notes, @beta, @hsi, @origin)";
                 insertCommand.Parameters.AddWithValue("name", hopsInfo.Name);
-                insertCommand.Parameters.AddWithValue("version", hopsInfo.Version);
                 insertCommand.Parameters.AddWithValue("alpha", hopsInfo.Characteristics.AlphaAcid);
                 insertCommand.Parameters.AddWithValue("use", hopsInfo.Use.SaveToString());
                 insertCommand.Parameters.AddWithValue("notes", hopsInfo.Notes);
@@ -108,7 +105,6 @@ namespace CreateBeerDatabase
             foreach (XElement yeastEntry in yeastEntries)
             {
                 string name = yeastEntry.Element("NAME").Value;
-                int version = Convert.ToInt32(yeastEntry.Element("VERSION").Value);
                 string type = yeastEntry.Element("TYPE").Value;
                 string form = yeastEntry.Element("FORM").Value;
                 float amount = (float) Convert.ToDouble(yeastEntry.Element("AMOUNT").Value);
@@ -120,28 +116,26 @@ namespace CreateBeerDatabase
                 string flocculation = yeastEntry.Element("FLOCCULATION").Value;
                 float attenuation = (float) Convert.ToDouble(yeastEntry.Element("ATTENUATION").Value);
                 string notes = yeastEntry.Element("NOTES").Value;
-                string bestFor = yeastEntry.Element("BEST_FOR").Value;
 
-                Yeast yeastInfo = new Yeast(name, version, notes, type, form, amount, amountIsWeight == 0, laboratory, productId, minTemperature, maxTemperature,
-                    flocculation, attenuation, bestFor);
+                YeastCharacteristics characteristics = new YeastCharacteristics(type, flocculation, form)
+                    { Attenuation = attenuation, MinTemperature = minTemperature, MaxTemperature = maxTemperature };
+                Yeast yeastInfo = new Yeast(name, characteristics, notes, amount, amountIsWeight == 0, laboratory, productId);
 
                 SQLiteCommand insertCommand = connection.CreateCommand();
-                insertCommand.CommandText = "INSERT INTO Yeasts (name, version, type, form, amount, amountIsWeight, laboratory, productId, minTemperature, maxTemperature, flocculation, attenuation, notes, bestFor)"
-                    + "VALUES (@name, @version, @type, @form, @amount, @amountIsWeight, @laboratory, @productId, @minTemperature, @maxTemperature, @flocculation, @attenuation, @notes, @bestFor)";
+                insertCommand.CommandText = "INSERT INTO Yeasts (name, type, form, amount, amountIsWeight, laboratory, productId, minTemperature, maxTemperature, flocculation, attenuation, notes)"
+                    + "VALUES (@name, @type, @form, @amount, @amountIsWeight, @laboratory, @productId, @minTemperature, @maxTemperature, @flocculation, @attenuation, @notes)";
                 insertCommand.Parameters.AddWithValue("name", yeastInfo.Name);
-                insertCommand.Parameters.AddWithValue("version", yeastInfo.Version);
-                insertCommand.Parameters.AddWithValue("type", yeastInfo.Type.SaveToString());
-                insertCommand.Parameters.AddWithValue("form", yeastInfo.Form.SaveToString());
+                insertCommand.Parameters.AddWithValue("type", yeastInfo.Characteristics.Type.SaveToString());
+                insertCommand.Parameters.AddWithValue("form", yeastInfo.Characteristics.Form.SaveToString());
                 insertCommand.Parameters.AddWithValue("amount", yeastInfo.Amount);
                 insertCommand.Parameters.AddWithValue("amountIsWeight", yeastInfo.AmountIsWeight ? 1 : 0);
                 insertCommand.Parameters.AddWithValue("laboratory", yeastInfo.Laboratory);
                 insertCommand.Parameters.AddWithValue("productId", yeastInfo.ProductId);
-                insertCommand.Parameters.AddWithValue("minTemperature", yeastInfo.MinTemperature);
-                insertCommand.Parameters.AddWithValue("maxTemperature", yeastInfo.MaxTemperature);
-                insertCommand.Parameters.AddWithValue("flocculation", yeastInfo.Flocculation.SaveToString());
-                insertCommand.Parameters.AddWithValue("attenuation", yeastInfo.Attenuation);
+                insertCommand.Parameters.AddWithValue("minTemperature", yeastInfo.Characteristics.MinTemperature);
+                insertCommand.Parameters.AddWithValue("maxTemperature", yeastInfo.Characteristics.MaxTemperature);
+                insertCommand.Parameters.AddWithValue("flocculation", yeastInfo.Characteristics.Flocculation.SaveToString());
+                insertCommand.Parameters.AddWithValue("attenuation", yeastInfo.Characteristics.Attenuation);
                 insertCommand.Parameters.AddWithValue("notes", yeastInfo.Notes);
-                insertCommand.Parameters.AddWithValue("bestFor", yeastInfo.BestFor);
                 insertCommand.ExecuteNonQuery();
             }
         }
@@ -153,7 +147,6 @@ namespace CreateBeerDatabase
             foreach (XElement styleEntry in styleEntries)
             {
                 string name = styleEntry.Element("NAME").Value;
-                int version = Convert.ToInt32(styleEntry.Element("VERSION").Value);
                 string category = styleEntry.Element("CATEGORY").Value;
                 int categoryNumber = Convert.ToInt32(styleEntry.Element("CATEGORY_NUMBER").Value);
                 string styleLetter = styleEntry.Element("STYLE_LETTER").Value;
@@ -182,11 +175,11 @@ namespace CreateBeerDatabase
         const string c_connectionString = @"Data Source=" + c_beerDataLocation + @"\Beer.db";
         static readonly string[] s_createTableCommands = new string[]
         {
-            "CREATE TABLE Hops (id INTEGER PRIMARY KEY, name VARCHAR(40), version INT, alpha NUMERIC, use VARCHAR(10), notes TEXT, beta NUMERIC, hsi NUMERIC, origin VARCHAR(30))",
-            "CREATE TABLE Fermentables (id INTEGER PRIMARY KEY, name VARCHAR(40), version INT, yield NUMERIC, color NUMERIC, origin VARCHAR(30), notes TEXT, diastaticPower NUMERIC)",
-            "CREATE TABLE Yeasts (id INTEGER PRIMARY KEY, name VARCHAR(40), version INT, type VARCHAR(30), form VARCHAR(10), amount NUMERIC, amountIsWeight INT, laboratory VARCHAR(30), productId VARCHAR(30), minTemperature NUMERIC, maxTemperature NUMERIC, flocculation VARCHAR(10), attenuation NUMERIC, notes VARCHAR(100), bestFor VARCHAR(100))",
-            "CREATE TABLE Styles (id INTEGER PRIMARY KEY, name VARCHAR(40), version INT, category VARCHAR(100), categoryNumber INT, styleLetter VARCHAR(1), styleGuide VARCHAR(30), type VARCHAR(10), ogMin NUMERIC, ogMax NUMERIC, fgMin NUMERIC, fgMax NUMERIC, ibuMin NUMERIC, ibuMax NUMERIC, colorMin NUMERIC, colorMax NUMERIC, carbMin NUMERIC, carbMax NUMERIC, abvMin NUMERIC, abvMax NUMERIC, notes TEXT, profile TEXT, ingredients TEXT, examples TEXT)",
-            "CREATE TABLE MiscellaneousIngredients (id INTEGER PRIMARY KEY, name VARCHAR(40), version INT, type VARCHAR(10), use VARCHAR(20), useFor VARCHAR(40), notes TEXT)",
+            "CREATE TABLE Hops (id INTEGER PRIMARY KEY, name VARCHAR(40), alpha NUMERIC, use VARCHAR(10), notes TEXT, beta NUMERIC, hsi NUMERIC, origin VARCHAR(30))",
+            "CREATE TABLE Fermentables (id INTEGER PRIMARY KEY, name VARCHAR(40), yield NUMERIC, color NUMERIC, origin VARCHAR(30), notes TEXT, diastaticPower NUMERIC)",
+            "CREATE TABLE Yeasts (id INTEGER PRIMARY KEY, name VARCHAR(40), type VARCHAR(30), form VARCHAR(10), amount NUMERIC, amountIsWeight INT, laboratory VARCHAR(30), productId VARCHAR(30), minTemperature NUMERIC, maxTemperature NUMERIC, flocculation VARCHAR(10), attenuation NUMERIC, notes VARCHAR(100))",
+            "CREATE TABLE Styles (id INTEGER PRIMARY KEY, name VARCHAR(40), category VARCHAR(100), categoryNumber INT, styleLetter VARCHAR(1), styleGuide VARCHAR(30), type VARCHAR(10), ogMin NUMERIC, ogMax NUMERIC, fgMin NUMERIC, fgMax NUMERIC, ibuMin NUMERIC, ibuMax NUMERIC, colorMin NUMERIC, colorMax NUMERIC, carbMin NUMERIC, carbMax NUMERIC, abvMin NUMERIC, abvMax NUMERIC, notes TEXT, profile TEXT, ingredients TEXT, examples TEXT)",
+            "CREATE TABLE MiscellaneousIngredients (id INTEGER PRIMARY KEY, name VARCHAR(40), type VARCHAR(10), use VARCHAR(20), useFor VARCHAR(40), notes TEXT)",
             
             "CREATE TABLE HopsIngredients (id INTEGER PRIMARY KEY, amount NUMERIC, time NUMERIC, type VARCHAR(10), form VARCHAR(10), hopsInfo INTEGER, FOREIGN KEY(hopsInfo) REFERENCES Hops(id))",
             "CREATE TABLE FermentableIngredients (id INTEGER PRIMARY KEY, amount NUMERIC, time NUMERIC, type VARCHAR(10), form VARCHAR(10), fermentableInfo INTEGER, FOREIGN KEY(fermentableInfo) REFERENCES Fermentables(id))",

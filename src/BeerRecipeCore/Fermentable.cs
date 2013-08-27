@@ -2,23 +2,16 @@
 {
     public class Fermentable : BeerXmlObject
     {
-        public Fermentable(string name, int version, string notes, float yield, float color, string origin, float? diastaticPower)
-            : base(name, version, notes)
+        public Fermentable(string name, FermentableCharacteristics characteristics, string notes, string origin)
+            : base(name, notes)
         {
-            m_yield = yield;
-            m_color = color;
+            m_characteristics = characteristics;
             m_origin = origin;
-            m_diastaticPower = diastaticPower;
         }
 
-        public float Yield
+        public FermentableCharacteristics Characteristics
         {
-            get { return m_yield; }
-        }
-
-        public float Color
-        {
-            get { return m_color; }
+            get { return m_characteristics; }
         }
 
         public string Origin
@@ -26,14 +19,7 @@
             get { return m_origin; }
         }
 
-        public float? DiastaticPower
-        {
-            get { return m_diastaticPower; }
-        }
-
-        private float m_yield;
-        private float m_color;
         private string m_origin = "";
-        private float? m_diastaticPower; 
+        private FermentableCharacteristics m_characteristics;
     }
 }
