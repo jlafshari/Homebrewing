@@ -1,16 +1,65 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace BeerRecipeCore
 {
-    public class Style : BeerXmlObject
+    public class Style
     {
-        public Style(string name, StyleCategory category, string notes, string styleLetter, string styleGuide, string profile, string ingredients, string examples)
-            : base(name, notes)
+        public Style(string name, StyleCategory category, StyleClassification classification, IList<StyleThreshold> thresholds)
         {
+            m_name = name;
+            m_category = category;
+            m_classification = classification;
+            m_thresholds = new ReadOnlyCollection<StyleThreshold>(thresholds);
         }
+
+        public string Name
+        {
+            get { return m_name; }
+        }
+
+        public string Notes
+        {
+            get { return m_notes; }
+        }
+
+        public StyleCategory Category
+        {
+            get { return m_category; }
+        }
+
+        public StyleClassification Classification
+        {
+            get { return m_classification; }
+        }
+
+        public string Profile
+        {
+            get { return m_profile; }
+        }
+
+        public string Ingredients
+        {
+            get { return m_ingredients; }
+        }
+
+        public string Examples
+        {
+            get { return m_examples; }
+        }
+
+        public ReadOnlyCollection<StyleThreshold> Thresholds
+        {
+            get { return m_thresholds; }
+        }
+
+        private string m_name = "";
+        private string m_notes = "";
+        private StyleCategory m_category;
+        private StyleClassification m_classification;
+        private string m_profile = "";
+        private string m_ingredients = "";
+        private string m_examples = "";
+        private ReadOnlyCollection<StyleThreshold> m_thresholds;
     }
 }
