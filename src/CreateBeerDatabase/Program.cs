@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Xml.Linq;
 using BeerRecipeCore;
+using BeerRecipeCore.BeerXml;
 using Utility;
 
 namespace CreateBeerDatabase
@@ -43,17 +44,7 @@ namespace CreateBeerDatabase
             List<XElement> fermentableEntries = fermentables.Descendants("FERMENTABLE").ToList();
             foreach (XElement fermentableEntry in fermentableEntries)
             {
-                string name = fermentableEntry.Element("NAME").Value;
-                string origin = fermentableEntry.Element("ORIGIN").Value;
-                string notes = fermentableEntry.Element("NOTES").Value;
-                float yield = (float) Convert.ToDouble(fermentableEntry.Element("YIELD").Value);
-                float color = (float) Convert.ToDouble(fermentableEntry.Element("COLOR").Value);
-                //float diastaticPower = (float) Convert.ToDouble(fermentableEntry.Element("DIASTATIC_POWER").Value);
-                float diastaticPowerParsed;
-                bool diastaticPowerIsntNull = float.TryParse(fermentableEntry.Element("DIASTATIC_POWER").Value, out diastaticPowerParsed);
-                float? diastaticPower = diastaticPowerIsntNull ? (float?) diastaticPowerParsed : null;
-                FermentableCharacteristics characteristics = new FermentableCharacteristics(yield, color, diastaticPower);
-                Fermentable fermentableInfo = new Fermentable(name, characteristics, notes, origin);
+                Fermentable fermentableInfo = BeerXmlImportUtility.GetFermentable(fermentableEntry);
 
                 SQLiteCommand insertCommand = connection.CreateCommand();
                 insertCommand.CommandText = "INSERT INTO Fermentables (name, yield, color, origin, notes, diastaticPower)"
@@ -74,15 +65,7 @@ namespace CreateBeerDatabase
             List<XElement> hopEntries = hops.Descendants("HOP").ToList();
             foreach (XElement hopEntry in hopEntries)
             {
-                string name = hopEntry.Element("NAME").Value;
-                string origin = hopEntry.Element("ORIGIN").Value;
-                float alphaAcid = (float) Convert.ToDouble(hopEntry.Element("ALPHA").Value);
-                float betaAcid = (float) Convert.ToDouble(hopEntry.Element("BETA").Value);
-                string use = hopEntry.Element("USE").Value;
-                string notes = hopEntry.Element("NOTES").Value;
-                float hsi = (float) Convert.ToDouble(hopEntry.Element("HSI").Value);
-                HopsCharacteristics hopsCharacteristics = new HopsCharacteristics(alphaAcid, betaAcid) { Hsi = hsi };
-                Hops hopsInfo = new Hops(name, hopsCharacteristics, use, notes, origin);
+                Hops hopsInfo = BeerXmlImportUtility.GetHops(hopEntry);
 
                 SQLiteCommand insertCommand = connection.CreateCommand();
                 insertCommand.CommandText = "INSERT INTO Hops (name, alpha, use, notes, beta, hsi, origin)"
@@ -104,22 +87,7 @@ namespace CreateBeerDatabase
             List<XElement> yeastEntries = yeasts.Descendants("YEAST").ToList();
             foreach (XElement yeastEntry in yeastEntries)
             {
-                string name = yeastEntry.Element("NAME").Value;
-                string type = yeastEntry.Element("TYPE").Value;
-                string form = yeastEntry.Element("FORM").Value;
-                float amount = (float) Convert.ToDouble(yeastEntry.Element("AMOUNT").Value);
-                int amountIsWeight = bool.Parse(yeastEntry.Element("AMOUNT_IS_WEIGHT").Value) ? 1 : 0;
-                string laboratory = yeastEntry.Element("LABORATORY").Value;
-                string productId = yeastEntry.Element("PRODUCT_ID").Value;
-                float minTemperature = (float) Convert.ToDouble(yeastEntry.Element("MIN_TEMPERATURE").Value);
-                float maxTemperature = (float) Convert.ToDouble(yeastEntry.Element("MAX_TEMPERATURE").Value);
-                string flocculation = yeastEntry.Element("FLOCCULATION").Value;
-                float attenuation = (float) Convert.ToDouble(yeastEntry.Element("ATTENUATION").Value);
-                string notes = yeastEntry.Element("NOTES").Value;
-
-                YeastCharacteristics characteristics = new YeastCharacteristics(type, flocculation, form)
-                    { Attenuation = attenuation, MinTemperature = minTemperature, MaxTemperature = maxTemperature };
-                Yeast yeastInfo = new Yeast(name, characteristics, notes, amount, amountIsWeight == 0, laboratory, productId);
+                Yeast yeastInfo = BeerXmlImportUtility.GetYeast(yeastEntry);
 
                 SQLiteCommand insertCommand = connection.CreateCommand();
                 insertCommand.CommandText = "INSERT INTO Yeasts (name, type, form, amount, amountIsWeight, laboratory, productId, minTemperature, maxTemperature, flocculation, attenuation, notes)"
@@ -146,28 +114,8 @@ namespace CreateBeerDatabase
             List<XElement> styleEntries = styles.Descendants("STYLE").ToList();
             foreach (XElement styleEntry in styleEntries)
             {
-                string name = styleEntry.Element("NAME").Value;
-                string category = styleEntry.Element("CATEGORY").Value;
-                int categoryNumber = Convert.ToInt32(styleEntry.Element("CATEGORY_NUMBER").Value);
-                string styleLetter = styleEntry.Element("STYLE_LETTER").Value;
-                string styleGuide = styleEntry.Element("STYLE_GUIDE").Value;
-                string type = styleEntry.Element("TYPE").Value;
-                float ogMin = (float) Convert.ToDouble(styleEntry.Element("OG_MIN").Value);
-                float ogMax = (float) Convert.ToDouble(styleEntry.Element("OG_MAX").Value);
-                float fgMin = (float) Convert.ToDouble(styleEntry.Element("FG_MIN").Value);
-                float fgMax = (float) Convert.ToDouble(styleEntry.Element("FG_MAX").Value);
-                float ibuMin = (float) Convert.ToDouble(styleEntry.Element("IBU_MIN").Value);
-                float ibuMax = (float) Convert.ToDouble(styleEntry.Element("IBU_MAX").Value);
-                float colorMin = (float) Convert.ToDouble(styleEntry.Element("COLOR_MIN").Value);
-                float colorMax = (float) Convert.ToDouble(styleEntry.Element("COLOR_MAX").Value);
-                float carbMin = (float) Convert.ToDouble(styleEntry.Element("CARB_MIN").Value);
-                float carbMax = (float) Convert.ToDouble(styleEntry.Element("CARB_MAX").Value);
-                float abvMin = (float) Convert.ToDouble(styleEntry.Element("ABV_MIN").Value);
-                float abvMax = (float) Convert.ToDouble(styleEntry.Element("ABV_MAX").Value);
-                string notes = styleEntry.Element("NOTES").Value;
-                string profile = styleEntry.Element("PROFILE").Value;
-                string ingredients = styleEntry.Element("INGREDIENTS").Value;
-                string examples = styleEntry.Element("EXAMPLES").Value;
+                Style styleInfo = BeerXmlImportUtility.GetStyle(styleEntry);
+                // TODO: add to database
             }
         }
 
