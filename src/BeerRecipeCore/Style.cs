@@ -21,6 +21,7 @@ namespace BeerRecipeCore
         public string Notes
         {
             get { return m_notes; }
+            set { m_notes = value; }
         }
 
         public StyleCategory Category
@@ -36,16 +37,19 @@ namespace BeerRecipeCore
         public string Profile
         {
             get { return m_profile; }
+            set { m_profile = value; }
         }
 
         public string Ingredients
         {
             get { return m_ingredients; }
+            set { m_ingredients = value; }
         }
 
         public string Examples
         {
             get { return m_examples; }
+            set { m_examples = value; }
         }
 
         public ReadOnlyCollection<StyleThreshold> Thresholds
