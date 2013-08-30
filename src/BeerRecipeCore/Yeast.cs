@@ -2,7 +2,7 @@
 
 namespace BeerRecipeCore
 {
-    public class Yeast : BeerXmlObject
+    public class Yeast : IngredientTypeBase
     {
         public Yeast(string name, YeastCharacteristics characteristics, string notes, float amount, bool amountIsWeight, string laboratory,
             string productId)

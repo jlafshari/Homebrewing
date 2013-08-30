@@ -2,7 +2,7 @@
 
 namespace BeerRecipeCore
 {
-    public class Hops : BeerXmlObject
+    public class Hops : IngredientTypeBase
     {
         public Hops(string name, HopsCharacteristics characteristics, string use, string notes, string origin)
             : base(name, notes)

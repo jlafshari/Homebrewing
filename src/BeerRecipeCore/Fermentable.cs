@@ -1,6 +1,6 @@
 ﻿namespace BeerRecipeCore
 {
-    public class Fermentable : BeerXmlObject
+    public class Fermentable : IngredientTypeBase
     {
         public Fermentable(string name, FermentableCharacteristics characteristics, string notes, string origin)
             : base(name, notes)

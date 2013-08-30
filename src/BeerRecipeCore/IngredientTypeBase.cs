@@ -1,8 +1,8 @@
 ﻿namespace BeerRecipeCore
 {
-    public class BeerXmlObject
+    public abstract class IngredientTypeBase
     {
-        public BeerXmlObject(string name, string notes)
+        public IngredientTypeBase(string name, string notes)
         {
             m_name = name;
             m_notes = notes;

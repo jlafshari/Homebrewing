@@ -57,7 +57,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BeerXmlObject.cs" />
+    <Compile Include="IngredientTypeBase.cs" />
     <Compile Include="BeerXml\BeerXmlImportUtility.cs" />
     <Compile Include="Fermentable.cs" />
     <Compile Include="FermentableCharacteristics.cs" />
