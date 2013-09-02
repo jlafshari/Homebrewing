@@ -112,10 +112,75 @@ namespace CreateBeerDatabase
         {
             XDocument styles = XDocument.Load(Path.Combine(c_beerDataLocation, "style.xml"));
             List<XElement> styleEntries = styles.Descendants("STYLE").ToList();
+            List<StyleCategory> categoriesAdded = new List<StyleCategory>();
+            List<StyleClassification> classificationsAdded = new List<StyleClassification>();
             foreach (XElement styleEntry in styleEntries)
             {
                 Style styleInfo = BeerXmlImportUtility.GetStyle(styleEntry);
-                // TODO: add to database
+
+                StyleCategory category = styleInfo.Category;
+                if (!categoriesAdded.Any(cat => cat.Name == category.Name && cat.Number == category.Number && cat.Type == category.Type))
+                {
+                    categoriesAdded.Add(category);
+
+                    // insert into StyleCategories table
+                    SQLiteCommand categoryInsertCommand = connection.CreateCommand();
+                    categoryInsertCommand.CommandText = "INSERT INTO StyleCategories (name, number, type) VALUES(@name, @number, @type)";
+                    categoryInsertCommand.Parameters.AddWithValue("name", category.Name);
+                    categoryInsertCommand.Parameters.AddWithValue("number", category.Number);
+                    categoryInsertCommand.Parameters.AddWithValue("type", category.Type.SaveToString());
+                    categoryInsertCommand.ExecuteNonQuery();
+                }
+
+                StyleClassification classification = styleInfo.Classification;
+                if (!classificationsAdded.Any(cls => cls.StyleGuide == classification.StyleGuide && cls.StyleLetter == classification.StyleLetter))
+                {
+                    classificationsAdded.Add(classification);
+
+                    // insert into StyleClassifications table
+                    SQLiteCommand classificationInsertCommand = connection.CreateCommand();
+                    classificationInsertCommand.CommandText = "INSERT INTO StyleClassifications (letter, guide) VALUES(@letter, @guide)";
+                    classificationInsertCommand.Parameters.AddWithValue("letter", classification.StyleLetter);
+                    classificationInsertCommand.Parameters.AddWithValue("guide", classification.StyleGuide);
+                    classificationInsertCommand.ExecuteNonQuery();
+                }
+
+                // insert into Styles table
+                SQLiteCommand styleInsertCommand = connection.CreateCommand();
+                styleInsertCommand.CommandText = "INSERT INTO Styles (name, category, classification, notes, profile, ingredients, examples)"
+                    + " VALUES(@name, (SELECT id FROM StyleCategories WHERE name = @categoryName), "
+                    + "(SELECT id FROM StyleClassifications WHERE letter = @styleLetter AND guide = @styleGuide), @notes, @profile, @ingredients, @examples)";
+                styleInsertCommand.Parameters.AddWithValue("name", styleInfo.Name);
+                styleInsertCommand.Parameters.AddWithValue("categoryName", styleInfo.Category.Name);
+                styleInsertCommand.Parameters.AddWithValue("styleLetter", styleInfo.Classification.StyleLetter);
+                styleInsertCommand.Parameters.AddWithValue("styleGuide", styleInfo.Classification.StyleGuide);
+                styleInsertCommand.Parameters.AddWithValue("notes", styleInfo.Notes);
+                styleInsertCommand.Parameters.AddWithValue("profile", styleInfo.Profile);
+                styleInsertCommand.Parameters.AddWithValue("ingredients", styleInfo.Ingredients);
+                styleInsertCommand.Parameters.AddWithValue("examples", styleInfo.Examples);
+                styleInsertCommand.ExecuteNonQuery();
+
+                // style thresholds
+                foreach (StyleThreshold threshold in styleInfo.Thresholds)
+                {
+                    SQLiteCommand thresholdInsertCommand = connection.CreateCommand();
+                    thresholdInsertCommand.CommandText = "INSERT INTO StyleThresholds (value, minimum, maximum) VALUES(@value, @minimum, @maximum)";
+                    thresholdInsertCommand.Parameters.AddWithValue("value", threshold.Value);
+                    thresholdInsertCommand.Parameters.AddWithValue("minimum", threshold.Minimum);
+                    thresholdInsertCommand.Parameters.AddWithValue("maximum", threshold.Maximum);
+                    thresholdInsertCommand.ExecuteNonQuery();
+
+                    // insert into junction table
+                    SQLiteCommand thresholdJunctionInsertCommand = connection.CreateCommand();
+                    thresholdJunctionInsertCommand.CommandText = "INSERT INTO ThresholdsInStyle (threshold, style) VALUES("
+                        + "(SELECT id FROM StyleThresholds WHERE value = @thresholdValue AND minimum = @minimum AND maximum = @maximum),"
+                        + "(SELECT id FROM Styles WHERE name = @name))";
+                    thresholdJunctionInsertCommand.Parameters.AddWithValue("thresholdValue", threshold.Value);
+                    thresholdJunctionInsertCommand.Parameters.AddWithValue("minimum", threshold.Minimum);
+                    thresholdJunctionInsertCommand.Parameters.AddWithValue("maximum", threshold.Maximum);
+                    thresholdJunctionInsertCommand.Parameters.AddWithValue("name", styleInfo.Name);
+                    thresholdJunctionInsertCommand.ExecuteNonQuery();
+                }
             }
         }
 
@@ -126,7 +191,10 @@ namespace CreateBeerDatabase
             "CREATE TABLE Hops (id INTEGER PRIMARY KEY, name VARCHAR(40), alpha NUMERIC, use VARCHAR(10), notes TEXT, beta NUMERIC, hsi NUMERIC, origin VARCHAR(30))",
             "CREATE TABLE Fermentables (id INTEGER PRIMARY KEY, name VARCHAR(40), yield NUMERIC, color NUMERIC, origin VARCHAR(30), notes TEXT, diastaticPower NUMERIC)",
             "CREATE TABLE Yeasts (id INTEGER PRIMARY KEY, name VARCHAR(40), type VARCHAR(30), form VARCHAR(10), amount NUMERIC, amountIsWeight INT, laboratory VARCHAR(30), productId VARCHAR(30), minTemperature NUMERIC, maxTemperature NUMERIC, flocculation VARCHAR(10), attenuation NUMERIC, notes VARCHAR(100))",
-            "CREATE TABLE Styles (id INTEGER PRIMARY KEY, name VARCHAR(40), category VARCHAR(100), categoryNumber INT, styleLetter VARCHAR(1), styleGuide VARCHAR(30), type VARCHAR(10), ogMin NUMERIC, ogMax NUMERIC, fgMin NUMERIC, fgMax NUMERIC, ibuMin NUMERIC, ibuMax NUMERIC, colorMin NUMERIC, colorMax NUMERIC, carbMin NUMERIC, carbMax NUMERIC, abvMin NUMERIC, abvMax NUMERIC, notes TEXT, profile TEXT, ingredients TEXT, examples TEXT)",
+            "CREATE TABLE Styles (id INTEGER PRIMARY KEY, name VARCHAR(40), category INT, classification INT, notes TEXT, profile TEXT, ingredients TEXT, examples TEXT, FOREIGN KEY(category) REFERENCES StyleCategories(id), FOREIGN KEY(classification) REFERENCES StyleClassifications(id))",
+            "CREATE TABLE StyleCategories (id INTEGER PRIMARY KEY, name VARCHAR(40), number INT, type VARCHAR(10))",
+            "CREATE TABLE StyleClassifications (id INTEGER PRIMARY KEY, letter VARCHAR(1), guide VARCHAR(30))",
+            "CREATE TABLE StyleThresholds (id INTEGER PRIMARY KEY, value VARCHAR(10), minimum NUMERIC, maximum NUMERIC)",
             "CREATE TABLE MiscellaneousIngredients (id INTEGER PRIMARY KEY, name VARCHAR(40), type VARCHAR(10), use VARCHAR(20), useFor VARCHAR(40), notes TEXT)",
             
             "CREATE TABLE HopsIngredients (id INTEGER PRIMARY KEY, amount NUMERIC, time NUMERIC, type VARCHAR(10), form VARCHAR(10), hopsInfo INTEGER, FOREIGN KEY(hopsInfo) REFERENCES Hops(id))",
@@ -137,6 +205,7 @@ namespace CreateBeerDatabase
             "CREATE TABLE HopsInRecipe (id INTEGER PRIMARY KEY, hopsIngredient INTEGER, recipe INTEGER, FOREIGN KEY(hopsIngredient) REFERENCES HopsIngredients(id), FOREIGN KEY(recipe) REFERENCES Recipes(id))",
             "CREATE TABLE FermentablesInRecipe (id INTEGER PRIMARY KEY, fermentableIngredient INTEGER, recipe INTEGER, FOREIGN KEY(fermentableIngredient) REFERENCES FermentableIngredients(id), FOREIGN KEY(recipe) REFERENCES Recipes(id))",
             "CREATE TABLE MiscellaneousIngredientsInRecipe (id INTEGER PRIMARY KEY, miscellaneousIngredient INTEGER, recipe INTEGER, FOREIGN KEY(miscellaneousIngredient) REFERENCES MiscellaneousIngredientInRecipe(id), FOREIGN KEY(recipe) REFERENCES Recipes(id))",
+            "CREATE TABLE ThresholdsInStyle (id INTEGER PRIMARY KEY, threshold INT, style INT, FOREIGN KEY(threshold) REFERENCES StyleThresholds(id), FOREIGN KEY(style) REFERENCES Styles(id))",
 
             // TODO: add mash profile table?
             "CREATE TABLE Recipes (id INTEGER PRIMARY KEY, size NUMERIC, boilTime NUMERIC, beerStyleInfo INTEGER, FOREIGN KEY(beerStyleInfo) REFERENCES Styles(id))",
