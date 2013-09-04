@@ -71,6 +71,12 @@
     <Compile Include="BitternessUtilityTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\BeerRecipeCore\BeerRecipeCore.csproj">
+      <Project>{5ab9e40e-d72c-42bd-808c-26281ae50523}</Project>
+      <Name>BeerRecipeCore</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>
