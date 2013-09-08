@@ -57,6 +57,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FermentableIngredient.cs" />
     <Compile Include="FermentableType.cs" />
     <Compile Include="Formulas\AlcoholUtility.cs" />
     <Compile Include="Formulas\BitternessUtility.cs" />
