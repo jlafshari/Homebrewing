@@ -69,6 +69,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="BitternessUtilityTests.cs" />
+    <Compile Include="ColorUtilityTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
