@@ -71,6 +71,7 @@
     <Compile Include="BitternessUtilityTests.cs" />
     <Compile Include="ColorUtilityTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="AlcoholUtilityTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\BeerRecipeCore\BeerRecipeCore.csproj">
