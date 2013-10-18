@@ -62,6 +62,7 @@
     <Compile Include="Formulas\AlcoholUtility.cs" />
     <Compile Include="Formulas\BitternessUtility.cs" />
     <Compile Include="Formulas\ColorUtility.cs" />
+    <Compile Include="Formulas\MashUtility.cs" />
     <Compile Include="IngredientTypeBase.cs" />
     <Compile Include="BeerXml\BeerXmlImportUtility.cs" />
     <Compile Include="Fermentable.cs" />
