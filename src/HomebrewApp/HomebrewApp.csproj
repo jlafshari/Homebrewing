@@ -97,6 +97,10 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BeerRecipeCore.Data\BeerRecipeCore.Data.csproj">
+      <Project>{c313dae1-e59f-4634-8b42-0831a8d785dc}</Project>
+      <Name>BeerRecipeCore.Data</Name>
+    </ProjectReference>
     <ProjectReference Include="..\BeerRecipeCore\BeerRecipeCore.csproj">
       <Project>{5ab9e40e-d72c-42bd-808c-26281ae50523}</Project>
       <Name>BeerRecipeCore</Name>

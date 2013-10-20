@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utility", "..\Utility\Utili
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeerRecipeCore.Tests", "..\..\tests\BeerRecipeCore.Tests\BeerRecipeCore.Tests.csproj", "{05DCA1F7-374C-495C-B4C5-F4FB1A29B5B5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeerRecipeCore.Data", "..\BeerRecipeCore.Data\BeerRecipeCore.Data.csproj", "{C313DAE1-E59F-4634-8B42-0831A8D785DC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -58,7 +60,8 @@ Global
 		{E9779B0A-8965-4000-9161-E1E63DAC6FF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E9779B0A-8965-4000-9161-E1E63DAC6FF4}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
 		{E9779B0A-8965-4000-9161-E1E63DAC6FF4}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{E9779B0A-8965-4000-9161-E1E63DAC6FF4}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{E9779B0A-8965-4000-9161-E1E63DAC6FF4}.Debug|x86.ActiveCfg = Debug|x86
+		{E9779B0A-8965-4000-9161-E1E63DAC6FF4}.Debug|x86.Build.0 = Debug|x86
 		{E9779B0A-8965-4000-9161-E1E63DAC6FF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E9779B0A-8965-4000-9161-E1E63DAC6FF4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E9779B0A-8965-4000-9161-E1E63DAC6FF4}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
@@ -76,6 +79,17 @@ Global
 		{05DCA1F7-374C-495C-B4C5-F4FB1A29B5B5}.Release|Mixed Platforms.Build.0 = Release|x86
 		{05DCA1F7-374C-495C-B4C5-F4FB1A29B5B5}.Release|x86.ActiveCfg = Release|x86
 		{05DCA1F7-374C-495C-B4C5-F4FB1A29B5B5}.Release|x86.Build.0 = Release|x86
+		{C313DAE1-E59F-4634-8B42-0831A8D785DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C313DAE1-E59F-4634-8B42-0831A8D785DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C313DAE1-E59F-4634-8B42-0831A8D785DC}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{C313DAE1-E59F-4634-8B42-0831A8D785DC}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{C313DAE1-E59F-4634-8B42-0831A8D785DC}.Debug|x86.ActiveCfg = Debug|x86
+		{C313DAE1-E59F-4634-8B42-0831A8D785DC}.Debug|x86.Build.0 = Debug|x86
+		{C313DAE1-E59F-4634-8B42-0831A8D785DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C313DAE1-E59F-4634-8B42-0831A8D785DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C313DAE1-E59F-4634-8B42-0831A8D785DC}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{C313DAE1-E59F-4634-8B42-0831A8D785DC}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{C313DAE1-E59F-4634-8B42-0831A8D785DC}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
