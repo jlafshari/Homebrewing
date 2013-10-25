@@ -60,6 +60,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FermentableUtility.cs" />
     <Compile Include="HopsUtility.cs" />
     <Compile Include="IngredientUtility.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -68,6 +69,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="YeastUtility.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BeerRecipeCore\BeerRecipeCore.csproj">

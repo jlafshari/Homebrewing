@@ -13,6 +13,8 @@ namespace BeerRecipeCore.Data
                 connection.Open();
 
                 ingredients.AddRange(HopsUtility.GetAvailableHopsVarieties(connection));
+                ingredients.AddRange(FermentableUtility.GetAvailableFermentables(connection));
+                ingredients.AddRange(YeastUtility.GetAvailableYeasts(connection));
 
                 connection.Close();
             }
