@@ -78,6 +78,9 @@
     <Compile Include="HopsUse.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="MashProfile.cs" />
+    <Compile Include="MashStep.cs" />
+    <Compile Include="MashType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Style.cs" />
     <Compile Include="StyleCategory.cs" />
