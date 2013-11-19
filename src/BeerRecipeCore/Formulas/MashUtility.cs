@@ -31,6 +31,6 @@ namespace BeerRecipeCore.Formulas
             return (float) Math.Round(waterAmount, 1);
         }
 
-        private static float c_thermodynamicConstant = 0.2f;
+        private const float c_thermodynamicConstant = 0.2f;
     }
 }
