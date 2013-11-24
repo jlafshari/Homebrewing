@@ -196,6 +196,8 @@ namespace CreateBeerDatabase
             "CREATE TABLE StyleClassifications (id INTEGER PRIMARY KEY, letter VARCHAR(1), guide VARCHAR(30))",
             "CREATE TABLE StyleThresholds (id INTEGER PRIMARY KEY, value VARCHAR(10), minimum NUMERIC, maximum NUMERIC)",
             "CREATE TABLE MiscellaneousIngredients (id INTEGER PRIMARY KEY, name VARCHAR(40), type VARCHAR(10), use VARCHAR(20), useFor VARCHAR(40), notes TEXT)",
+            "CREATE TABLE MashSteps (id INTEGER PRIMARY KEY, type VARCHAR(20), infuseAmount NUMERIC, targetTemperature INTEGER, duration INTEGER, infusionWaterTemperature INTEGER)",
+            "CREATE TABLE MashProfiles (id INTEGER PRIMARY KEY, grainStartingTemperature INTEGER, waterToGrainRatio NUMERIC)",
             
             "CREATE TABLE HopsIngredients (id INTEGER PRIMARY KEY, amount NUMERIC, time NUMERIC, type VARCHAR(10), form VARCHAR(10), hopsInfo INTEGER, FOREIGN KEY(hopsInfo) REFERENCES Hops(id))",
             "CREATE TABLE FermentableIngredients (id INTEGER PRIMARY KEY, amount NUMERIC, time NUMERIC, type VARCHAR(10), fermentableInfo INTEGER, FOREIGN KEY(fermentableInfo) REFERENCES Fermentables(id))",
@@ -206,9 +208,10 @@ namespace CreateBeerDatabase
             "CREATE TABLE FermentablesInRecipe (id INTEGER PRIMARY KEY, fermentableIngredient INTEGER, recipe INTEGER, FOREIGN KEY(fermentableIngredient) REFERENCES FermentableIngredients(id), FOREIGN KEY(recipe) REFERENCES Recipes(id))",
             "CREATE TABLE MiscellaneousIngredientsInRecipe (id INTEGER PRIMARY KEY, miscellaneousIngredient INTEGER, recipe INTEGER, FOREIGN KEY(miscellaneousIngredient) REFERENCES MiscellaneousIngredientInRecipe(id), FOREIGN KEY(recipe) REFERENCES Recipes(id))",
             "CREATE TABLE ThresholdsInStyle (id INTEGER PRIMARY KEY, threshold INT, style INT, FOREIGN KEY(threshold) REFERENCES StyleThresholds(id), FOREIGN KEY(style) REFERENCES Styles(id))",
+            "CREATE TABLE MashStepsInProfile (id INTEGER PRIMARY KEY, mashStep INTEGER, mashProfile INTEGER, FOREIGN KEY(mashStep) REFERENCES MashSteps, FOREIGN KEY(mashProfile) REFERENCES MashProfiles)",
 
             // TODO: add mash profile table?
-            "CREATE TABLE Recipes (id INTEGER PRIMARY KEY, size NUMERIC, boilTime NUMERIC, yeastInfo INTEGER, beerStyleInfo INTEGER, FOREIGN KEY(yeastInfo) REFERENCES Yeasts(id), FOREIGN KEY(beerStyleInfo) REFERENCES Styles(id))",
+            "CREATE TABLE Recipes (id INTEGER PRIMARY KEY, size NUMERIC, boilTime INTEGER, yeastInfo INTEGER, beerStyleInfo INTEGER, mashProfileInfo INTEGER, FOREIGN KEY(yeastInfo) REFERENCES Yeasts(id), FOREIGN KEY(beerStyleInfo) REFERENCES Styles(id), FOREIGN KEY(mashProfileInfo) REFERENCES MashProfiles(id))",
             "CREATE TABLE Batches (id INTEGER PRIMARY KEY, brewerName TEXT, assistantBrewerName TEXT, date TEXT, recipeInfo INTEGER, FOREIGN KEY(recipeInfo) REFERENCES Recipes(id))"
         };
     }
