@@ -208,7 +208,7 @@ namespace CreateBeerDatabase
             "CREATE TABLE ThresholdsInStyle (id INTEGER PRIMARY KEY, threshold INT, style INT, FOREIGN KEY(threshold) REFERENCES StyleThresholds(id), FOREIGN KEY(style) REFERENCES Styles(id))",
 
             // TODO: add mash profile table?
-            "CREATE TABLE Recipes (id INTEGER PRIMARY KEY, size NUMERIC, boilTime NUMERIC, beerStyleInfo INTEGER, FOREIGN KEY(beerStyleInfo) REFERENCES Styles(id))",
+            "CREATE TABLE Recipes (id INTEGER PRIMARY KEY, size NUMERIC, boilTime NUMERIC, yeastInfo INTEGER, beerStyleInfo INTEGER, FOREIGN KEY(yeastInfo) REFERENCES Yeasts(id), FOREIGN KEY(beerStyleInfo) REFERENCES Styles(id))",
             "CREATE TABLE Batches (id INTEGER PRIMARY KEY, brewerName TEXT, assistantBrewerName TEXT, date TEXT, recipeInfo INTEGER, FOREIGN KEY(recipeInfo) REFERENCES Recipes(id))"
         };
     }
