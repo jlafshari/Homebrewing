@@ -76,6 +76,10 @@
       <Project>{5ab9e40e-d72c-42bd-808c-26281ae50523}</Project>
       <Name>BeerRecipeCore</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Utility\Utility.csproj">
+      <Project>{e9779b0a-8965-4000-9161-e1e63dac6ff4}</Project>
+      <Name>Utility</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
