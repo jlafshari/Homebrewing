@@ -43,10 +43,17 @@
             set { m_type = value; }
         }
 
+        public int GravityPoint
+        {
+            get { return m_gravityPoint; }
+            set { m_gravityPoint = value; }
+        }
+
         private float? m_yield;
         private float? m_yieldByWeight;
         private float m_color;
         private float? m_diastaticPower;
         private FermentableType m_type;
+        private int m_gravityPoint;
     }
 }

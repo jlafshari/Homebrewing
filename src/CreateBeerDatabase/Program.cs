@@ -47,8 +47,8 @@ namespace CreateBeerDatabase
                 Fermentable fermentableInfo = BeerXmlImportUtility.GetFermentable(fermentableEntry);
 
                 SQLiteCommand insertCommand = connection.CreateCommand();
-                insertCommand.CommandText = "INSERT INTO Fermentables (name, yield, yieldByWeight, color, origin, notes, diastaticPower, type)"
-                    + "VALUES (@name, @yield, @yieldByWeight, @color, @origin, @notes, @diastaticPower, @type)";
+                insertCommand.CommandText = "INSERT INTO Fermentables (name, yield, yieldByWeight, color, origin, notes, diastaticPower, type, gravityPoint)"
+                    + "VALUES (@name, @yield, @yieldByWeight, @color, @origin, @notes, @diastaticPower, @type, @gravityPoint)";
                 insertCommand.Parameters.AddWithValue("name", fermentableInfo.Name);
                 insertCommand.Parameters.AddWithValue("yield", fermentableInfo.Characteristics.Yield);
                 insertCommand.Parameters.AddWithValue("yieldByWeight", fermentableInfo.Characteristics.YieldByWeight);
@@ -57,6 +57,7 @@ namespace CreateBeerDatabase
                 insertCommand.Parameters.AddWithValue("notes", fermentableInfo.Notes);
                 insertCommand.Parameters.AddWithValue("diastaticPower", fermentableInfo.Characteristics.DiastaticPower);
                 insertCommand.Parameters.AddWithValue("type", fermentableInfo.Characteristics.Type.SaveToString());
+                insertCommand.Parameters.AddWithValue("gravityPoint", fermentableInfo.Characteristics.GravityPoint);
                 insertCommand.ExecuteNonQuery();
             }
         }
@@ -191,7 +192,7 @@ namespace CreateBeerDatabase
         static readonly string[] s_createTableCommands = new string[]
         {
             "CREATE TABLE Hops (id INTEGER PRIMARY KEY, name VARCHAR(40), alpha NUMERIC, use VARCHAR(10), notes TEXT, beta NUMERIC, hsi NUMERIC, origin VARCHAR(30))",
-            "CREATE TABLE Fermentables (id INTEGER PRIMARY KEY, name VARCHAR(40), yield NUMERIC, yieldByWeight NUMERIC, color NUMERIC, origin VARCHAR(30), notes TEXT, diastaticPower NUMERIC, type VARCHAR(10))",
+            "CREATE TABLE Fermentables (id INTEGER PRIMARY KEY, name VARCHAR(40), yield NUMERIC, yieldByWeight NUMERIC, color NUMERIC, origin VARCHAR(30), notes TEXT, diastaticPower NUMERIC, type VARCHAR(10), gravityPoint INTEGER)",
             "CREATE TABLE Yeasts (id INTEGER PRIMARY KEY, name VARCHAR(40), type VARCHAR(30), form VARCHAR(10), amount NUMERIC, amountIsWeight INT, laboratory VARCHAR(30), productId VARCHAR(30), minTemperature NUMERIC, maxTemperature NUMERIC, flocculation VARCHAR(10), attenuation NUMERIC, notes VARCHAR(100))",
             "CREATE TABLE Styles (id INTEGER PRIMARY KEY, name VARCHAR(40), category INT, classification INT, notes TEXT, profile TEXT, ingredients TEXT, examples TEXT, FOREIGN KEY(category) REFERENCES StyleCategories(id), FOREIGN KEY(classification) REFERENCES StyleClassifications(id))",
             "CREATE TABLE StyleCategories (id INTEGER PRIMARY KEY, name VARCHAR(40), number INT, type VARCHAR(10))",
