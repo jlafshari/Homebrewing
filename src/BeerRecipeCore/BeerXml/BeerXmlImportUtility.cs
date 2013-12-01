@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using Utility;
 
 namespace BeerRecipeCore.BeerXml
 {
@@ -27,12 +28,15 @@ namespace BeerRecipeCore.BeerXml
             string name = GetNameFromRecord(fermentableEntry);
             string origin = fermentableEntry.Element("ORIGIN").Value;
             string notes = GetNotesFromRecord(fermentableEntry);
-            float yield = (float) Convert.ToDouble(fermentableEntry.Element("YIELD").Value);
+            FermentableType type = (FermentableType) EnumConverter.Parse(typeof(FermentableType), fermentableEntry.Element("TYPE").Value);
+            float yieldValue = (float) Convert.ToDouble(fermentableEntry.Element("YIELD").Value);
+            float? yield = type == FermentableType.Grain ? (float?) yieldValue : null;
+            float? yieldByWeight = type != FermentableType.Grain ? (float?) yieldValue : null;
             float color = (float) Convert.ToDouble(fermentableEntry.Element("COLOR").Value);
             float diastaticPowerParsed;
             bool diastaticPowerIsntNull = float.TryParse(fermentableEntry.Element("DIASTATIC_POWER").Value, out diastaticPowerParsed);
             float? diastaticPower = diastaticPowerIsntNull ? (float?) diastaticPowerParsed : null;
-            FermentableCharacteristics characteristics = new FermentableCharacteristics(yield, color, diastaticPower);
+            FermentableCharacteristics characteristics = new FermentableCharacteristics(yield, color, diastaticPower) { Type = type, YieldByWeight = yieldByWeight };
             return new Fermentable(name, characteristics, notes, origin);
         }
 
