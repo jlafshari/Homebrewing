@@ -7,12 +7,18 @@
             m_hopsInfo = hopsInfo;
         }
 
+        /// <summary>
+        /// The amount of hops used, in ounces.
+        /// </summary>
         public float Amount
         {
             get { return m_amount; }
             set { m_amount = value; }
         }
 
+        /// <summary>
+        /// The amount of time the hops is used, in minutes.
+        /// </summary>
         public float Time
         {
             get { return m_time; }

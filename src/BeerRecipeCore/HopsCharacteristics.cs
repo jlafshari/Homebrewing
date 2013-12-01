@@ -14,16 +14,25 @@ namespace BeerRecipeCore
             m_betaAcid = betaAcid;
         }
 
+        /// <summary>
+        /// The alpha acid percentage.
+        /// </summary>
         public float AlphaAcid
         {
             get { return m_alphaAcid; }
         }
 
+        /// <summary>
+        /// The beta acid percentage.
+        /// </summary>
         public float BetaAcid
         {
             get { return m_betaAcid; }
         }
 
+        /// <summary>
+        /// The Hop Stability Index: the percentage of hop alpha acid lost in 6 months of storage.
+        /// </summary>
         public float Hsi
         {
             get { return m_hsi; }

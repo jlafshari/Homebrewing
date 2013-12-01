@@ -26,18 +26,27 @@ namespace BeerRecipeCore
             get { return m_form; }
         }
 
+        /// <summary>
+        /// The minimum fermenting temperature, in degrees Celsius.
+        /// </summary>
         public float MinTemperature
         {
             get { return m_minTemperature; }
             set { m_minTemperature = value; }
         }
 
+        /// <summary>
+        /// The maximum fermenting temperature, in degrees Celsius.
+        /// </summary>
         public float MaxTemperature
         {
             get { return m_maxTemperature; }
             set { m_maxTemperature = value; }
         }
 
+        /// <summary>
+        /// The average attenuation percentage.
+        /// </summary>
         public float Attenuation
         {
             get { return m_attenuation; }

@@ -7,6 +7,9 @@
             m_fermentableInfo = fermentableInfo;
         }
 
+        /// <summary>
+        /// The amount of fermentable used, in pounds.
+        /// </summary>
         public float Amount
         {
             get { return m_amount; }
