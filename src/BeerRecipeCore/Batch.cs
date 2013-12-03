@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 
 namespace BeerRecipeCore
 {
@@ -8,6 +9,9 @@ namespace BeerRecipeCore
         {
             m_brewerName = brewerName;
             m_recipe = recipe;
+            m_originalGravity = null;
+            m_finalGravity = null;
+            m_recordedGravityReadings = new Collection<GravityReading>();
         }
 
         public string BrewerName
@@ -46,11 +50,18 @@ namespace BeerRecipeCore
             set { m_finalGravity = value; }
         }
 
+        public Collection<GravityReading> RecordedGravityReadings
+        {
+            get { return m_recordedGravityReadings; }
+            private set { m_recordedGravityReadings = value; }
+        }
+
         private string m_brewerName;
         private string m_assistantBrewerName;
         private DateTime m_brewingDate;
         private Recipe m_recipe;
         private GravityReading m_originalGravity;
         private GravityReading m_finalGravity;
+        private Collection<GravityReading> m_recordedGravityReadings;
     }
 }
