@@ -18,7 +18,7 @@
             get { return m_notes; }
         }
 
-        private string m_name = "";
-        private string m_notes = "";
+        private string m_name;
+        private string m_notes;
     }
 }
