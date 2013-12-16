@@ -66,6 +66,7 @@
     <Compile Include="Formulas\MashUtility.cs" />
     <Compile Include="GravityReading.cs" />
     <Compile Include="IFermentableIngredient.cs" />
+    <Compile Include="IHopsIngredient.cs" />
     <Compile Include="IngredientTypeBase.cs" />
     <Compile Include="BeerXml\BeerXmlImportUtility.cs" />
     <Compile Include="Fermentable.cs" />

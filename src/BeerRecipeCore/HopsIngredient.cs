@@ -1,6 +1,6 @@
 ﻿namespace BeerRecipeCore
 {
-    public class HopsIngredient
+    public class HopsIngredient : IHopsIngredient
     {
         public HopsIngredient(Hops hopsInfo)
         {
@@ -19,7 +19,7 @@
         /// <summary>
         /// The amount of time the hops is used, in minutes.
         /// </summary>
-        public float Time
+        public int Time
         {
             get { return m_time; }
             set { m_time = value; }
@@ -43,7 +43,7 @@
         }
 
         private float m_amount;
-        private float m_time;
+        private int m_time;
         private HopsFlavorType m_flavorType;
         private HopsForm m_form;
         private Hops m_hopsInfo;
