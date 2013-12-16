@@ -9,6 +9,7 @@ namespace BeerRecipeCore
         {
             m_brewerName = brewerName;
             m_recipe = recipe;
+            m_assistantBrewerName = null;
             m_originalGravity = null;
             m_finalGravity = null;
             m_recordedGravityReadings = new Collection<GravityReading>();
