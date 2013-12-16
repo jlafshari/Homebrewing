@@ -1,6 +1,6 @@
 ﻿namespace BeerRecipeCore
 {
-    public class FermentableIngredient
+    public class FermentableIngredient : IFermentableIngredient
     {
         public FermentableIngredient(Fermentable fermentableInfo)
         {

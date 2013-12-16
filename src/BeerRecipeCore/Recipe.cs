@@ -34,7 +34,7 @@ namespace BeerRecipeCore
             private set { m_hopsIngredients = value; }
         }
 
-        public Collection<FermentableIngredient> FermentableIngredients
+        public Collection<IFermentableIngredient> FermentableIngredients
         {
             get { return m_fermentableIngredients; }
             private set { m_fermentableIngredients = value; }
@@ -56,7 +56,7 @@ namespace BeerRecipeCore
         int m_boilTime;
         Style m_style;
         Collection<HopsIngredient> m_hopsIngredients = new Collection<HopsIngredient>();
-        Collection<FermentableIngredient> m_fermentableIngredients = new Collection<FermentableIngredient>();
+        Collection<IFermentableIngredient> m_fermentableIngredients = new Collection<IFermentableIngredient>();
         Yeast m_yeast;
         MashProfile m_mashProfile;
     }

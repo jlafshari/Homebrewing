@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace BeerRecipeCore.Formulas
 {
     public static class ColorUtility
     {
-        public static float GetColorInSrm(IEnumerable<FermentableIngredient> fermentables, float recipeVolumeInGallons)
+        public static float GetColorInSrm(IEnumerable<IFermentableIngredient> fermentables, float recipeVolumeInGallons)
         {
             // calculate MCU from each fermentable
             float totalMcu = 0;
-            foreach (FermentableIngredient fermentable in fermentables)
+            foreach (IFermentableIngredient fermentable in fermentables)
             {
                 float fermentableMcu = GetMaltColorUnit(fermentable, recipeVolumeInGallons);
                 totalMcu += fermentableMcu;
@@ -20,7 +19,7 @@ namespace BeerRecipeCore.Formulas
             return 1.4922f * (float) Math.Pow(totalMcu, 0.6859);
         }
 
-        private static float GetMaltColorUnit(FermentableIngredient fermentable, float recipeVolumeInGallons)
+        private static float GetMaltColorUnit(IFermentableIngredient fermentable, float recipeVolumeInGallons)
         {
             return fermentable.FermentableInfo.Characteristics.Color * fermentable.Amount / recipeVolumeInGallons;
         }
