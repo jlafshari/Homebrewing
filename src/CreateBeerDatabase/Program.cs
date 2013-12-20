@@ -93,13 +93,11 @@ namespace CreateBeerDatabase
                 Yeast yeastInfo = BeerXmlImportUtility.GetYeast(yeastEntry);
 
                 SQLiteCommand insertCommand = connection.CreateCommand();
-                insertCommand.CommandText = "INSERT INTO Yeasts (name, type, form, amount, amountIsWeight, laboratory, productId, minTemperature, maxTemperature, flocculation, attenuation, notes)"
-                    + "VALUES (@name, @type, @form, @amount, @amountIsWeight, @laboratory, @productId, @minTemperature, @maxTemperature, @flocculation, @attenuation, @notes)";
+                insertCommand.CommandText = "INSERT INTO Yeasts (name, type, form, laboratory, productId, minTemperature, maxTemperature, flocculation, attenuation, notes)"
+                    + "VALUES (@name, @type, @form, @laboratory, @productId, @minTemperature, @maxTemperature, @flocculation, @attenuation, @notes)";
                 insertCommand.Parameters.AddWithValue("name", yeastInfo.Name);
                 insertCommand.Parameters.AddWithValue("type", yeastInfo.Characteristics.Type.SaveToString());
                 insertCommand.Parameters.AddWithValue("form", yeastInfo.Characteristics.Form.SaveToString());
-                insertCommand.Parameters.AddWithValue("amount", yeastInfo.Amount);
-                insertCommand.Parameters.AddWithValue("amountIsWeight", yeastInfo.AmountIsWeight ? 1 : 0);
                 insertCommand.Parameters.AddWithValue("laboratory", yeastInfo.Laboratory);
                 insertCommand.Parameters.AddWithValue("productId", yeastInfo.ProductId);
                 insertCommand.Parameters.AddWithValue("minTemperature", yeastInfo.Characteristics.MinTemperature);
@@ -193,7 +191,7 @@ namespace CreateBeerDatabase
         {
             "CREATE TABLE Hops (id INTEGER PRIMARY KEY, name VARCHAR(40), alpha NUMERIC, use VARCHAR(10), notes TEXT, beta NUMERIC, hsi NUMERIC, origin VARCHAR(30))",
             "CREATE TABLE Fermentables (id INTEGER PRIMARY KEY, name VARCHAR(40), yield NUMERIC, yieldByWeight NUMERIC, color NUMERIC, origin VARCHAR(30), notes TEXT, diastaticPower NUMERIC, type VARCHAR(10), gravityPoint INTEGER)",
-            "CREATE TABLE Yeasts (id INTEGER PRIMARY KEY, name VARCHAR(40), type VARCHAR(30), form VARCHAR(10), amount NUMERIC, amountIsWeight INT, laboratory VARCHAR(30), productId VARCHAR(30), minTemperature NUMERIC, maxTemperature NUMERIC, flocculation VARCHAR(10), attenuation NUMERIC, notes VARCHAR(100))",
+            "CREATE TABLE Yeasts (id INTEGER PRIMARY KEY, name VARCHAR(40), type VARCHAR(30), form VARCHAR(10), laboratory VARCHAR(30), productId VARCHAR(30), minTemperature NUMERIC, maxTemperature NUMERIC, flocculation VARCHAR(10), attenuation NUMERIC, notes VARCHAR(100))",
             "CREATE TABLE Styles (id INTEGER PRIMARY KEY, name VARCHAR(40), category INT, classification INT, notes TEXT, profile TEXT, ingredients TEXT, examples TEXT, FOREIGN KEY(category) REFERENCES StyleCategories(id), FOREIGN KEY(classification) REFERENCES StyleClassifications(id))",
             "CREATE TABLE StyleCategories (id INTEGER PRIMARY KEY, name VARCHAR(40), number INT, type VARCHAR(10))",
             "CREATE TABLE StyleClassifications (id INTEGER PRIMARY KEY, letter VARCHAR(1), guide VARCHAR(30))",
@@ -205,6 +203,7 @@ namespace CreateBeerDatabase
             
             "CREATE TABLE HopsIngredients (id INTEGER PRIMARY KEY, amount NUMERIC, time NUMERIC, type VARCHAR(10), form VARCHAR(10), hopsInfo INTEGER, FOREIGN KEY(hopsInfo) REFERENCES Hops(id))",
             "CREATE TABLE FermentableIngredients (id INTEGER PRIMARY KEY, amount NUMERIC, fermentableInfo INTEGER, FOREIGN KEY(fermentableInfo) REFERENCES Fermentables(id))",
+            "CREATE TABLE YeastIngredients (id INTEGER PRIMARY KEY, weight NUMERIC, volume NUMERIC, yeastInfo INTEGER, FOREIGN KEY(yeastInfo) REFERENCES Yeasts(id))",
             "CREATE TABLE MiscellaneousIngredientInRecipe (id INTEGER PRIMARY KEY, time NUMERIC, amount NUMERIC, amountIsWeight INT, miscellaneousIngredientInfo INTEGER, FOREIGN KEY(miscellaneousIngredientInfo) REFERENCES MiscellaneousIngredients(id))",
             
             // junction tables
@@ -215,7 +214,7 @@ namespace CreateBeerDatabase
             "CREATE TABLE MashStepsInProfile (id INTEGER PRIMARY KEY, mashStep INTEGER, mashProfile INTEGER, FOREIGN KEY(mashStep) REFERENCES MashSteps, FOREIGN KEY(mashProfile) REFERENCES MashProfiles)",
             "CREATE TABLE GravityReadingsInBatch (id INTEGER PRIMARY KEY, gravityReading INTEGER, batch INTEGER, FOREIGN KEY(gravityReading) REFERENCES GravityReadings, FOREIGN KEY(batch) REFERENCES Batches)",
 
-            "CREATE TABLE Recipes (id INTEGER PRIMARY KEY, size NUMERIC, boilTime INTEGER, yeastInfo INTEGER, beerStyleInfo INTEGER, mashProfileInfo INTEGER, FOREIGN KEY(yeastInfo) REFERENCES Yeasts(id), FOREIGN KEY(beerStyleInfo) REFERENCES Styles(id), FOREIGN KEY(mashProfileInfo) REFERENCES MashProfiles(id))",
+            "CREATE TABLE Recipes (id INTEGER PRIMARY KEY, size NUMERIC, boilTime INTEGER, yeastIngredientInfo INTEGER, beerStyleInfo INTEGER, mashProfileInfo INTEGER, FOREIGN KEY(yeastIngredientInfo) REFERENCES YeastIngredients(id), FOREIGN KEY(beerStyleInfo) REFERENCES Styles(id), FOREIGN KEY(mashProfileInfo) REFERENCES MashProfiles(id))",
             "CREATE TABLE Batches (id INTEGER PRIMARY KEY, brewerName TEXT, assistantBrewerName TEXT, brewingDate TEXT, recipeInfo INTEGER, FOREIGN KEY(recipeInfo) REFERENCES Recipes(id))"
         };
     }
