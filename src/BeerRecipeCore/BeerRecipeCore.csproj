@@ -82,6 +82,7 @@
     <Compile Include="HopsUse.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="IYeastIngredient.cs" />
     <Compile Include="MashProfile.cs" />
     <Compile Include="MashStep.cs" />
     <Compile Include="MashType.cs" />
@@ -95,6 +96,7 @@
     <Compile Include="Yeast.cs" />
     <Compile Include="YeastCharacteristics.cs" />
     <Compile Include="YeastForm.cs" />
+    <Compile Include="YeastIngredient.cs" />
     <Compile Include="YeastType.cs" />
   </ItemGroup>
   <ItemGroup>

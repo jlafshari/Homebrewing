@@ -48,8 +48,6 @@ namespace BeerRecipeCore.BeerXml
             string name = GetNameFromRecord(yeastEntry);
             string type = yeastEntry.Element("TYPE").Value;
             string form = yeastEntry.Element("FORM").Value;
-            float amount = (float) Convert.ToDouble(yeastEntry.Element("AMOUNT").Value);
-            bool amountIsWeight = bool.Parse(yeastEntry.Element("AMOUNT_IS_WEIGHT").Value);
             string laboratory = yeastEntry.Element("LABORATORY").Value;
             string productId = yeastEntry.Element("PRODUCT_ID").Value;
             float minTemperature = (float) Convert.ToDouble(yeastEntry.Element("MIN_TEMPERATURE").Value);
@@ -59,7 +57,7 @@ namespace BeerRecipeCore.BeerXml
             string notes = GetNotesFromRecord(yeastEntry);
 
             YeastCharacteristics characteristics = new YeastCharacteristics(type, flocculation, form) { Attenuation = attenuation, MinTemperature = minTemperature, MaxTemperature = maxTemperature };
-            return new Yeast(name, characteristics, notes, amount, amountIsWeight, laboratory, productId);
+            return new Yeast(name, characteristics, notes, laboratory, productId);
         }
 
         public static Style GetStyle(XElement styleEntry)
