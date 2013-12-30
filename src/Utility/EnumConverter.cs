@@ -5,12 +5,18 @@ namespace Utility
 {
     public static class EnumConverter
     {
+        /// <summary>
+        /// Performs the same conversion as <see cref="Enum.Parse"/>, except that spaces are removed from the value before converting.
+        /// </summary>
         public static object Parse(Type enumType, string value)
         {
             string valueNoSpaces = value.Replace(" ", "");
             return Enum.Parse(enumType, valueNoSpaces);
         }
 
+        /// <summary>
+        /// Converts the value to a string, adding a space between each word (where a word begins with a capital letter).
+        /// </summary>
         public static string SaveToString(this Enum value)
         {
             string valueAsString = value.ToString();
