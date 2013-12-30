@@ -38,5 +38,13 @@ namespace BeerRecipeCore.Tests
             float actualSpecificGravity = AlcoholUtility.GetOriginalGravity(fermentablesInRecipe, 5, 70);
             Assert.AreEqual(1.049f, actualSpecificGravity);
         }
+
+        [TestMethod]
+        public void GetGravityPointTest()
+        {
+            double specificGravity = 1.037;
+            int gravityPoint = AlcoholUtility.GetGravityPoint(specificGravity);
+            Assert.AreEqual(37, gravityPoint);
+        }
     }
 }

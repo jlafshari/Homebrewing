@@ -38,7 +38,7 @@ namespace BeerRecipeCore.BeerXml
             bool diastaticPowerIsntNull = float.TryParse(fermentableEntry.Element("DIASTATIC_POWER").Value, out diastaticPowerParsed);
             float? diastaticPower = diastaticPowerIsntNull ? (float?) diastaticPowerParsed : null;
             double potential = Convert.ToDouble(fermentableEntry.Element("POTENTIAL").Value);
-            int gravityPoint = MashUtility.GetGravityPoint(potential);
+            int gravityPoint = AlcoholUtility.GetGravityPoint(potential);
             FermentableCharacteristics characteristics = new FermentableCharacteristics(yield, color, diastaticPower) { Type = type, YieldByWeight = yieldByWeight, GravityPoint = gravityPoint };
             return new Fermentable(name, characteristics, notes, origin);
         }

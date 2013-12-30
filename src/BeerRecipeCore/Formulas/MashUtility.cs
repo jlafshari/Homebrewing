@@ -31,14 +31,6 @@ namespace BeerRecipeCore.Formulas
             return (float) Math.Round(waterAmount, 1);
         }
 
-        /// <summary>
-        /// Gets the gravity point from a specific gravity value.
-        /// </summary>
-        public static int GetGravityPoint(double specificGravity)
-        {
-            return (int) ((specificGravity * 1000.0) - 1000.0);
-        }
-
         private const float c_thermodynamicConstant = 0.2f;
     }
 }

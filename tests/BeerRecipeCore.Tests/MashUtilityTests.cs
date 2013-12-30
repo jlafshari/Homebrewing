@@ -19,13 +19,5 @@ namespace BeerRecipeCore.Tests
             float actualMashStepWaterAmount = MashUtility.GetMashStepWaterAmount(104, 140, 8, 8, 210);
             Assert.AreEqual(4.9f, actualMashStepWaterAmount);
         }
-
-        [TestMethod]
-        public void GetGravityPointTest()
-        {
-            double specificGravity = 1.037;
-            int gravityPoint = MashUtility.GetGravityPoint(specificGravity);
-            Assert.AreEqual(37, gravityPoint);
-        }
     }
 }

@@ -46,6 +46,14 @@ namespace BeerRecipeCore.Formulas
             return 1f + (pointsPerPound / 1000f);
         }
 
+        /// <summary>
+        /// Gets the gravity point from a specific gravity value.
+        /// </summary>
+        public static int GetGravityPoint(double specificGravity)
+        {
+            return (int) ((specificGravity * 1000.0) - 1000.0);
+        }
+
         const float c_defaultExtractionEfficiency = 60f;
     }
 }
