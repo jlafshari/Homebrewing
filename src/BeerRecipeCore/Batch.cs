@@ -3,9 +3,9 @@ using System.Collections.ObjectModel;
 
 namespace BeerRecipeCore
 {
-    public class Batch
+    public class Batch : IBatch
     {
-        public Batch(string brewerName, Recipe recipe)
+        public Batch(string brewerName, IRecipe recipe)
         {
             m_brewerName = brewerName;
             m_recipe = recipe;
@@ -33,7 +33,7 @@ namespace BeerRecipeCore
             set { m_brewingDate = value; }
         }
 
-        public Recipe Recipe
+        public IRecipe Recipe
         {
             get { return m_recipe; }
             set { m_recipe = value; }
@@ -60,7 +60,7 @@ namespace BeerRecipeCore
         private string m_brewerName;
         private string m_assistantBrewerName;
         private DateTime m_brewingDate;
-        private Recipe m_recipe;
+        private IRecipe m_recipe;
         private GravityReading m_originalGravity;
         private GravityReading m_finalGravity;
         private Collection<GravityReading> m_recordedGravityReadings;

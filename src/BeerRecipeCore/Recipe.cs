@@ -2,7 +2,7 @@
 
 namespace BeerRecipeCore
 {
-    public class Recipe
+    public class Recipe : IRecipe
     {
         /// <summary>
         /// The final amount of beer in gallons.
