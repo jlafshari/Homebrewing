@@ -14,8 +14,8 @@ namespace BeerRecipeCore
         /// </summary>
         int BoilTime { get; set; }
         Style Style { get; set; }
-        Collection<IHopsIngredient> HopsIngredients { get; }
-        Collection<IFermentableIngredient> FermentableIngredients { get; }
+        ObservableCollection<IHopsIngredient> HopsIngredients { get; }
+        ObservableCollection<IFermentableIngredient> FermentableIngredients { get; }
         Yeast Yeast { get; set; }
         MashProfile MashProfile { get; set; }
     }

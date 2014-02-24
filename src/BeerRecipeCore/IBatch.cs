@@ -11,6 +11,6 @@ namespace BeerRecipeCore
         IRecipe Recipe { get; set; }
         GravityReading OriginalGravity { get; set; }
         GravityReading FinalGravity { get; set; }
-        Collection<GravityReading> RecordedGravityReadings { get; }
+        ObservableCollection<GravityReading> RecordedGravityReadings { get; }
     }
 }

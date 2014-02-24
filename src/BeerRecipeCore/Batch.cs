@@ -12,7 +12,7 @@ namespace BeerRecipeCore
             m_assistantBrewerName = null;
             m_originalGravity = null;
             m_finalGravity = null;
-            m_recordedGravityReadings = new Collection<GravityReading>();
+            m_recordedGravityReadings = new ObservableCollection<GravityReading>();
         }
 
         public string BrewerName
@@ -51,7 +51,7 @@ namespace BeerRecipeCore
             set { m_finalGravity = value; }
         }
 
-        public Collection<GravityReading> RecordedGravityReadings
+        public ObservableCollection<GravityReading> RecordedGravityReadings
         {
             get { return m_recordedGravityReadings; }
             private set { m_recordedGravityReadings = value; }
@@ -63,6 +63,6 @@ namespace BeerRecipeCore
         private IRecipe m_recipe;
         private GravityReading m_originalGravity;
         private GravityReading m_finalGravity;
-        private Collection<GravityReading> m_recordedGravityReadings;
+        private ObservableCollection<GravityReading> m_recordedGravityReadings;
     }
 }

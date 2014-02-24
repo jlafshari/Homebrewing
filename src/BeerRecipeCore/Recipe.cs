@@ -28,13 +28,13 @@ namespace BeerRecipeCore
             set { m_style = value; }
         }
 
-        public Collection<IHopsIngredient> HopsIngredients
+        public ObservableCollection<IHopsIngredient> HopsIngredients
         {
             get { return m_hopsIngredients; }
             private set { m_hopsIngredients = value; }
         }
 
-        public Collection<IFermentableIngredient> FermentableIngredients
+        public ObservableCollection<IFermentableIngredient> FermentableIngredients
         {
             get { return m_fermentableIngredients; }
             private set { m_fermentableIngredients = value; }
@@ -55,8 +55,8 @@ namespace BeerRecipeCore
         float m_size;
         int m_boilTime;
         Style m_style;
-        Collection<IHopsIngredient> m_hopsIngredients = new Collection<IHopsIngredient>();
-        Collection<IFermentableIngredient> m_fermentableIngredients = new Collection<IFermentableIngredient>();
+        ObservableCollection<IHopsIngredient> m_hopsIngredients = new ObservableCollection<IHopsIngredient>();
+        ObservableCollection<IFermentableIngredient> m_fermentableIngredients = new ObservableCollection<IFermentableIngredient>();
         Yeast m_yeast;
         MashProfile m_mashProfile;
     }
