@@ -18,5 +18,6 @@ namespace BeerRecipeCore
         ObservableCollection<IFermentableIngredient> FermentableIngredients { get; }
         Yeast Yeast { get; set; }
         MashProfile MashProfile { get; set; }
+        string Name { get; set; }
     }
 }

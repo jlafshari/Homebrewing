@@ -52,6 +52,12 @@ namespace BeerRecipeCore
             set { m_mashProfile = value; }
         }
 
+        public string Name
+        {
+            get { return m_name; }
+            set { m_name = value; }
+        }
+
         float m_size;
         int m_boilTime;
         Style m_style;
@@ -59,5 +65,6 @@ namespace BeerRecipeCore
         ObservableCollection<IFermentableIngredient> m_fermentableIngredients = new ObservableCollection<IFermentableIngredient>();
         Yeast m_yeast;
         MashProfile m_mashProfile;
+        string m_name;
     }
 }

@@ -76,6 +76,16 @@ namespace HomebrewApp
             }
         }
 
+        public string Name
+        {
+            get { return m_name; }
+            set
+            {
+                m_name = value;
+                RaisePropertyChanged("Name");
+            }
+        }
+
         float m_size;
         int m_boilTime;
         Style m_style;
@@ -83,5 +93,6 @@ namespace HomebrewApp
         ObservableCollection<IFermentableIngredient> m_fermentableIngredients = new ObservableCollection<IFermentableIngredient>();
         Yeast m_yeast;
         MashProfile m_mashProfile;
+        string m_name;
     }
 }
