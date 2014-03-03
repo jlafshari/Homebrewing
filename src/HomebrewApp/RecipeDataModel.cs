@@ -6,6 +6,11 @@ namespace HomebrewApp
 {
     public class RecipeDataModel : ObservableObject, IRecipe
     {
+        public RecipeDataModel(RecipesViewModel viewModel)
+        {
+            m_viewModel = viewModel;
+        }
+
         public float Size
         {
             get { return m_size; }
@@ -86,6 +91,11 @@ namespace HomebrewApp
             }
         }
 
+        public RecipesViewModel ViewModel
+        {
+            get { return m_viewModel; }
+        }
+
         float m_size;
         int m_boilTime;
         Style m_style;
@@ -94,5 +104,6 @@ namespace HomebrewApp
         Yeast m_yeast;
         MashProfile m_mashProfile;
         string m_name;
+        RecipesViewModel m_viewModel;
     }
 }
