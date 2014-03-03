@@ -40,10 +40,10 @@ namespace BeerRecipeCore
             private set { m_fermentableIngredients = value; }
         }
 
-        public Yeast Yeast
+        public IYeastIngredient YeastIngredient
         {
-            get { return m_yeast; }
-            set { m_yeast = value; }
+            get { return m_yeastIngredient; }
+            set { m_yeastIngredient = value; }
         }
 
         public MashProfile MashProfile
@@ -63,7 +63,7 @@ namespace BeerRecipeCore
         Style m_style;
         ObservableCollection<IHopsIngredient> m_hopsIngredients = new ObservableCollection<IHopsIngredient>();
         ObservableCollection<IFermentableIngredient> m_fermentableIngredients = new ObservableCollection<IFermentableIngredient>();
-        Yeast m_yeast;
+        IYeastIngredient m_yeastIngredient;
         MashProfile m_mashProfile;
         string m_name;
     }

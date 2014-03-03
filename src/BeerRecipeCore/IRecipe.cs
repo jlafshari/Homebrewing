@@ -16,7 +16,7 @@ namespace BeerRecipeCore
         Style Style { get; set; }
         ObservableCollection<IHopsIngredient> HopsIngredients { get; }
         ObservableCollection<IFermentableIngredient> FermentableIngredients { get; }
-        Yeast Yeast { get; set; }
+        IYeastIngredient YeastIngredient { get; set; }
         MashProfile MashProfile { get; set; }
         string Name { get; set; }
     }
