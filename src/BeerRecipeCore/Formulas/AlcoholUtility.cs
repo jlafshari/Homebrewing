@@ -40,10 +40,22 @@ namespace BeerRecipeCore.Formulas
         /// <param name="extractionEfficiency">The expected extraction efficiency percentage.</param>
         public static float GetOriginalGravity(IEnumerable<IFermentableIngredient> fermentableIngredients, float recipeSize, float extractionEfficiency)
         {
-            float gravityPoints = fermentableIngredients.Select(ingredient => ingredient.Amount * ingredient.FermentableInfo.Characteristics.GravityPoint).Sum();
+            float gravityPoints = GetGravityPoint(fermentableIngredients);
             float pointsPerPound = (gravityPoints / recipeSize) * (extractionEfficiency / 100f);
             pointsPerPound = (float) Math.Round((double) pointsPerPound);
             return 1f + (pointsPerPound / 1000f);
+        }
+
+        /// <summary>
+        /// Gets the estimated final gravity.
+        /// </summary>
+        /// <param name="fermentableIngredients">The fermentable ingredients in the recipe.</param>
+        /// <param name="attenuation">The attenuation percentage.</param>
+        public static float GetFinalGravity(IEnumerable<IFermentableIngredient> fermentableIngredients, float attenuation)
+        {
+            float gravityPoints = GetGravityPoint(fermentableIngredients);
+            float finalGravity = 1f + ((gravityPoints * (1f - (attenuation / 100f))) / 1000f);
+            return (float) Math.Round((double) finalGravity, 3);
         }
 
         /// <summary>
@@ -52,6 +64,11 @@ namespace BeerRecipeCore.Formulas
         public static int GetGravityPoint(double specificGravity)
         {
             return (int) ((specificGravity * 1000.0) - 1000.0);
+        }
+
+        private static float GetGravityPoint(IEnumerable<IFermentableIngredient> fermentableIngredients)
+        {
+            return fermentableIngredients.Select(ingredient => ingredient.Amount * ingredient.FermentableInfo.Characteristics.GravityPoint).Sum();
         }
 
         const float c_defaultExtractionEfficiency = 60f;

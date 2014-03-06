@@ -25,7 +25,7 @@ namespace BeerRecipeCore.Tests
         }
 
         [TestMethod]
-        public void GetSpecificGravityTest()
+        public void GetSpecificAndFinalGravityTest()
         {
             Fermentable crystal60 = new Fermentable("Caramel/Crystal Malt - 60L", new FermentableCharacteristics(74, 60, 0) { Type = FermentableType.Grain, GravityPoint = 34 }, "Test Notes", "US");
             FermentableIngredient crystal60InRecipe = new FermentableIngredient(crystal60) { Amount = 0.50f };
@@ -37,6 +37,8 @@ namespace BeerRecipeCore.Tests
             List<FermentableIngredient> fermentablesInRecipe = new List<FermentableIngredient>() { crystal60InRecipe, chocolateMaltInRecipe, marisOtterInRecipe };
             float actualSpecificGravity = AlcoholUtility.GetOriginalGravity(fermentablesInRecipe, 5, 70);
             Assert.AreEqual(1.049f, actualSpecificGravity);
+            float actualFinalGravity = AlcoholUtility.GetFinalGravity(fermentablesInRecipe, 75);
+            Assert.AreEqual(1.087f, actualFinalGravity);
         }
 
         [TestMethod]
