@@ -49,17 +49,17 @@ namespace BeerRecipeCore.Formulas
         /// <summary>
         /// Gets the estimated final gravity.
         /// </summary>
-        /// <param name="fermentableIngredients">The fermentable ingredients in the recipe.</param>
+        /// <param name="originalGravity">The original gravity.</param>
         /// <param name="attenuation">The attenuation percentage.</param>
-        public static float GetFinalGravity(IEnumerable<IFermentableIngredient> fermentableIngredients, float attenuation)
+        public static float GetFinalGravity(float originalGravity, float attenuation)
         {
-            float gravityPoints = GetGravityPoint(fermentableIngredients);
-            float finalGravity = 1f + ((gravityPoints * (1f - (attenuation / 100f))) / 1000f);
+            float gravityUnit = GetGravityUnit(originalGravity);
+            float finalGravity = 1f + ((gravityUnit * (1f - (attenuation / 100f))) / 1000f);
             return (float) Math.Round((double) finalGravity, 3);
         }
 
         /// <summary>
-        /// Gets the gravity unit from a specific gravity value.
+        /// Gets the gravity unit (or gravity points per gallon) from a specific gravity value.
         /// </summary>
         public static int GetGravityUnit(double specificGravity)
         {

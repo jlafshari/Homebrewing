@@ -37,8 +37,8 @@ namespace BeerRecipeCore.Tests
             List<FermentableIngredient> fermentablesInRecipe = new List<FermentableIngredient>() { crystal60InRecipe, chocolateMaltInRecipe, marisOtterInRecipe };
             float actualSpecificGravity = AlcoholUtility.GetOriginalGravity(fermentablesInRecipe, 5, 70);
             Assert.AreEqual(1.049f, actualSpecificGravity);
-            float actualFinalGravity = AlcoholUtility.GetFinalGravity(fermentablesInRecipe, 75);
-            Assert.AreEqual(1.087f, actualFinalGravity);
+            float actualFinalGravity = AlcoholUtility.GetFinalGravity(actualSpecificGravity, 75);
+            Assert.AreEqual(1.012f, actualFinalGravity);
         }
 
         [TestMethod]
