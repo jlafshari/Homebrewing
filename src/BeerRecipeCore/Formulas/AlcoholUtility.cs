@@ -59,9 +59,9 @@ namespace BeerRecipeCore.Formulas
         }
 
         /// <summary>
-        /// Gets the gravity point from a specific gravity value.
+        /// Gets the gravity unit from a specific gravity value.
         /// </summary>
-        public static int GetGravityPoint(double specificGravity)
+        public static int GetGravityUnit(double specificGravity)
         {
             return (int) ((specificGravity * 1000.0) - 1000.0);
         }
