@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 using BeerRecipeCore;
 using MvvmFoundation.Wpf;
 
-namespace HomebrewApp
+namespace BeerRecipeCore.Data.Models
 {
     public class BatchDataModel : ObservableObject, IBatch
     {

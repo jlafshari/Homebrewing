@@ -1,7 +1,7 @@
 ﻿using BeerRecipeCore;
 using MvvmFoundation.Wpf;
 
-namespace HomebrewApp
+namespace BeerRecipeCore.Data.Models
 {
     public class HopsIngredientDataModel : ObservableObject, IHopsIngredient
     {
