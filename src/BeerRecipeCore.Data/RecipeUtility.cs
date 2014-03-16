@@ -37,18 +37,18 @@ namespace BeerRecipeCore.Data
                 {
                     while (reader.Read())
                     {
-                        StyleCategory category = new StyleCategory(reader[5].ToString(), Convert.ToInt32(reader[6].ToString()), reader[7].ToString());
-                        StyleClassification classification = new StyleClassification(reader[8].ToString(), reader[9].ToString());
+                        StyleCategory category = new StyleCategory(reader.GetString(5), reader.GetInt32(6), reader.GetString(7));
+                        StyleClassification classification = new StyleClassification(reader.GetString(8), reader.GetString(9));
 
-                        string styleName = reader[0].ToString();
+                        string styleName = reader.GetString(0);
                         List<StyleThreshold> thresholds = GetStyleThresholds(styleName, connection).ToList();
 
                         yield return new Style(styleName, category, classification, thresholds)
                         {
-                            Notes = reader[1].ToString(),
-                            Profile = reader[2].ToString(),
-                            Ingredients = reader[3].ToString(),
-                            Examples = reader[4].ToString()
+                            Notes = reader.GetString(1),
+                            Profile = reader.GetString(2),
+                            Ingredients = reader.GetString(3),
+                            Examples = reader.GetString(4)
                         };
                     }
                 }
@@ -67,7 +67,7 @@ namespace BeerRecipeCore.Data
             {
                 while (reader.Read())
                 {
-                    yield return new StyleThreshold(reader[0].ToString(), (float) Convert.ToDouble(reader[1].ToString()), (float) Convert.ToDouble(reader[2].ToString()));
+                    yield return new StyleThreshold(reader.GetString(0), reader.GetFloat(1), reader.GetFloat(2));
                 }
             }
         }

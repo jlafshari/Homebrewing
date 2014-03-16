@@ -15,18 +15,18 @@ namespace BeerRecipeCore.Data
             {
                 while (reader.Read())
                 {
-                    string name = reader[0].ToString();
+                    string name = reader.GetString(0);
                     string yieldValue = reader[1].ToString();
-                    float? yield = !string.IsNullOrEmpty(yieldValue) ? (float?) Convert.ToDouble(yieldValue) : null;
+                    float? yield = !yieldValue.IsNullOrEmpty() ? (float?) float.Parse(yieldValue) : null;
                     string yieldByWeightValue = reader[2].ToString();
-                    float? yieldByWeight = !string.IsNullOrEmpty(yieldByWeightValue) ? (float?) Convert.ToDouble(yieldByWeightValue) : null;
-                    float color = (float) Convert.ToDouble(reader[3]);
-                    string origin = reader[4].ToString();
-                    string notes = reader[5].ToString();
+                    float? yieldByWeight = !yieldByWeightValue.IsNullOrEmpty() ? (float?) float.Parse(yieldByWeightValue) : null;
+                    float color = reader.GetFloat(3);
+                    string origin = reader.GetString(4);
+                    string notes = reader.GetString(5);
                     string diastaticPowerValue = reader[6].ToString();
-                    float? diastaticPower = !string.IsNullOrEmpty(diastaticPowerValue) ? (float?) Convert.ToDouble(diastaticPowerValue) : null;
-                    FermentableType type = (FermentableType) EnumConverter.Parse(typeof(FermentableType), reader[7].ToString());
-                    int gravityPoint = Convert.ToInt32(reader[8].ToString());
+                    float? diastaticPower = !diastaticPowerValue.IsNullOrEmpty() ? (float?) float.Parse(diastaticPowerValue) : null;
+                    FermentableType type = (FermentableType) EnumConverter.Parse(typeof(FermentableType), reader.GetString(7));
+                    int gravityPoint = reader.GetInt32(8);
 
                     FermentableCharacteristics characteristics = new FermentableCharacteristics(yield, color, diastaticPower) {
                         YieldByWeight = yieldByWeight, Type = type, GravityPoint = gravityPoint };

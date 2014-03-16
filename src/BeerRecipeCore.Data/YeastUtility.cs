@@ -14,16 +14,16 @@ namespace BeerRecipeCore.Data
             {
                 while (reader.Read())
                 {
-                    string name = reader[0].ToString();
-                    string type = reader[1].ToString();
-                    string form = reader[2].ToString();
-                    string laboratory = reader[3].ToString();
-                    string productId = reader[4].ToString();
-                    float minTemperature = (float) Convert.ToDouble(reader[5]);
-                    float maxTemperature = (float) Convert.ToDouble(reader[6]);
-                    string flocculation = reader[7].ToString();
-                    float attenuation = (float) Convert.ToDouble(reader[8]);
-                    string notes = reader[9].ToString();
+                    string name = reader.GetString(0);
+                    string type = reader.GetString(1);
+                    string form = reader.GetString(2);
+                    string laboratory = reader.GetString(3);
+                    string productId = reader.GetString(4);
+                    float minTemperature = reader.GetFloat(5);
+                    float maxTemperature = reader.GetFloat(6);
+                    string flocculation = reader.GetString(7);
+                    float attenuation = reader.GetFloat(8);
+                    string notes = reader.GetString(9);
 
                     YeastCharacteristics characteristics = new YeastCharacteristics(type, flocculation, form)
                     {

@@ -14,13 +14,13 @@ namespace BeerRecipeCore.Data
             {
                 while (reader.Read())
                 {
-                    string name = reader[0].ToString();
-                    float alphaAcid = (float) Convert.ToDouble(reader[1]);
-                    string use = reader[2].ToString();
-                    string notes = reader[3].ToString();
-                    float betaAcid = (float) Convert.ToDouble(reader[4]);
-                    float hsi = (float) Convert.ToDouble(reader[5]);
-                    string origin = reader[6].ToString();
+                    string name = reader.GetString(0);
+                    float alphaAcid = reader.GetFloat(1);
+                    string use = reader.GetString(2);
+                    string notes = reader.GetString(3);
+                    float betaAcid = reader.GetFloat(4);
+                    float hsi = reader.GetFloat(5);
+                    string origin = reader.GetString(6);
 
                     HopsCharacteristics characteristics = new HopsCharacteristics(alphaAcid, betaAcid) { Hsi = hsi };
                     yield return new Hops(name, characteristics, use, notes, origin);
