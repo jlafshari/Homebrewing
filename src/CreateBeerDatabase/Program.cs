@@ -19,21 +19,23 @@ namespace CreateBeerDatabase
             using (SQLiteConnection connection = new SQLiteConnection(c_connectionString))
             {
                 connection.Open();
-                
-                // run create table commands
-                foreach (string tableCommandString in s_createTableCommands)
+                using (SQLiteTransaction transaction = connection.BeginTransaction())
                 {
-                    DbCommand createTablecommand = connection.CreateCommand();
-                    createTablecommand.CommandText = tableCommandString;
-                    createTablecommand.ExecuteNonQuery();
+                    // run create table commands
+                    foreach (string tableCommandString in s_createTableCommands)
+                    {
+                        DbCommand createTablecommand = connection.CreateCommand();
+                        createTablecommand.CommandText = tableCommandString;
+                        createTablecommand.ExecuteNonQuery();
+                    }
+
+                    // add generic beer data to database
+                    AddHopsData(connection);
+                    AddFermentableData(connection);
+                    AddYeastData(connection);
+                    AddStylesData(connection);
+                    transaction.Commit();
                 }
-
-                // add generic beer data to database
-                AddHopsData(connection);
-                AddFermentableData(connection);
-                AddYeastData(connection);
-                AddStylesData(connection);
-
                 connection.Close();
             }
         }
