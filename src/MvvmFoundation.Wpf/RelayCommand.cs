@@ -41,7 +41,7 @@ namespace MvvmFoundation.Wpf
         [DebuggerStepThrough]
         public bool CanExecute(object parameter)
         {
-            return _canExecute == null ? true : _canExecute((T)parameter);
+            return _canExecute == null || _canExecute((T) parameter);
         }
 
         public event EventHandler CanExecuteChanged
@@ -114,7 +114,7 @@ namespace MvvmFoundation.Wpf
         [DebuggerStepThrough]
         public bool CanExecute(object parameter)
         {
-            return _canExecute == null ? true : _canExecute();
+            return _canExecute == null || _canExecute();
         }
 
         public event EventHandler CanExecuteChanged

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
+using Utility;
 
 namespace MvvmFoundation.Wpf
 {
@@ -29,7 +30,7 @@ namespace MvvmFoundation.Wpf
         /// <param name="callback">The callback to be called when this message is broadcasted.</param>
         public void Register(string message, Action callback)
         {
-            this.Register(message, callback, null);
+            Register(message, callback, null);
         }
 
         /// <summary>
@@ -39,18 +40,18 @@ namespace MvvmFoundation.Wpf
         /// <param name="callback">The callback to be called when this message is broadcasted.</param>
         public void Register<T>(string message, Action<T> callback)
         {
-            this.Register(message, callback, typeof(T));
+            Register(message, callback, typeof(T));
         }
 
         void Register(string message, Delegate callback, Type parameterType)
         {
-            if (String.IsNullOrEmpty(message))
+            if (message.IsNullOrEmpty())
                 throw new ArgumentException("'message' cannot be null or empty.");
 
             if (callback == null)
                 throw new ArgumentNullException("callback");
 
-            this.VerifyParameterType(message, parameterType);
+            VerifyParameterType(message, parameterType);
 
             _messageToActionsMap.AddAction(message, callback.Target, callback.Method, parameterType);
         }
@@ -59,29 +60,24 @@ namespace MvvmFoundation.Wpf
         void VerifyParameterType(string message, Type parameterType)
         {
             Type previouslyRegisteredParameterType = null;
-            if (_messageToActionsMap.TryGetParameterType(message, out previouslyRegisteredParameterType))
+            if (!_messageToActionsMap.TryGetParameterType(message, out previouslyRegisteredParameterType))
+                return;
+
+            if (previouslyRegisteredParameterType != null && parameterType != null && !previouslyRegisteredParameterType.Equals(parameterType))
             {
-                if (previouslyRegisteredParameterType != null && parameterType != null)
-                {
-                    if (!previouslyRegisteredParameterType.Equals(parameterType))
-                        throw new InvalidOperationException(string.Format(
-                            "The registered action's parameter type is inconsistent with the previously registered actions for message '{0}'.\nExpected: {1}\nAdding: {2}",
-                            message, 
-                            previouslyRegisteredParameterType.FullName,
-                            parameterType.FullName));
-                }
-                else
-                {
-                    // One, or both, of previouslyRegisteredParameterType or callbackParameterType are null.
-                    if (previouslyRegisteredParameterType != parameterType)   // not both null?
-                    {
-                        throw new TargetParameterCountException(string.Format(
-                            "The registered action has a number of parameters inconsistent with the previously registered actions for message \"{0}\".\nExpected: {1}\nAdding: {2}",
-                            message,
-                            previouslyRegisteredParameterType == null ? 0 : 1,
-                            parameterType == null ? 0 : 1));
-                    }
-                }
+                throw new InvalidOperationException(string.Format(
+                    "The registered action's parameter type is inconsistent with the previously registered actions for message '{0}'.\nExpected: {1}\nAdding: {2}",
+                    message, 
+                    previouslyRegisteredParameterType.FullName,
+                    parameterType.FullName));
+            }
+            else if (previouslyRegisteredParameterType != parameterType)
+            {
+                throw new TargetParameterCountException(string.Format(
+                    "The registered action has a number of parameters inconsistent with the previously registered actions for message \"{0}\".\nExpected: {1}\nAdding: {2}",
+                    message,
+                    previouslyRegisteredParameterType == null ? 0 : 1,
+                    parameterType == null ? 0 : 1));
             }
         }
 
@@ -96,15 +92,12 @@ namespace MvvmFoundation.Wpf
         /// <param name="parameter">The parameter to pass together with the message.</param>
         public void NotifyColleagues(string message, object parameter)
         {
-            if (String.IsNullOrEmpty(message))
+            if (message.IsNullOrEmpty())
                 throw new ArgumentException("'message' cannot be null or empty.");
 
             Type registeredParameterType;
-            if (_messageToActionsMap.TryGetParameterType(message, out registeredParameterType))
-            {
-                if (registeredParameterType == null)
-                    throw new TargetParameterCountException(string.Format("Cannot pass a parameter with message '{0}'. Registered action(s) expect no parameter.", message));
-            }
+            if (_messageToActionsMap.TryGetParameterType(message, out registeredParameterType) && registeredParameterType == null)
+                throw new TargetParameterCountException(string.Format("Cannot pass a parameter with message '{0}'. Registered action(s) expect no parameter.", message));
 
             var actions = _messageToActionsMap.GetActions(message);
             if (actions != null)
@@ -117,15 +110,12 @@ namespace MvvmFoundation.Wpf
         /// <param name="message">The message to broadcast.</param>
         public void NotifyColleagues(string message)
         {
-            if (String.IsNullOrEmpty(message))
+            if (message.IsNullOrEmpty())
                 throw new ArgumentException("'message' cannot be null or empty.");
 
             Type registeredParameterType;
-            if (_messageToActionsMap.TryGetParameterType(message, out registeredParameterType))
-            {
-                if (registeredParameterType != null)
-                    throw new TargetParameterCountException(string.Format("Must pass a parameter of type {0} with this message. Registered action(s) expect it.", registeredParameterType.FullName));
-            }
+            if (_messageToActionsMap.TryGetParameterType(message, out registeredParameterType) && registeredParameterType != null)
+                throw new TargetParameterCountException(string.Format("Must pass a parameter of type {0} with this message. Registered action(s) expect it.", registeredParameterType.FullName));
 
             var actions = _messageToActionsMap.GetActions(message);
             if (actions != null)
@@ -286,27 +276,13 @@ namespace MvvmFoundation.Wpf
             /// <param name="parameterType">The type of parameter to be passed to the action. Pass null if there is no parameter.</param>
             internal WeakAction(object target, MethodInfo method, Type parameterType)
             {
-                if (target == null)
-                {
-                    _targetRef = null;
-                }
-                else
-                {
-                    _targetRef = new WeakReference(target);
-                }
+                _targetRef = target != null ? new WeakReference(target) : null;
 
                 _method = method;
 
-                this.ParameterType = parameterType;
+                ParameterType = parameterType;
 
-                if (parameterType == null)
-                {
-                    _delegateType = typeof(Action);
-                }
-                else
-                {
-                    _delegateType = typeof(Action<>).MakeGenericType(parameterType);
-                }
+                _delegateType = parameterType != null ? typeof(Action<>).MakeGenericType(parameterType) : typeof(Action);
             }
 
             #endregion // Constructor
@@ -320,20 +296,16 @@ namespace MvvmFoundation.Wpf
             {
                 // Rehydrate into a real Action object, so that the method can be invoked.
                 if (_targetRef == null)
-                {
                     return Delegate.CreateDelegate(_delegateType, _method);
-                }
-                else
+
+                try
                 {
-                    try
-                    {
-                        object target = _targetRef.Target;
-                        if (target != null)
-                            return Delegate.CreateDelegate(_delegateType, target, _method);
-                    }
-                    catch
-                    {
-                    }
+                    object target = _targetRef.Target;
+                    if (target != null)
+                        return Delegate.CreateDelegate(_delegateType, target, _method);
+                }
+                catch
+                {
                 }
 
                 return null;

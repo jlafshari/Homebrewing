@@ -6,6 +6,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Windows;
+using Utility;
 
 namespace MvvmFoundation.Wpf
 {
@@ -53,13 +54,13 @@ namespace MvvmFoundation.Wpf
                 throw new ArgumentNullException("expression");
 
             string propertyName = GetPropertyName(expression);
-            if (String.IsNullOrEmpty(propertyName))
+            if (propertyName.IsNullOrEmpty())
                 throw new ArgumentException("'expression' did not provide a property name.");
 
             if (handler == null)
                 throw new ArgumentNullException("handler");
 
-            TPropertySource propertySource = this.GetPropertySource();
+            TPropertySource propertySource = GetPropertySource();
             if (propertySource != null)
             {
                 Debug.Assert(!_propertyNameToHandlerMap.ContainsKey(propertyName), "Why is the '" + propertyName + "' property being registered again?");
@@ -86,17 +87,14 @@ namespace MvvmFoundation.Wpf
                 throw new ArgumentNullException("expression");
 
             string propertyName = GetPropertyName(expression);
-            if (String.IsNullOrEmpty(propertyName))
+            if (propertyName.IsNullOrEmpty())
                 throw new ArgumentException("'expression' did not provide a property name.");
 
-             TPropertySource propertySource = this.GetPropertySource();
-             if (propertySource != null)
+             TPropertySource propertySource = GetPropertySource();
+             if (propertySource != null && _propertyNameToHandlerMap.ContainsKey(propertyName))
              {
-                 if (_propertyNameToHandlerMap.ContainsKey(propertyName))
-                 {
-                     _propertyNameToHandlerMap.Remove(propertyName);
-                     PropertyChangedEventManager.RemoveListener(propertySource, this, propertyName);
-                 }
+                _propertyNameToHandlerMap.Remove(propertyName);
+                PropertyChangedEventManager.RemoveListener(propertySource, this, propertyName);
              }
 
             return this;
@@ -118,9 +116,9 @@ namespace MvvmFoundation.Wpf
                 if (args != null && sender is TPropertySource)
                 {
                     string propertyName = args.PropertyName;
-                    TPropertySource propertySource = (TPropertySource)sender;
+                    TPropertySource propertySource = (TPropertySource) sender;
 
-                    if (String.IsNullOrEmpty(propertyName))
+                    if (propertyName.IsNullOrEmpty())
                     {
                         // When the property name is empty, all properties are considered to be invalidated.
                         // Iterate over a copy of the list of handlers, in case a handler is registered by a callback.
@@ -185,7 +183,7 @@ namespace MvvmFoundation.Wpf
         {
             try
             {
-                return (TPropertySource)_propertySourceRef.Target;
+                return (TPropertySource) _propertySourceRef.Target;
             }
             catch 
             {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using Utility;
 
 namespace MvvmFoundation.Wpf
 {
@@ -25,9 +26,9 @@ namespace MvvmFoundation.Wpf
         /// <param name="propertyName">The property that has a new value.</param>
         protected void RaisePropertyChanged(string propertyName)
         {
-            this.VerifyPropertyName(propertyName);
+            VerifyPropertyName(propertyName);
 
-            PropertyChangedEventHandler handler = this.PropertyChanged;
+            PropertyChangedEventHandler handler = PropertyChanged;
             if (handler != null)
             {
                 var e = new PropertyChangedEventArgs(propertyName);
@@ -50,7 +51,7 @@ namespace MvvmFoundation.Wpf
         {
             // If you raise PropertyChanged and do not specify a property name,
             // all properties on the object are considered to be changed by the binding system.
-            if (String.IsNullOrEmpty(propertyName))
+            if (propertyName.IsNullOrEmpty())
                 return;
 
             // Verify that the property name matches a real,  
@@ -59,7 +60,7 @@ namespace MvvmFoundation.Wpf
             {
                 string msg = "Invalid property name: " + propertyName;
 
-                if (this.ThrowOnInvalidPropertyName)
+                if (ThrowOnInvalidPropertyName)
                     throw new ArgumentException(msg);
                 else
                     Debug.Fail(msg);
