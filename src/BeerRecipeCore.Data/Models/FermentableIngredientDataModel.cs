@@ -5,9 +5,15 @@ namespace BeerRecipeCore.Data.Models
 {
     public class FermentableIngredientDataModel : ObservableObject, IFermentableIngredient
     {
-        public FermentableIngredientDataModel(Fermentable fermentableInfo)
+        public FermentableIngredientDataModel(Fermentable fermentableInfo, int fermentableId)
         {
             m_fermentableInfo = fermentableInfo;
+            m_fermentableId = fermentableId;
+        }
+
+        public int FermentableId
+        {
+            get { return m_fermentableId; }
         }
 
         public float Amount
@@ -25,7 +31,8 @@ namespace BeerRecipeCore.Data.Models
             get { return m_fermentableInfo; }
         }
 
-        private float m_amount;
-        private Fermentable m_fermentableInfo;
+        int m_fermentableId;
+        float m_amount;
+        Fermentable m_fermentableInfo;
     }
 }

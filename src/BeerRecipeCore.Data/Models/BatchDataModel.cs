@@ -7,6 +7,16 @@ namespace BeerRecipeCore.Data.Models
 {
     public class BatchDataModel : ObservableObject, IBatch
     {
+        public BatchDataModel(int batchId)
+        {
+            m_batchId = batchId;
+        }
+
+        public int BatchId
+        {
+            get { return m_batchId; }
+        }
+
         public string BrewerName
         {
             get { return m_brewerName; }
@@ -77,6 +87,7 @@ namespace BeerRecipeCore.Data.Models
             }
         }
 
+        int m_batchId;
         string m_brewerName;
         string m_assistantBrewerName;
         DateTime m_brewingDate;

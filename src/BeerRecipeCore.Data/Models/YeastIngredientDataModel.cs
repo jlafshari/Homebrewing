@@ -5,9 +5,15 @@ namespace BeerRecipeCore.Data.Models
 {
     public class YeastIngredientDataModel : ObservableObject, IYeastIngredient
     {
-        public YeastIngredientDataModel(Yeast yeastInfo)
+        public YeastIngredientDataModel(Yeast yeastInfo, int yeastIngredientId)
         {
             m_yeastInfo = yeastInfo;
+            m_yeastIngredientId = yeastIngredientId;
+        }
+
+        public int YeastIngredientId
+        {
+            get { return m_yeastIngredientId; }
         }
 
         public float Weight
@@ -41,8 +47,9 @@ namespace BeerRecipeCore.Data.Models
             get { return m_yeastInfo; }
         }
 
-        private float m_weight;
-        private float m_volume;
-        private Yeast m_yeastInfo;
+        int m_yeastIngredientId;
+        float m_weight;
+        float m_volume;
+        Yeast m_yeastInfo;
     }
 }

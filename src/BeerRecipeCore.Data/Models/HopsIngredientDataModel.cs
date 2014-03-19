@@ -5,9 +5,15 @@ namespace BeerRecipeCore.Data.Models
 {
     public class HopsIngredientDataModel : ObservableObject, IHopsIngredient
     {
-        public HopsIngredientDataModel(Hops hopsInfo)
+        public HopsIngredientDataModel(Hops hopsInfo, int hopsId)
         {
             m_hopsInfo = hopsInfo;
+            m_hopsId = hopsId;
+        }
+
+        public int HopsId
+        {
+            get { return m_hopsId; }
         }
 
         public float Amount
@@ -67,10 +73,11 @@ namespace BeerRecipeCore.Data.Models
             get { return m_hopsInfo; }
         }
 
-        private float m_amount;
-        private int m_time;
-        private HopsFlavorType m_flavorType;
-        private HopsForm m_form;
-        private Hops m_hopsInfo;
+        int m_hopsId;
+        float m_amount;
+        int m_time;
+        HopsFlavorType m_flavorType;
+        HopsForm m_form;
+        Hops m_hopsInfo;
     }
 }

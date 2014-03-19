@@ -7,8 +7,14 @@ namespace BeerRecipeCore.Data.Models
 {
     public class RecipeDataModel : ObservableObject, IRecipe
     {
-        public RecipeDataModel()
+        public RecipeDataModel(int recipeId)
         {
+            m_recipeId = recipeId;
+        }
+
+        public int RecipeId
+        {
+            get { return m_recipeId; }
         }
 
         public float Size
@@ -182,6 +188,7 @@ namespace BeerRecipeCore.Data.Models
             Color = ColorUtility.GetColorInSrm(m_fermentableIngredients, m_size);
         }
 
+        int m_recipeId;
         float m_size;
         int m_boilTime;
         Style m_style;
