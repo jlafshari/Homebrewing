@@ -22,6 +22,7 @@
         public Yeast YeastInfo
         {
             get { return m_yeastInfo; }
+            set { m_yeastInfo = value; }
         }
 
         private float m_weight;

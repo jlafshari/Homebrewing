@@ -44,7 +44,15 @@ namespace BeerRecipeCore.Data.Models
 
         public Yeast YeastInfo
         {
-            get { return m_yeastInfo; }
+            get
+            {
+                return m_yeastInfo;
+            }
+            set
+            {
+                m_yeastInfo = value;
+                RaisePropertyChanged("YeastInfo");
+            }
         }
 
         int m_yeastIngredientId;

@@ -12,6 +12,6 @@
         /// </summary>
         float Volume { get; set; }
 
-        Yeast YeastInfo { get; }
+        Yeast YeastInfo { get; set; }
     }
 }
