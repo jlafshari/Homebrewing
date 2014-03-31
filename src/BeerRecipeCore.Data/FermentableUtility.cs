@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
+using BeerRecipeCore.Data.Models;
 using Utility;
 
 namespace BeerRecipeCore.Data
@@ -32,6 +33,79 @@ namespace BeerRecipeCore.Data
                         YieldByWeight = yieldByWeight, Type = type, GravityPoint = gravityPoint };
                     yield return new Fermentable(name, characteristics, notes, origin);
                 }
+            }
+        }
+
+        public static FermentableIngredientDataModel CreateFermentableIngredient(Fermentable fermentableInfo, int recipeId)
+        {
+            FermentableIngredientDataModel fermentableIngredient = null;
+            using (SQLiteConnection connection = DatabaseUtility.GetNewConnection())
+            {
+                fermentableIngredient = CreateFermentableIngredient(fermentableInfo, recipeId, connection);
+                connection.Close();
+            }
+            return fermentableIngredient;
+        }
+
+        internal static FermentableIngredientDataModel CreateFermentableIngredient(Fermentable fermentableInfo, int recipeId, SQLiteConnection connection)
+        {
+            using (SQLiteCommand insertIngredientCommand = connection.CreateCommand())
+            {
+                insertIngredientCommand.CommandText = "INSERT INTO FermentableIngredients (amount, fermentableInfo) VALUES(0, (SELECT id FROM Fermentables WHERE name = @name))";
+                insertIngredientCommand.Parameters.AddWithValue("name", fermentableInfo.Name);
+                insertIngredientCommand.ExecuteNonQuery();
+            }
+            FermentableIngredientDataModel fermentableIngredient = new FermentableIngredientDataModel(fermentableInfo, DatabaseUtility.GetLastInsertedRowId(connection));
+
+            using (SQLiteCommand insertJunctionCommand = connection.CreateCommand())
+            {
+                insertJunctionCommand.CommandText = "INSERT INTO FermentablesInRecipe (fermentableIngredient, recipe) VALUES(@fermentableIngredientId, @recipeId)";
+                insertJunctionCommand.Parameters.AddWithValue("fermentableIngredientId", fermentableIngredient.FermentableId);
+                insertJunctionCommand.Parameters.AddWithValue("recipeId", recipeId);
+                insertJunctionCommand.ExecuteNonQuery();
+            }
+            return fermentableIngredient;
+        }
+
+        internal static IEnumerable<FermentableIngredientDataModel> GetFermentableIngredientsForRecipe(int recipeId, SQLiteConnection connection)
+        {
+            using (SQLiteCommand selectIngredientsCommand = connection.CreateCommand())
+            {
+                selectIngredientsCommand.CommandText = "SELECT FermentableIngredients.id, FermentableIngredients.amount, Fermentables.name, Fermentables.yield, Fermentables.yieldByWeight, Fermentables.color, Fermentables.origin, Fermentables.notes, Fermentables.diastaticPower, Fermentables.type, Fermentables.gravityPoint FROM FermentableIngredients " +
+                    "JOIN FermentablesInRecipe ON FermentablesInRecipe.fermentableIngredient = FermentableIngredients.id AND FermentablesInRecipe.recipe = @recipeId " +
+                    "JOIN Fermentables ON Fermentables.id = FermentableIngredients.fermentableInfo";
+                selectIngredientsCommand.Parameters.AddWithValue("recipeId", recipeId);
+                using (SQLiteDataReader reader = selectIngredientsCommand.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        string yieldValue = reader[3].ToString();
+                        float? yield = !yieldValue.IsNullOrEmpty() ? (float?) float.Parse(yieldValue) : null;
+                        string yieldByWeightValue = reader[4].ToString();
+                        float? yieldByWeight = !yieldByWeightValue.IsNullOrEmpty() ? (float?) float.Parse(yieldByWeightValue) : null;
+                        string diastaticPowerValue = reader[8].ToString();
+                        float? diastaticPower = !diastaticPowerValue.IsNullOrEmpty() ? (float?) float.Parse(diastaticPowerValue) : null;
+                        FermentableCharacteristics characteristics = new FermentableCharacteristics(yield, reader.GetFloat(5), diastaticPower)
+                        {
+                            GravityPoint = reader.GetInt32(10),
+                            Type = (FermentableType) EnumConverter.Parse(typeof(FermentableType), reader.GetString(9)),
+                            YieldByWeight = yieldByWeight
+                        };
+                        Fermentable fermentableInfo = new Fermentable(reader.GetString(2), characteristics, reader.GetString(7), reader.GetString(6));
+                        yield return new FermentableIngredientDataModel(fermentableInfo, reader.GetInt32(0)) { Amount = reader.GetFloat(1) };
+                    }
+                }
+            }
+        }
+
+        internal static void UpdateFermentableIngredient(FermentableIngredientDataModel fermentableIngredient, SQLiteConnection connection)
+        {
+            using (SQLiteCommand updateCommand = connection.CreateCommand())
+            {
+                updateCommand.CommandText = "UPDATE FermentableIngredients SET amount = @amount WHERE id = @id";
+                updateCommand.Parameters.AddWithValue("id", fermentableIngredient.FermentableId);
+                updateCommand.Parameters.AddWithValue("amount", fermentableIngredient.Amount);
+                updateCommand.ExecuteNonQuery();
             }
         }
     }

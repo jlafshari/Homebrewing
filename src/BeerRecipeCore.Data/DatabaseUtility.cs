@@ -13,5 +13,14 @@ namespace BeerRecipeCore.Data
                 return Convert.ToInt32(getRowIdCommand.ExecuteScalar());
             }
         }
+
+        internal static SQLiteConnection GetNewConnection()
+        {
+            SQLiteConnection connection = new SQLiteConnection(DatabaseConnectionString);
+            connection.Open();
+            return connection;
+        }
+
+        internal static readonly string DatabaseConnectionString = "Data Source=" + Properties.Settings.Default.DatabaseLocation;
     }
 }
