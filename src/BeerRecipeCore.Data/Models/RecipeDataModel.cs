@@ -1,5 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using BeerRecipeCore;
 using BeerRecipeCore.Formulas;
 using MvvmFoundation.Wpf;
 
@@ -98,18 +97,6 @@ namespace BeerRecipeCore.Data.Models
             }
         }
 
-        public Yeast SelectedYeastInfo
-        {
-            get { return m_selectedYeastInfo; }
-            set
-            {
-                m_selectedYeastInfo = value;
-                YeastIngredient = new YeastIngredientDataModel(m_selectedYeastInfo);
-                UpdateRecipeOutcome();
-                RaisePropertyChanged("SelectedYeastInfo");
-            }
-        }
-
         public float OriginalGravity
         {
             get { return m_originalGravity; }
@@ -197,7 +184,6 @@ namespace BeerRecipeCore.Data.Models
         IYeastIngredient m_yeastIngredient;
         MashProfile m_mashProfile;
         string m_name;
-        Yeast m_selectedYeastInfo;
         float m_originalGravity;
         float m_finalGravity;
         float m_alcoholByVolume;

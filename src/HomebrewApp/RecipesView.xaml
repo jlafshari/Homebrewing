@@ -1,0 +1,263 @@
+﻿<UserControl x:Class="HomebrewApp.RecipesView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             xmlns:brc="clr-namespace:BeerRecipeCore;assembly=BeerRecipeCore"
+             xmlns:vw="clr-namespace:HomebrewApp"
+             mc:Ignorable="d">
+    <UserControl.DataContext>
+        <vw:RecipesViewModel />
+    </UserControl.DataContext>
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Left">
+            <ListView ItemsSource="{Binding SavedRecipes}" SelectedItem="{Binding CurrentRecipe}" MinHeight="100" MinWidth="150">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <TextBlock Text="{Binding Name}" />
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <Button Width="80" Margin="0,4,0,0" HorizontalAlignment="Left" Command="{Binding AddNewRecipeCommand, Mode=OneTime}">New Recipe</Button>
+        </StackPanel>
+
+        <!-- Recipe Editor -->
+        <Grid>
+            <Grid.Style>
+                <Style TargetType="{x:Type Grid}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsRecipeSelected}" Value="False">
+                            <Setter Property="Visibility" Value="Hidden" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Row="0" DockPanel.Dock="Right" Margin="16,0,0,0">
+                <Grid.Resources>
+                    <Style TargetType="{x:Type TextBox}">
+                        <Setter Property="Margin" Value="4" />
+                    </Style>
+                    <Style TargetType="{x:Type TextBlock}">
+                        <Setter Property="VerticalAlignment" Value="Center" />
+                    </Style>
+                    <ObjectDataProvider x:Key="HopsFormValues" MethodName="GetValues" ObjectType="{x:Type sys:Enum}">
+                        <ObjectDataProvider.MethodParameters>
+                            <x:Type Type="{x:Type brc:HopsForm}" />
+                        </ObjectDataProvider.MethodParameters>
+                    </ObjectDataProvider>
+                    <ObjectDataProvider x:Key="FermentableTypeValues" MethodName="GetValues" ObjectType="{x:Type sys:Enum}">
+                        <ObjectDataProvider.MethodParameters>
+                            <x:Type Type="{x:Type brc:FermentableType}" />
+                        </ObjectDataProvider.MethodParameters>
+                    </ObjectDataProvider>
+                </Grid.Resources>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30" />
+                    <RowDefinition Height="30" />
+                    <RowDefinition Height="30" />
+                    <RowDefinition Height="30" />
+                    <RowDefinition MinHeight="100" MaxHeight="200" Height="150*" />
+                    <RowDefinition MinHeight="100" MaxHeight="200" Height="150*" />
+                    <RowDefinition Height="90" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="80" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Row="0" Grid.Column="0" Height="16" Margin="0,7">Name</TextBlock>
+                <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding CurrentRecipe.Name}" />
+                <TextBlock Grid.Row="1" Grid.Column="0">Style</TextBlock>
+                <ComboBox Grid.Row="1" Grid.Column="1" ItemsSource="{Binding AvailableBeerStyles}" SelectedItem="{Binding CurrentRecipe.Style}" Margin="4">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Name}" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                <TextBlock Grid.Row="2" Grid.Column="0" Height="16" Margin="0,7">BoilTime</TextBlock>
+                <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding CurrentRecipe.BoilTime}" />
+                <TextBlock Grid.Row="3" Grid.Column="0" Height="16" Margin="0,7">Size</TextBlock>
+                <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding CurrentRecipe.Size}" />
+                <TextBlock Grid.Row="4" Grid.Column="0" VerticalAlignment="Top" Height="16">Hops</TextBlock>
+                <StackPanel Grid.Row="4" Grid.Column="1" Margin="4">
+                    <ListView ItemsSource="{Binding CurrentRecipe.HopsIngredients}" SelectionChanged="ListView_SelectionChanged" MinHeight="50">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Name" DisplayMemberBinding="{Binding HopsInfo.Name}" Width="100" />
+                                <GridViewColumn Header="Amount">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBox Text="{Binding Amount}" MinWidth="40" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Addition Time">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBox Text="{Binding Time}" MinWidth="40" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Form" Width="80">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <ComboBox ItemsSource="{Binding Source={StaticResource HopsFormValues}}" SelectedItem="{Binding Form}" MinWidth="60" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                    <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
+                        <ComboBox Name="AvailableHops" ItemsSource="{Binding AvailableHops}" MinWidth="100" Margin="0,4,0,4">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Name}" />
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                        <Button Command="{Binding AddHopsIngredientToRecipeCommand}" CommandParameter="{Binding ElementName=AvailableHops, Path=SelectedItem}"
+                                Margin="4">
+                            <Button.Style>
+                                <Style TargetType="{x:Type Button}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ElementName=AvailableHops, Path=SelectedIndex}" Value="-1">
+                                            <Setter Property="IsEnabled" Value="False" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                            Add
+                        </Button>
+                    </StackPanel>
+                </StackPanel>
+                <TextBlock  Grid.Row="5" Grid.Column="0" VerticalAlignment="Top" Height="16">Fermentables</TextBlock>
+                <StackPanel Grid.Row="5" Grid.Column="1" Margin="4">
+                    <ListView ItemsSource="{Binding CurrentRecipe.FermentableIngredients}" SelectionChanged="ListView_SelectionChanged" MinHeight="50">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Name" DisplayMemberBinding="{Binding FermentableInfo.Name}" Width="100" />
+                                <GridViewColumn Header="Amount">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBox Text="{Binding Amount}" MinWidth="40" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Type" Width="80">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <ComboBox ItemsSource="{Binding Source={StaticResource FermentableTypeValues}}" SelectedItem="{Binding FermentableInfo.Characteristics.Type}" Width="60" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                    <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
+                        <ComboBox Name="AvailableFermentables" ItemsSource="{Binding AvailableFermentables}" MinWidth="100" Margin="0,4,0,4">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Name}" />
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                        <Button Command="{Binding AddFermentableIngredientToRecipeCommand}" CommandParameter="{Binding ElementName=AvailableFermentables, Path=SelectedItem}"
+                                Margin="4">
+                            <Button.Style>
+                                <Style TargetType="{x:Type Button}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ElementName=AvailableFermentables, Path=SelectedIndex}" Value="-1">
+                                            <Setter Property="IsEnabled" Value="False" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                            Add
+                        </Button>
+                    </StackPanel>
+                </StackPanel>
+                <TextBlock Grid.Row="6" Grid.Column="0" VerticalAlignment="Top" Height="16" Margin="0,4,0,4">Yeast</TextBlock>
+                <Grid Grid.Row="6" Grid.Column="1" Margin="4,4,4,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="30" />
+                        <RowDefinition Height="30" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition MinWidth="50" />
+                        <ColumnDefinition MinWidth="80" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Row="0" Grid.Column="0">Name</TextBlock>
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding CurrentRecipe.YeastIngredient.YeastInfo.Name}" />
+                    <TextBlock Grid.Row="0" Grid.Column="1">Weight</TextBlock>
+                    <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding CurrentRecipe.YeastIngredient.Weight}" Margin="0,4,4,4" />
+                    <TextBlock Grid.Row="0" Grid.Column="2">Form</TextBlock>
+                    <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding CurrentRecipe.YeastIngredient.YeastInfo.Characteristics.Form}" />
+                    <ComboBox Name="AvailableYeasts" Grid.Row="2" Grid.Column="0" ItemsSource="{Binding AvailableYeasts}" MinWidth="80" Margin="0,4,4,4" VerticalAlignment="Center" SelectionChanged="ListView_SelectionChanged">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Name}" />
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                    <Button Grid.Row="2" Grid.Column="1" Command="{Binding ChangeYeastCommand}" CommandParameter="{Binding ElementName=AvailableYeasts, Path=SelectedItem}"
+                            Margin="0,4,4,4" Width="50" HorizontalAlignment="Left">
+                        <Button.Style>
+                            <Style TargetType="{x:Type Button}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ElementName=AvailableYeasts, Path=SelectedIndex}" Value="-1">
+                                        <Setter Property="IsEnabled" Value="False" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                        Change
+                    </Button>
+                </Grid>
+                <!-- TODO: mash schedule -->
+            </Grid>
+            <DockPanel Grid.Row="1">
+                <TextBlock DockPanel.Dock="Top" FontSize="14">Projected Outcome</TextBlock>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Row="0" Grid.Column="0">Original Gravity</TextBlock>
+                    <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding CurrentRecipe.OriginalGravity, Mode=OneWay}" />
+                    <TextBlock Grid.Row="1" Grid.Column="0">Final Gravity</TextBlock>
+                    <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding CurrentRecipe.FinalGravity, Mode=OneWay}" />
+                    <TextBlock Grid.Row="2" Grid.Column="0">ABV</TextBlock>
+                    <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding CurrentRecipe.AlcoholByVolume, Mode=OneWay}" />
+                    <TextBlock Grid.Row="3" Grid.Column="0">ABW</TextBlock>
+                    <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding CurrentRecipe.AlcoholByWeight, Mode=OneWay}" />
+                    <TextBlock Grid.Row="4" Grid.Column="0">Bitterness</TextBlock>
+                    <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding CurrentRecipe.Bitterness, Mode=OneWay}" />
+                    <TextBlock Grid.Row="5" Grid.Column="0">Color</TextBlock>
+                    <TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding CurrentRecipe.Color, Mode=OneWay}" />
+                </Grid>
+            </DockPanel>
+        </Grid>
+    </DockPanel>
+</UserControl>
