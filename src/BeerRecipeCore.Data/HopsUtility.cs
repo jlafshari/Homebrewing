@@ -100,5 +100,21 @@ namespace BeerRecipeCore.Data
                 updateCommand.ExecuteNonQuery();
             }
         }
+
+        internal static void DeleteHopsIngredient(int hopsIngredientId, SQLiteConnection connection)
+        {
+            using (SQLiteCommand deleteIngredientCommand = connection.CreateCommand())
+            {
+                deleteIngredientCommand.CommandText = "DELETE FROM HopsIngredients WHERE id = @id";
+                deleteIngredientCommand.Parameters.AddWithValue("id", hopsIngredientId);
+                deleteIngredientCommand.ExecuteNonQuery();
+            }
+            using (SQLiteCommand deleteJunctionCommand = connection.CreateCommand())
+            {
+                deleteJunctionCommand.CommandText = "DELETE FROM HopsInRecipe WHERE hopsIngredient = @id";
+                deleteJunctionCommand.Parameters.AddWithValue("id", hopsIngredientId);
+                deleteJunctionCommand.ExecuteNonQuery();
+            }
+        }
     }
 }

@@ -98,5 +98,15 @@ namespace BeerRecipeCore.Data
                 updateCommand.ExecuteNonQuery();
             }
         }
+
+        internal static void DeleteYeastIngredient(int yeastIngredientId, SQLiteConnection connection)
+        {
+            using (SQLiteCommand deleteCommand = connection.CreateCommand())
+            {
+                deleteCommand.CommandText = "DELETE FROM YeastIngredients WHERE id = @id";
+                deleteCommand.Parameters.AddWithValue("id", yeastIngredientId);
+                deleteCommand.ExecuteNonQuery();
+            }
+        }
     }
 }

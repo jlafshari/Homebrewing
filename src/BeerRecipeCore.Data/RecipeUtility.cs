@@ -138,6 +138,28 @@ namespace BeerRecipeCore.Data
             return recipe;
         }
 
+        public static void DeleteRecipe(RecipeDataModel recipe)
+        {
+            using (SQLiteConnection connection = DatabaseUtility.GetNewConnection())
+            {
+                if (recipe.YeastIngredient != null)
+                    YeastUtility.DeleteYeastIngredient(((YeastIngredientDataModel) recipe.YeastIngredient).YeastIngredientId, connection);
+
+                foreach (FermentableIngredientDataModel fermentableIngredient in recipe.FermentableIngredients)
+                    FermentableUtility.DeleteFermentableIngredient(fermentableIngredient.FermentableId, connection);
+
+                foreach (HopsIngredientDataModel hopsIngredient in recipe.HopsIngredients)
+                    HopsUtility.DeleteHopsIngredient(hopsIngredient.HopsId, connection);
+
+                using (SQLiteCommand deleteRecipeCommand = connection.CreateCommand())
+                {
+                    deleteRecipeCommand.CommandText = "DELETE FROM Recipes WHERE id = @id";
+                    deleteRecipeCommand.Parameters.AddWithValue("id", recipe.RecipeId);
+                    deleteRecipeCommand.ExecuteNonQuery();
+                }
+            }
+        }
+
         private static IEnumerable<StyleThreshold> GetStyleThresholds(string styleName, SQLiteConnection connection)
         {
             SQLiteCommand thresholdCommand = connection.CreateCommand();

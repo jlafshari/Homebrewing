@@ -108,5 +108,21 @@ namespace BeerRecipeCore.Data
                 updateCommand.ExecuteNonQuery();
             }
         }
+
+        internal static void DeleteFermentableIngredient(int fermentableIngredientId, SQLiteConnection connection)
+        {
+            using (SQLiteCommand deleteIngredientCommand = connection.CreateCommand())
+            {
+                deleteIngredientCommand.CommandText = "DELETE FROM FermentableIngredients WHERE id = @id";
+                deleteIngredientCommand.Parameters.AddWithValue("id", fermentableIngredientId);
+                deleteIngredientCommand.ExecuteNonQuery();
+            }
+            using (SQLiteCommand deleteJunctionCommand = connection.CreateCommand())
+            {
+                deleteJunctionCommand.CommandText = "DELETE FROM FermentablesInRecipe WHERE fermentableIngredient = @id";
+                deleteJunctionCommand.Parameters.AddWithValue("id", fermentableIngredientId);
+                deleteJunctionCommand.ExecuteNonQuery();
+            }
+        }
     }
 }
