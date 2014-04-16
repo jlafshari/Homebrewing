@@ -16,6 +16,7 @@ namespace HomebrewApp
         {
             // initialize commands
             m_addNewRecipeCommand = new RelayCommand(AddNewRecipe);
+            m_deleteRecipeCommand = new RelayCommand<RecipeDataModel>(DeleteRecipe);
             m_addHopsIngredientToRecipeCommand = new RelayCommand<Hops>(AddHopsIngredient);
             m_addFermentableIngredientToRecipeCommand = new RelayCommand<Fermentable>(AddFermentableIngredient);
             m_changeYeastCommand = new RelayCommand<Yeast>(ChangeYeast);
@@ -83,6 +84,11 @@ namespace HomebrewApp
             get { return m_addNewRecipeCommand; }
         }
 
+        public ICommand DeleteRecipeCommand
+        {
+            get { return m_deleteRecipeCommand; }
+        }
+
         public ICommand AddHopsIngredientToRecipeCommand
         {
             get { return m_addHopsIngredientToRecipeCommand; }
@@ -113,6 +119,12 @@ namespace HomebrewApp
             RaisePropertyChanged("IsRecipeSelected");
         }
 
+        private void DeleteRecipe(RecipeDataModel recipe)
+        {
+            RecipeUtility.DeleteRecipe(recipe);
+            SavedRecipes.Remove(recipe);
+        }
+
         private void AddHopsIngredient(Hops hops)
         {
             HopsIngredientDataModel hopsIngredient = HopsUtility.CreateHopsIngredient(hops, CurrentRecipe.RecipeId);
@@ -127,6 +139,9 @@ namespace HomebrewApp
 
         private void ChangeYeast(Yeast yeastInfo)
         {
+            if (CurrentRecipe.YeastIngredient == null)
+                CurrentRecipe.YeastIngredient = YeastUtility.CreateYeastIngredient();
+
             CurrentRecipe.YeastIngredient.YeastInfo = yeastInfo;
         }
 
@@ -136,6 +151,7 @@ namespace HomebrewApp
         readonly ReadOnlyObservableCollection<Yeast> m_availableYeasts;
         readonly ReadOnlyObservableCollection<Style> m_availableBeerStyles;
         readonly RelayCommand m_addNewRecipeCommand;
+        readonly RelayCommand<RecipeDataModel> m_deleteRecipeCommand;
         readonly RelayCommand<Hops> m_addHopsIngredientToRecipeCommand;
         readonly RelayCommand<Fermentable> m_addFermentableIngredientToRecipeCommand;
         readonly RelayCommand<Yeast> m_changeYeastCommand;
