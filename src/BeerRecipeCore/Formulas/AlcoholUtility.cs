@@ -11,7 +11,7 @@ namespace BeerRecipeCore.Formulas
         /// </summary>
         public static float GetAlcoholByVolume(float startingGravity, float finalGravity)
         {
-            return (1.05f * (startingGravity - finalGravity)) / (finalGravity * 0.79f) * 100;
+            return (float) Math.Round((1.05f * (startingGravity - finalGravity)) / (finalGravity * 0.79f) * 100, c_abvFractionalDigits);
         }
 
         /// <summary>
@@ -19,7 +19,7 @@ namespace BeerRecipeCore.Formulas
         /// </summary>
         public static float GetAlcoholByWeight(float alcoholByVolume)
         {
-            return alcoholByVolume * 0.79336f;
+            return (float) Math.Round(alcoholByVolume * 0.79336f, c_abvFractionalDigits);
         }
 
         /// <summary>
@@ -72,5 +72,6 @@ namespace BeerRecipeCore.Formulas
         }
 
         const float c_defaultExtractionEfficiency = 60f;
+        const int c_abvFractionalDigits = 2;
     }
 }

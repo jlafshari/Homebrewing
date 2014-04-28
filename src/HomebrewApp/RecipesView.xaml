@@ -259,12 +259,18 @@
                     <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding CurrentRecipe.OriginalGravity, Mode=OneWay}" />
                     <TextBlock Grid.Row="1" Grid.Column="0">Final Gravity</TextBlock>
                     <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding CurrentRecipe.FinalGravity, Mode=OneWay}" />
-                    <TextBlock Grid.Row="2" Grid.Column="0">ABV</TextBlock>
-                    <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding CurrentRecipe.AlcoholByVolume, Mode=OneWay}" />
+                    <TextBlock Grid.Row="2" Grid.Column="0" Margin="0,4,0,0">ABV</TextBlock>
+                    <StackPanel Grid.Row="2" Grid.Column="1" Margin="0,4,0,0" Orientation="Horizontal">
+                        <TextBlock Text="{Binding CurrentRecipe.AlcoholByVolume, Mode=OneWay}" />
+                        <TextBlock>%</TextBlock>
+                    </StackPanel>
                     <TextBlock Grid.Row="3" Grid.Column="0">ABW</TextBlock>
-                    <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding CurrentRecipe.AlcoholByWeight, Mode=OneWay}" />
-                    <TextBlock Grid.Row="4" Grid.Column="0">Bitterness</TextBlock>
-                    <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding CurrentRecipe.Bitterness, Mode=OneWay}" />
+                    <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal">
+                        <TextBlock Text="{Binding CurrentRecipe.AlcoholByWeight, Mode=OneWay}" />
+                        <TextBlock>%</TextBlock>
+                    </StackPanel>
+                    <TextBlock Grid.Row="4" Grid.Column="0" Margin="0,4,0,0">Bitterness</TextBlock>
+                    <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding CurrentRecipe.Bitterness, Mode=OneWay}" Margin="0,4,0,0" />
                     <TextBlock Grid.Row="5" Grid.Column="0">Color</TextBlock>
                     <TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding CurrentRecipe.Color, Mode=OneWay}" />
                 </Grid>

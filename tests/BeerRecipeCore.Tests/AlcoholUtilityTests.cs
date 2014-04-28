@@ -13,14 +13,14 @@ namespace BeerRecipeCore.Tests
         {
             float originalGravity = 1.045f;
             float finalGravity = 1.006f;
-            float actualAbv = (float) Math.Round(AlcoholUtility.GetAlcoholByVolume(originalGravity, finalGravity), 2);
+            float actualAbv = AlcoholUtility.GetAlcoholByVolume(originalGravity, finalGravity);
             Assert.AreEqual(5.15f, actualAbv);
         }
 
         [TestMethod]
         public void GetAlcoholByWeightTest()
         {
-            float actualAbw = (float) Math.Round(AlcoholUtility.GetAlcoholByWeight(5.12f), 2);
+            float actualAbw = AlcoholUtility.GetAlcoholByWeight(5.12f);
             Assert.AreEqual(4.06f, actualAbw);
         }
 
