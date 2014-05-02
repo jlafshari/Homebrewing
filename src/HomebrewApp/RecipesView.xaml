@@ -273,7 +273,10 @@
                         <TextBlock>%</TextBlock>
                     </StackPanel>
                     <TextBlock Grid.Row="4" Grid.Column="0" Margin="0,4,0,0">Bitterness</TextBlock>
-                    <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding CurrentRecipe.Bitterness, Mode=OneWay}" Margin="0,4,0,0" />
+                    <StackPanel Grid.Row="4" Grid.Column="1" Orientation="Horizontal" Margin="0,4,0,0">
+                        <TextBlock Text="{Binding CurrentRecipe.Bitterness, Mode=OneWay}" />
+                        <TextBlock Margin="2,0,0,0">IBU</TextBlock>
+                    </StackPanel>
                     <TextBlock Grid.Row="5" Grid.Column="0">Color</TextBlock>
                     <StackPanel Grid.Row="5" Grid.Column="1" Orientation="Horizontal">
                         <TextBlock Text="{Binding CurrentRecipe.Color, Mode=OneWay}" VerticalAlignment="Bottom" />
