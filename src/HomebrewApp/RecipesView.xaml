@@ -7,6 +7,9 @@
              xmlns:brc="clr-namespace:BeerRecipeCore;assembly=BeerRecipeCore"
              xmlns:vw="clr-namespace:HomebrewApp"
              mc:Ignorable="d">
+    <UserControl.Resources>
+        <vw:SrmColorConverter x:Key="srmColorConverter" />
+    </UserControl.Resources>
     <UserControl.DataContext>
         <vw:RecipesViewModel />
     </UserControl.DataContext>
@@ -272,7 +275,11 @@
                     <TextBlock Grid.Row="4" Grid.Column="0" Margin="0,4,0,0">Bitterness</TextBlock>
                     <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding CurrentRecipe.Bitterness, Mode=OneWay}" Margin="0,4,0,0" />
                     <TextBlock Grid.Row="5" Grid.Column="0">Color</TextBlock>
-                    <TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding CurrentRecipe.Color, Mode=OneWay}" />
+                    <StackPanel Grid.Row="5" Grid.Column="1" Orientation="Horizontal">
+                        <TextBlock Text="{Binding CurrentRecipe.Color, Mode=OneWay}" VerticalAlignment="Bottom" />
+                        <TextBlock VerticalAlignment="Bottom" Margin="2,0,0,0">SRM</TextBlock>
+                        <Rectangle Fill="{Binding CurrentRecipe.Color, Converter={StaticResource srmColorConverter}}" Width="40" Height="18" Margin="4,0,0,0" VerticalAlignment="Bottom" />
+                    </StackPanel>
                 </Grid>
             </DockPanel>
         </Grid>
