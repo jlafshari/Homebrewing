@@ -147,7 +147,7 @@ namespace BeerRecipeCore.Data.Models
             }
         }
 
-        public float Color
+        public double Color
         {
             get { return m_color; }
             set
@@ -189,6 +189,6 @@ namespace BeerRecipeCore.Data.Models
         float m_alcoholByVolume;
         float m_alcoholByWeight;
         int m_bitterness;
-        float m_color;
+        double m_color;
     }
 }

@@ -5,7 +5,7 @@ namespace BeerRecipeCore.Formulas
 {
     public static class ColorUtility
     {
-        public static float GetColorInSrm(IEnumerable<IFermentableIngredient> fermentables, float recipeVolumeInGallons)
+        public static double GetColorInSrm(IEnumerable<IFermentableIngredient> fermentables, float recipeVolumeInGallons)
         {
             // calculate MCU from each fermentable
             float totalMcu = 0;
@@ -16,7 +16,7 @@ namespace BeerRecipeCore.Formulas
             }
             
             // get SRM color using Morey equation
-            return 1.4922f * (float) Math.Pow(totalMcu, 0.6859);
+            return Math.Round(1.4922 * Math.Pow(totalMcu, 0.6859), 1);
         }
 
         private static float GetMaltColorUnit(IFermentableIngredient fermentable, float recipeVolumeInGallons)
