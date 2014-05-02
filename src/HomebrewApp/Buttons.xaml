@@ -1,12 +1,17 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <ControlTemplate x:Key="SimpleButtonTemplate" TargetType="{x:Type Button}">
+    <ControlTemplate x:Key="DeleteButtonTemplate" TargetType="{x:Type Button}">
         <Grid>
-            <TextBlock Text="{TemplateBinding Content}" />
+            <TextBlock x:Name="buttonTextBlock" Text="{TemplateBinding Content}" Foreground="Transparent" />
         </Grid>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="buttonTextBlock" Property="Foreground" Value="Gray" />
+            </Trigger>
+        </ControlTemplate.Triggers>
     </ControlTemplate>
 
-    <Style x:Key="SimpleButtonStyle" TargetType="{x:Type Button}">
-        <Setter Property="Template" Value="{StaticResource SimpleButtonTemplate}" />
+    <Style x:Key="DeleteButtonStyle" TargetType="{x:Type Button}">
+        <Setter Property="Template" Value="{StaticResource DeleteButtonTemplate}" />
     </Style>
 </ResourceDictionary>

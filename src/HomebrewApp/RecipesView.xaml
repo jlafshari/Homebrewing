@@ -23,11 +23,11 @@
                                 <RowDefinition />
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="90" />
-                                <ColumnDefinition Width="50" />
+                                <ColumnDefinition Width="95" />
+                                <ColumnDefinition Width="45" />
                             </Grid.ColumnDefinitions>
                             <TextBlock Grid.Column="0" Text="{Binding Name}" />
-                            <Button Grid.Column="1" Foreground="Gray" FontSize="9" Width="40" HorizontalAlignment="Right" Style="{DynamicResource SimpleButtonStyle}"
+                            <Button Grid.Column="1" Foreground="Gray" FontSize="9" Width="40" HorizontalAlignment="Right" Style="{DynamicResource DeleteButtonStyle}"
                                     Command="{Binding DataContext.DeleteRecipeCommand, RelativeSource={RelativeSource FindAncestor,  AncestorType={x:Type UserControl}}}" CommandParameter="{Binding}">
                                 Delete
                             </Button>
