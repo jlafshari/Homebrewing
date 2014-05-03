@@ -89,19 +89,25 @@
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
                 <TextBlock Grid.Row="0" Grid.Column="0" Height="16" Margin="0,7">Name</TextBlock>
-                <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding CurrentRecipe.Name}" />
+                <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding CurrentRecipe.Name}" MinWidth="150" MaxWidth="200" HorizontalAlignment="Left" />
                 <TextBlock Grid.Row="1" Grid.Column="0">Style</TextBlock>
-                <ComboBox Grid.Row="1" Grid.Column="1" ItemsSource="{Binding AvailableBeerStyles}" SelectedItem="{Binding CurrentRecipe.Style}" Margin="4">
+                <ComboBox Grid.Row="1" Grid.Column="1" ItemsSource="{Binding AvailableBeerStyles}" SelectedItem="{Binding CurrentRecipe.Style}" Margin="4" MinWidth="150" MaxWidth="200" HorizontalAlignment="Left">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding Name}" />
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
-                <TextBlock Grid.Row="2" Grid.Column="0" Height="16" Margin="0,7">BoilTime</TextBlock>
-                <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding CurrentRecipe.BoilTime}" />
+                <TextBlock Grid.Row="2" Grid.Column="0" Height="16" Margin="0,7">Boil time</TextBlock>
+                <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal">
+                    <TextBox Text="{Binding CurrentRecipe.BoilTime}" MinWidth="50" MaxWidth="70" HorizontalAlignment="Left" />
+                    <TextBlock>Minutes</TextBlock>
+                </StackPanel>
                 <TextBlock Grid.Row="3" Grid.Column="0" Height="16" Margin="0,7">Size</TextBlock>
-                <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding CurrentRecipe.Size}" />
+                <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal">
+                    <TextBox Text="{Binding CurrentRecipe.Size}" MinWidth="50" MaxWidth="70" HorizontalAlignment="Left" />
+                    <TextBlock>Gallons</TextBlock>
+                </StackPanel>
                 <TextBlock Grid.Row="4" Grid.Column="0" VerticalAlignment="Top" Height="16">Hops</TextBlock>
                 <StackPanel Grid.Row="4" Grid.Column="1" Margin="4">
                     <ListView ItemsSource="{Binding CurrentRecipe.HopsIngredients}" SelectionChanged="ListView_SelectionChanged" MinHeight="50">
@@ -160,7 +166,7 @@
                     <ListView ItemsSource="{Binding CurrentRecipe.FermentableIngredients}" SelectionChanged="ListView_SelectionChanged" MinHeight="50">
                         <ListView.View>
                             <GridView>
-                                <GridViewColumn Header="Name" DisplayMemberBinding="{Binding FermentableInfo.Name}" Width="150" />
+                                <GridViewColumn Header="Name" DisplayMemberBinding="{Binding FermentableInfo.Name}" Width="180" />
                                 <GridViewColumn Header="Amount">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
@@ -210,7 +216,7 @@
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />
-                        <ColumnDefinition MinWidth="50" />
+                        <ColumnDefinition MinWidth="40" />
                         <ColumnDefinition MinWidth="80" />
                     </Grid.ColumnDefinitions>
                     <TextBlock Grid.Row="0" Grid.Column="0">Name</TextBlock>
