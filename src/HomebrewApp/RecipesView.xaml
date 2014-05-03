@@ -35,7 +35,7 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <Button Width="80" Margin="0,4,0,0" HorizontalAlignment="Left" Command="{Binding AddNewRecipeCommand, Mode=OneTime}">New Recipe</Button>
+            <Button Width="80" Margin="0,4,0,0" HorizontalAlignment="Left" Command="{Binding AddNewRecipeCommand, Mode=OneTime}">New recipe</Button>
         </StackPanel>
 
         <!-- Recipe Editor -->
@@ -121,7 +121,7 @@
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
-                                <GridViewColumn Header="Addition Time">
+                                <GridViewColumn Header="Addition time">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
                                             <TextBox Text="{Binding Time}" MinWidth="40" />
@@ -264,9 +264,9 @@
                         <ColumnDefinition />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Row="0" Grid.Column="0">Original Gravity</TextBlock>
+                    <TextBlock Grid.Row="0" Grid.Column="0">Original gravity</TextBlock>
                     <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding CurrentRecipe.OriginalGravity, Mode=OneWay}" />
-                    <TextBlock Grid.Row="1" Grid.Column="0">Final Gravity</TextBlock>
+                    <TextBlock Grid.Row="1" Grid.Column="0">Final gravity</TextBlock>
                     <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding CurrentRecipe.FinalGravity, Mode=OneWay}" />
                     <TextBlock Grid.Row="2" Grid.Column="0" Margin="0,4,0,0">ABV</TextBlock>
                     <StackPanel Grid.Row="2" Grid.Column="1" Margin="0,4,0,0" Orientation="Horizontal">
