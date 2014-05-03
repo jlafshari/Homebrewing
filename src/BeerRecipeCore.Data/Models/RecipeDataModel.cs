@@ -164,7 +164,7 @@ namespace BeerRecipeCore.Data.Models
 
             OriginalGravity = AlcoholUtility.GetOriginalGravity(m_fermentableIngredients, m_size);
 
-            if (m_yeastIngredient != null)
+            if (m_yeastIngredient != null && m_yeastIngredient.YeastInfo != null)
                 FinalGravity = AlcoholUtility.GetFinalGravity(m_originalGravity, m_yeastIngredient.YeastInfo.Characteristics.Attenuation);
 
             if (m_finalGravity != 0)
