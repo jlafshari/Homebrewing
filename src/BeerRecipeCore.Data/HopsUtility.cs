@@ -41,6 +41,15 @@ namespace BeerRecipeCore.Data
             return hopsIngredient;
         }
 
+        public static void DeleteHopsIngredient(int hopsIngredientId)
+        {
+            using (SQLiteConnection connection = DatabaseUtility.GetNewConnection())
+            {
+                DeleteHopsIngredient(hopsIngredientId, connection);
+                connection.Close();
+            }
+        }
+
         internal static HopsIngredientDataModel CreateHopsIngredient(Hops hopsInfo, int recipeId, SQLiteConnection connection)
         {
             using (SQLiteCommand insertCommand = connection.CreateCommand())

@@ -20,6 +20,8 @@ namespace HomebrewApp
             m_addHopsIngredientToRecipeCommand = new RelayCommand<Hops>(AddHopsIngredient);
             m_addFermentableIngredientToRecipeCommand = new RelayCommand<Fermentable>(AddFermentableIngredient);
             m_changeYeastCommand = new RelayCommand<Yeast>(ChangeYeast);
+            m_deleteHopsIngredientCommand = new RelayCommand<IHopsIngredient>(DeleteHopsIngredient);
+            m_deleteFermentableIngredientCommand = new RelayCommand<IFermentableIngredient>(DeleteFermentableIngredient);
 
             // get available ingredients
             List<IngredientTypeBase> allAvailableIngredients = RecipeUtility.GetAvailableIngredients().ToList();
@@ -104,6 +106,16 @@ namespace HomebrewApp
             get { return m_changeYeastCommand; }
         }
 
+        public ICommand DeleteHopsIngredientCommand
+        {
+            get { return m_deleteHopsIngredientCommand; }
+        }
+
+        public ICommand DeleteFermentableIngredientCommand
+        {
+            get { return m_deleteFermentableIngredientCommand; }
+        }
+
         private void SaveCurrentRecipe()
         {
             if (IsRecipeSelected)
@@ -145,6 +157,18 @@ namespace HomebrewApp
             CurrentRecipe.YeastIngredient.YeastInfo = yeastInfo;
         }
 
+        private void DeleteHopsIngredient(IHopsIngredient hopsIngredient)
+        {
+            CurrentRecipe.HopsIngredients.Remove(hopsIngredient);
+            HopsUtility.DeleteHopsIngredient(((HopsIngredientDataModel) hopsIngredient).HopsId);
+        }
+
+        private void DeleteFermentableIngredient(IFermentableIngredient fermentableIngredient)
+        {
+            CurrentRecipe.FermentableIngredients.Remove(fermentableIngredient);
+            FermentableUtility.DeleteFermentableIngredient(((FermentableIngredientDataModel) fermentableIngredient).FermentableId);
+        }
+
         const string c_defaultRecipeName = "My Recipe";
         readonly ReadOnlyObservableCollection<Hops> m_availableHops;
         readonly ReadOnlyObservableCollection<Fermentable> m_availableFermentables;
@@ -155,6 +179,8 @@ namespace HomebrewApp
         readonly RelayCommand<Hops> m_addHopsIngredientToRecipeCommand;
         readonly RelayCommand<Fermentable> m_addFermentableIngredientToRecipeCommand;
         readonly RelayCommand<Yeast> m_changeYeastCommand;
+        readonly RelayCommand<IHopsIngredient> m_deleteHopsIngredientCommand;
+        readonly RelayCommand<IFermentableIngredient> m_deleteFermentableIngredientCommand;
         ObservableCollection<RecipeDataModel> m_savedRecipes;
         RecipeDataModel m_currentRecipe = null;
     }

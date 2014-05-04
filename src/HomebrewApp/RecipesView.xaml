@@ -135,6 +135,16 @@
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
+                                <GridViewColumn>
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Command="{Binding DataContext.DeleteHopsIngredientCommand, RelativeSource={RelativeSource FindAncestor,  AncestorType={x:Type UserControl}}}" CommandParameter="{Binding}"
+                                                Style="{DynamicResource DeleteButtonStyle}" FontSize="9">
+                                                Delete
+                                            </Button>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
                             </GridView>
                         </ListView.View>
                     </ListView>
@@ -178,6 +188,16 @@
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
                                             <ComboBox ItemsSource="{Binding Source={StaticResource FermentableTypeValues}}" SelectedItem="{Binding FermentableInfo.Characteristics.Type}" Width="70" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn>
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Command="{Binding DataContext.DeleteFermentableIngredientCommand, RelativeSource={RelativeSource FindAncestor,  AncestorType={x:Type UserControl}}}" CommandParameter="{Binding}"
+                                                Style="{DynamicResource DeleteButtonStyle}" FontSize="9">
+                                                Delete
+                                            </Button>
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>

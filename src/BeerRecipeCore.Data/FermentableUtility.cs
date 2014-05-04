@@ -47,6 +47,15 @@ namespace BeerRecipeCore.Data
             return fermentableIngredient;
         }
 
+        public static void DeleteFermentableIngredient(int fermentableIngredientId)
+        {
+            using (SQLiteConnection connection = DatabaseUtility.GetNewConnection())
+            {
+                DeleteFermentableIngredient(fermentableIngredientId, connection);
+                connection.Close();
+            }
+        }
+
         internal static FermentableIngredientDataModel CreateFermentableIngredient(Fermentable fermentableInfo, int recipeId, SQLiteConnection connection)
         {
             using (SQLiteCommand insertIngredientCommand = connection.CreateCommand())
