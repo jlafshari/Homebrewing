@@ -1,4 +1,6 @@
 ﻿using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.ComponentModel;
 using BeerRecipeCore.Formulas;
 using MvvmFoundation.Wpf;
 
@@ -9,6 +11,8 @@ namespace BeerRecipeCore.Data.Models
         public RecipeDataModel(int recipeId)
         {
             m_recipeId = recipeId;
+            m_fermentableIngredients.CollectionChanged += Ingredients_CollectionChanged;
+            m_hopsIngredients.CollectionChanged += Ingredients_CollectionChanged;
         }
 
         public int RecipeId
@@ -33,6 +37,7 @@ namespace BeerRecipeCore.Data.Models
             set
             {
                 m_boilTime = value;
+                UpdateRecipeOutcome();
                 RaisePropertyChanged("BoilTime");
             }
         }
@@ -73,6 +78,7 @@ namespace BeerRecipeCore.Data.Models
             set
             {
                 m_yeastIngredient = value;
+                UpdateRecipeOutcome();
                 RaisePropertyChanged("YeastIngredient");
             }
         }
@@ -173,6 +179,16 @@ namespace BeerRecipeCore.Data.Models
             AlcoholByWeight = AlcoholUtility.GetAlcoholByWeight(m_alcoholByVolume);
             Bitterness = BitternessUtility.GetBitterness(m_hopsIngredients, m_size, m_originalGravity);
             Color = ColorUtility.GetColorInSrm(m_fermentableIngredients, m_size);
+        }
+
+        public void Ingredient_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            UpdateRecipeOutcome();
+        }
+
+        private void Ingredients_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            UpdateRecipeOutcome();
         }
 
         int m_recipeId;

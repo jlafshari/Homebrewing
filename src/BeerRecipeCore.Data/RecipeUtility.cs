@@ -79,10 +79,16 @@ namespace BeerRecipeCore.Data
                             };
 
                             foreach (HopsIngredientDataModel hopsIngredient in HopsUtility.GetHopsIngredientsForRecipe(recipeId, connection))
+                            {
+                                hopsIngredient.PropertyChanged += recipe.Ingredient_PropertyChanged;
                                 recipe.HopsIngredients.Add(hopsIngredient);
+                            }
 
                             foreach (FermentableIngredientDataModel fermentableIngredient in FermentableUtility.GetFermentableIngredientsForRecipe(recipeId, connection))
+                            {
+                                fermentableIngredient.PropertyChanged += recipe.Ingredient_PropertyChanged;
                                 recipe.FermentableIngredients.Add(fermentableIngredient);
+                            }
 
                             yield return recipe;
                         }

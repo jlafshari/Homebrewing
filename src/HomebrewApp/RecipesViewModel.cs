@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows.Input;
 using BeerRecipeCore;
@@ -140,12 +141,14 @@ namespace HomebrewApp
         private void AddHopsIngredient(Hops hops)
         {
             HopsIngredientDataModel hopsIngredient = HopsUtility.CreateHopsIngredient(hops, CurrentRecipe.RecipeId);
+            hopsIngredient.PropertyChanged += CurrentRecipe.Ingredient_PropertyChanged;
             CurrentRecipe.HopsIngredients.Add(hopsIngredient);
         }
 
         private void AddFermentableIngredient(Fermentable fermentable)
         {
             FermentableIngredientDataModel fermentableIngredient = FermentableUtility.CreateFermentableIngredient(fermentable, CurrentRecipe.RecipeId);
+            fermentableIngredient.PropertyChanged += CurrentRecipe.Ingredient_PropertyChanged;
             CurrentRecipe.FermentableIngredients.Add(fermentableIngredient);
         }
 
@@ -155,6 +158,7 @@ namespace HomebrewApp
                 CurrentRecipe.YeastIngredient = YeastUtility.CreateYeastIngredient();
 
             CurrentRecipe.YeastIngredient.YeastInfo = yeastInfo;
+            CurrentRecipe.UpdateRecipeOutcome();
         }
 
         private void DeleteHopsIngredient(IHopsIngredient hopsIngredient)
