@@ -25,7 +25,7 @@ namespace HomebrewApp
             m_deleteFermentableIngredientCommand = new RelayCommand<IFermentableIngredient>(DeleteFermentableIngredient);
 
             // get available ingredients
-            List<IngredientTypeBase> allAvailableIngredients = RecipeUtility.GetAvailableIngredients().ToList();
+            List<IngredientTypeBase> allAvailableIngredients = RecipeUtility.GetAvailableIngredients().OrderBy(ingredient => ingredient.Name).ToList();
             m_availableHops = allAvailableIngredients.OfType<Hops>().ToReadOnlyObservableCollection();
             m_availableFermentables = allAvailableIngredients.OfType<Fermentable>().ToReadOnlyObservableCollection();
             m_availableYeasts = allAvailableIngredients.OfType<Yeast>().ToReadOnlyObservableCollection();
