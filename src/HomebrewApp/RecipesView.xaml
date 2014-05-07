@@ -117,14 +117,20 @@
                                 <GridViewColumn Header="Amount">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBox Text="{Binding Amount}" MinWidth="40" />
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBox Text="{Binding Amount}" MinWidth="40" />
+                                                <TextBlock VerticalAlignment="Center">oz</TextBlock>
+                                            </StackPanel>
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
                                 <GridViewColumn Header="Addition time">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBox Text="{Binding Time}" MinWidth="40" />
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBox Text="{Binding Time}" MinWidth="40" />
+                                                <TextBlock VerticalAlignment="Center">minutes</TextBlock>
+                                            </StackPanel>
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
@@ -180,7 +186,10 @@
                                 <GridViewColumn Header="Amount">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBox Text="{Binding Amount}" MinWidth="40" />
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBox Text="{Binding Amount}" MinWidth="40" />
+                                                <TextBlock VerticalAlignment="Center">lbs</TextBlock>
+                                            </StackPanel>
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
@@ -242,7 +251,10 @@
                     <TextBlock Grid.Row="0" Grid.Column="0">Name</TextBlock>
                     <TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding CurrentRecipe.YeastIngredient.YeastInfo.Name}" />
                     <TextBlock Grid.Row="0" Grid.Column="1">Weight</TextBlock>
-                    <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding CurrentRecipe.YeastIngredient.Weight}" Margin="0,4,4,4" />
+                    <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
+                        <TextBox Text="{Binding CurrentRecipe.YeastIngredient.Weight}" Margin="0,4,4,4" MinWidth="40" MaxWidth="60" />
+                        <TextBlock VerticalAlignment="Center">lbs</TextBlock>
+                    </StackPanel>
                     <TextBlock Grid.Row="0" Grid.Column="2">Form</TextBlock>
                     <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding CurrentRecipe.YeastIngredient.YeastInfo.Characteristics.Form}" />
                     <ComboBox Name="AvailableYeasts" Grid.Row="2" Grid.Column="0" ItemsSource="{Binding AvailableYeasts}" MinWidth="80" Margin="0,4,4,4" VerticalAlignment="Center" SelectionChanged="ListView_SelectionChanged">
