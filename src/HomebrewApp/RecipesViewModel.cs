@@ -30,7 +30,7 @@ namespace HomebrewApp
             m_availableFermentables = allAvailableIngredients.OfType<Fermentable>().ToReadOnlyObservableCollection();
             m_availableYeasts = allAvailableIngredients.OfType<Yeast>().ToReadOnlyObservableCollection();
 
-            List<Style> beerStyles = RecipeUtility.GetAvailableBeerStyles().ToList();
+            List<Style> beerStyles = RecipeUtility.GetAvailableBeerStyles().OrderBy(style => style.Name).ToList();
             m_availableBeerStyles = beerStyles.ToReadOnlyObservableCollection();
             m_savedRecipes = new ObservableCollection<RecipeDataModel>(RecipeUtility.GetSavedRecipes(beerStyles));
         }
