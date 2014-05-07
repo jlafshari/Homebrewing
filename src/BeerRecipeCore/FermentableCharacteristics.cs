@@ -27,7 +27,7 @@
             set { m_yieldByWeight = value; }
         }
 
-        public float Color
+        public double Color
         {
             get { return m_color; }
         }
@@ -51,7 +51,7 @@
 
         private float? m_yield;
         private float? m_yieldByWeight;
-        private float m_color;
+        private double m_color;
         private float? m_diastaticPower;
         private FermentableType m_type;
         private int m_gravityPoint;

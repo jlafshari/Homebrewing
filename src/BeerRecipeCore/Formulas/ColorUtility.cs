@@ -10,10 +10,10 @@ namespace BeerRecipeCore.Formulas
         public static double GetColorInSrm(IEnumerable<IFermentableIngredient> fermentables, float recipeVolumeInGallons)
         {
             // calculate MCU from each fermentable
-            float totalMcu = 0;
+            double totalMcu = 0;
             foreach (IFermentableIngredient fermentable in fermentables)
             {
-                float fermentableMcu = GetMaltColorUnit(fermentable, recipeVolumeInGallons);
+                double fermentableMcu = GetMaltColorUnit(fermentable, recipeVolumeInGallons);
                 totalMcu += fermentableMcu;
             }
             
@@ -35,7 +35,7 @@ namespace BeerRecipeCore.Formulas
                 return s_srmColors[1];
         }
 
-        private static float GetMaltColorUnit(IFermentableIngredient fermentable, float recipeVolumeInGallons)
+        private static double GetMaltColorUnit(IFermentableIngredient fermentable, float recipeVolumeInGallons)
         {
             return fermentable.FermentableInfo.Characteristics.Color * fermentable.Amount / recipeVolumeInGallons;
         }
