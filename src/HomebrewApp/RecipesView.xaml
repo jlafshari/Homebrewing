@@ -141,6 +141,16 @@
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
+                                <GridViewColumn Header="Alpha Acid" Width="70">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="{Binding HopsInfo.Characteristics.AlphaAcid}" />
+                                                <TextBlock>%</TextBlock>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
                                 <GridViewColumn>
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
@@ -197,6 +207,24 @@
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
                                             <ComboBox ItemsSource="{Binding Source={StaticResource FermentableTypeValues}}" SelectedItem="{Binding FermentableInfo.Characteristics.Type}" Width="70" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Color">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="50" />
+                                                    <ColumnDefinition Width="44" />
+                                                </Grid.ColumnDefinitions>
+                                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Grid.Column="0">
+                                                    <TextBlock Text="{Binding FermentableInfo.Characteristics.Color, Mode=OneWay}" VerticalAlignment="Bottom" HorizontalAlignment="Right" />
+                                                    <TextBlock VerticalAlignment="Bottom" Margin="2,0,0,0" HorizontalAlignment="Right">SRM</TextBlock>
+                                                </StackPanel>
+                                                <Rectangle Grid.Column="1" Fill="{Binding FermentableInfo.Characteristics.Color, Converter={StaticResource srmColorConverter}}" Width="40" Height="18" Margin="4,0,0,0"
+                                                    VerticalAlignment="Bottom" HorizontalAlignment="Right" />
+                                            </Grid>
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
