@@ -80,8 +80,8 @@
                     <RowDefinition Height="30" />
                     <RowDefinition Height="30" />
                     <RowDefinition Height="30" />
-                    <RowDefinition MinHeight="100" MaxHeight="200" Height="150*" />
-                    <RowDefinition MinHeight="100" MaxHeight="200" Height="150*" />
+                    <RowDefinition MinHeight="100" MaxHeight="220" Height="150*" />
+                    <RowDefinition MinHeight="100" MaxHeight="220" Height="150*" />
                     <RowDefinition Height="90" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
@@ -110,7 +110,7 @@
                 </StackPanel>
                 <TextBlock Grid.Row="4" Grid.Column="0" VerticalAlignment="Top" Height="16">Hops</TextBlock>
                 <StackPanel Grid.Row="4" Grid.Column="1" Margin="4">
-                    <ListView ItemsSource="{Binding CurrentRecipe.HopsIngredients}" SelectionChanged="ListView_SelectionChanged" MinHeight="50">
+                    <ListView ItemsSource="{Binding CurrentRecipe.HopsIngredients}" SelectionChanged="ListView_SelectionChanged" MinHeight="50" MaxHeight="180">
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Header="Name" DisplayMemberBinding="{Binding HopsInfo.Name}" Width="150" />
@@ -179,7 +179,7 @@
                 </StackPanel>
                 <TextBlock  Grid.Row="5" Grid.Column="0" VerticalAlignment="Top" Height="16">Fermentables</TextBlock>
                 <StackPanel Grid.Row="5" Grid.Column="1" Margin="4">
-                    <ListView ItemsSource="{Binding CurrentRecipe.FermentableIngredients}" SelectionChanged="ListView_SelectionChanged" MinHeight="50">
+                    <ListView ItemsSource="{Binding CurrentRecipe.FermentableIngredients}" SelectionChanged="ListView_SelectionChanged" MinHeight="50" MaxHeight="180">
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Header="Name" DisplayMemberBinding="{Binding FermentableInfo.Name}" Width="180" />
