@@ -245,7 +245,7 @@
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />
-                        <ColumnDefinition MinWidth="40" />
+                        <ColumnDefinition MinWidth="40" MaxWidth="80" />
                         <ColumnDefinition MinWidth="80" />
                     </Grid.ColumnDefinitions>
                     <TextBlock Grid.Row="0" Grid.Column="0">Name</TextBlock>
