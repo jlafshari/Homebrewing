@@ -67,6 +67,7 @@
     <Compile Include="Models\HopsIngredientDataModel.cs" />
     <Compile Include="HopsUtility.cs" />
     <Compile Include="Models\RecipeDataModel.cs" />
+    <Compile Include="Models\SettingsDataModel.cs" />
     <Compile Include="RecipeUtility.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
@@ -75,6 +76,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="Models\YeastIngredientDataModel.cs" />
+    <Compile Include="SettingsUtility.cs" />
     <Compile Include="YeastUtility.cs" />
   </ItemGroup>
   <ItemGroup>

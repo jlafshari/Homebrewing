@@ -1,0 +1,43 @@
+﻿<UserControl x:Class="HomebrewApp.SettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:vw="clr-namespace:HomebrewApp">
+    <UserControl.DataContext>
+        <vw:SettingsViewModel />
+    </UserControl.DataContext>
+    <Grid>
+        <Grid.Resources>
+            <Style TargetType="{x:Type TextBox}">
+                <Setter Property="Margin" Value="4" />
+            </Style>
+            <Style TargetType="{x:Type TextBlock}">
+                <Setter Property="VerticalAlignment" Value="Center" />
+            </Style>
+        </Grid.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <TextBlock Grid.Row="0" Grid.Column="0">Recipe size</TextBlock>
+        <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
+            <TextBox Text="{Binding Settings.RecipeSize}" MinWidth="50" MaxWidth="70" HorizontalAlignment="Left" />
+            <TextBlock>Gallons</TextBlock>
+        </StackPanel>
+        <TextBlock Grid.Row="1" Grid.Column="0">Boil time</TextBlock>
+        <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
+            <TextBox Text="{Binding Settings.BoilTime}" MinWidth="50" MaxWidth="70" HorizontalAlignment="Left" />
+            <TextBlock>Minutes</TextBlock>
+        </StackPanel>
+        <TextBlock Grid.Row="2" Grid.Column="0">Extraction efficiency</TextBlock>
+        <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal">
+            <TextBox Text="{Binding Settings.ExtractionEfficiency}" MinWidth="50" MaxWidth="70" HorizontalAlignment="Left" />
+            <TextBlock>%</TextBlock>
+        </StackPanel>
+    </Grid>
+</UserControl>

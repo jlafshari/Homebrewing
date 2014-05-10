@@ -9,7 +9,9 @@
                 <vw:RecipesView />
             </TabItem>
             <TabItem Header="Batches"></TabItem>
-            <TabItem Header="Settings"></TabItem>
+            <TabItem Header="Settings" HorizontalContentAlignment="Left" VerticalContentAlignment="Top">
+                <vw:SettingsView />
+            </TabItem>
         </TabControl>
     </ScrollViewer>
 </Window>
