@@ -29,7 +29,7 @@ namespace BeerRecipeCore.Formulas
         /// <param name="recipeSize">The recipe size in gallons.</param>
         public static float GetOriginalGravity(IEnumerable<IFermentableIngredient> fermentableIngredients, float recipeSize)
         {
-            return GetOriginalGravity(fermentableIngredients, recipeSize, c_defaultExtractionEfficiency);
+            return GetOriginalGravity(fermentableIngredients, recipeSize, RecipeDefaultSettings.ExtractionEfficiency);
         }
 
         /// <summary>
@@ -71,7 +71,6 @@ namespace BeerRecipeCore.Formulas
             return fermentableIngredients.Select(ingredient => ingredient.Amount * ingredient.FermentableInfo.Characteristics.GravityPoint).Sum();
         }
 
-        const float c_defaultExtractionEfficiency = 60f;
         const int c_abvFractionalDigits = 2;
     }
 }
