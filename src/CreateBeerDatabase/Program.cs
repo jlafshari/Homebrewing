@@ -34,6 +34,7 @@ namespace CreateBeerDatabase
                     AddFermentableData(connection);
                     AddYeastData(connection);
                     AddStylesData(connection);
+                    AddDefaultSettings(connection);
                     transaction.Commit();
                 }
                 connection.Close();
@@ -187,6 +188,18 @@ namespace CreateBeerDatabase
             }
         }
 
+        private static void AddDefaultSettings(SQLiteConnection connection)
+        {
+            using (SQLiteCommand insertCommand = connection.CreateCommand())
+            {
+                insertCommand.CommandText = "INSERT INTO Settings (recipeSize, boilTime, extractionEfficiency) VALUES (@recipeSize, @boilTime, @extractionEfficiency)";
+                insertCommand.Parameters.AddWithValue("recipeSize", RecipeDefaultSettings.Size);
+                insertCommand.Parameters.AddWithValue("boilTime", RecipeDefaultSettings.BoilTime);
+                insertCommand.Parameters.AddWithValue("extractionEfficiency", RecipeDefaultSettings.ExtractionEfficiency);
+                insertCommand.ExecuteNonQuery();
+            }
+        }
+
         const string c_beerDataLocation = @"C:\Beer data";
         const string c_connectionString = @"Data Source=" + c_beerDataLocation + @"\Beer.db";
         static readonly string[] s_createTableCommands = new string[]
@@ -207,6 +220,8 @@ namespace CreateBeerDatabase
             "CREATE TABLE FermentableIngredients (id INTEGER PRIMARY KEY, amount NUMERIC, fermentableInfo INTEGER, FOREIGN KEY(fermentableInfo) REFERENCES Fermentables(id))",
             "CREATE TABLE YeastIngredients (id INTEGER PRIMARY KEY, weight NUMERIC, volume NUMERIC, yeastInfo INTEGER, FOREIGN KEY(yeastInfo) REFERENCES Yeasts(id))",
             "CREATE TABLE MiscellaneousIngredientInRecipe (id INTEGER PRIMARY KEY, time NUMERIC, amount NUMERIC, amountIsWeight INT, miscellaneousIngredientInfo INTEGER, FOREIGN KEY(miscellaneousIngredientInfo) REFERENCES MiscellaneousIngredients(id))",
+
+            "CREATE TABLE Settings (id INTEGER PRIMARY KEY, recipeSize NUMERIC, boilTime INTEGER, extractionEfficiency NUMERIC)",
             
             // junction tables
             "CREATE TABLE HopsInRecipe (id INTEGER PRIMARY KEY, hopsIngredient INTEGER, recipe INTEGER, FOREIGN KEY(hopsIngredient) REFERENCES HopsIngredients(id), FOREIGN KEY(recipe) REFERENCES Recipes(id))",
