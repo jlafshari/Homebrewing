@@ -135,6 +135,11 @@ namespace HomebrewApp
         private void DeleteRecipe(RecipeDataModel recipe)
         {
             RecipeUtility.DeleteRecipe(recipe);
+
+            // set the current recipe to the previous recipe in the collection
+            int previousRecipeIndex = SavedRecipes.IndexOf(recipe) - 1;
+            CurrentRecipe = previousRecipeIndex == -1 ? SavedRecipes.FirstOrDefault() : SavedRecipes[previousRecipeIndex];
+
             SavedRecipes.Remove(recipe);
         }
 
