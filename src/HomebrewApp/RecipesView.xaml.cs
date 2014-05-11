@@ -17,5 +17,11 @@ namespace HomebrewApp
             RecipesViewModel viewModel = (RecipesViewModel) DataContext;
             viewModel.CurrentRecipe.UpdateRecipeOutcome();
         }
+
+        private void UserControl_GotFocus(object sender, System.Windows.RoutedEventArgs e)
+        {
+            RecipesViewModel viewModel = (RecipesViewModel) DataContext;
+            viewModel.GetSettings();
+        }
     }
 }

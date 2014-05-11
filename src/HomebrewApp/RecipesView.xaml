@@ -6,7 +6,7 @@
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:brc="clr-namespace:BeerRecipeCore;assembly=BeerRecipeCore"
              xmlns:vw="clr-namespace:HomebrewApp"
-             mc:Ignorable="d">
+             mc:Ignorable="d" GotFocus="UserControl_GotFocus">
     <UserControl.Resources>
         <vw:SrmColorConverter x:Key="srmColorConverter" />
     </UserControl.Resources>

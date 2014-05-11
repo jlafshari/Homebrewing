@@ -33,6 +33,8 @@ namespace HomebrewApp
             List<Style> beerStyles = RecipeUtility.GetAvailableBeerStyles().OrderBy(style => style.Name).ToList();
             m_availableBeerStyles = beerStyles.ToReadOnlyObservableCollection();
             m_savedRecipes = new ObservableCollection<RecipeDataModel>(RecipeUtility.GetSavedRecipes(beerStyles));
+
+            GetSettings();
         }
 
         public ObservableCollection<RecipeDataModel> SavedRecipes
@@ -117,6 +119,13 @@ namespace HomebrewApp
             get { return m_deleteFermentableIngredientCommand; }
         }
 
+        public void GetSettings()
+        {
+            m_settings = SettingsUtility.GetSavedSettings();
+            foreach (RecipeDataModel recipe in m_savedRecipes)
+                recipe.ExtractionEfficiency = m_settings.ExtractionEfficiency;
+        }
+
         private void SaveCurrentRecipe()
         {
             if (IsRecipeSelected)
@@ -128,6 +137,9 @@ namespace HomebrewApp
             SaveCurrentRecipe();
             CurrentRecipe = RecipeUtility.CreateRecipe();
             CurrentRecipe.Name = c_defaultRecipeName;
+            CurrentRecipe.Size = m_settings.RecipeSize;
+            CurrentRecipe.BoilTime = m_settings.BoilTime;
+            CurrentRecipe.ExtractionEfficiency = m_settings.ExtractionEfficiency;
             SavedRecipes.Add(CurrentRecipe);
             RaisePropertyChanged("IsRecipeSelected");
         }
@@ -192,5 +204,6 @@ namespace HomebrewApp
         readonly RelayCommand<IFermentableIngredient> m_deleteFermentableIngredientCommand;
         ObservableCollection<RecipeDataModel> m_savedRecipes;
         RecipeDataModel m_currentRecipe = null;
+        SettingsDataModel m_settings;
     }
 }

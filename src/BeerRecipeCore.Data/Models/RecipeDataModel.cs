@@ -163,12 +163,18 @@ namespace BeerRecipeCore.Data.Models
             }
         }
 
+        public float ExtractionEfficiency
+        {
+            get { return m_extractionEfficiency; }
+            set { m_extractionEfficiency = value; }
+        }
+
         public void UpdateRecipeOutcome()
         {
             if (m_size == 0)
                 return;
 
-            OriginalGravity = AlcoholUtility.GetOriginalGravity(m_fermentableIngredients, m_size);
+            OriginalGravity = AlcoholUtility.GetOriginalGravity(m_fermentableIngredients, m_size, m_extractionEfficiency);
 
             if (m_yeastIngredient != null && m_yeastIngredient.YeastInfo != null)
                 FinalGravity = AlcoholUtility.GetFinalGravity(m_originalGravity, m_yeastIngredient.YeastInfo.Characteristics.Attenuation);
@@ -206,5 +212,6 @@ namespace BeerRecipeCore.Data.Models
         float m_alcoholByWeight;
         int m_bitterness;
         double m_color;
+        float m_extractionEfficiency;
     }
 }
