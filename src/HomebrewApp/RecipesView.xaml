@@ -285,7 +285,7 @@
                     </StackPanel>
                     <TextBlock Grid.Row="0" Grid.Column="2">Form</TextBlock>
                     <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding CurrentRecipe.YeastIngredient.YeastInfo.Characteristics.Form}" />
-                    <ComboBox Name="AvailableYeasts" Grid.Row="2" Grid.Column="0" ItemsSource="{Binding AvailableYeasts}" MinWidth="80" Margin="0,4,4,4" VerticalAlignment="Center" SelectionChanged="ListView_SelectionChanged">
+                    <ComboBox Name="AvailableYeasts" Grid.Row="2" Grid.Column="0" ItemsSource="{Binding AvailableYeasts}" MinWidth="80" Margin="0,4,4,4" VerticalAlignment="Center">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding Name}" />
