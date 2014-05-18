@@ -70,11 +70,6 @@
                             <x:Type Type="{x:Type brc:HopsForm}" />
                         </ObjectDataProvider.MethodParameters>
                     </ObjectDataProvider>
-                    <ObjectDataProvider x:Key="FermentableTypeValues" MethodName="GetValues" ObjectType="{x:Type sys:Enum}">
-                        <ObjectDataProvider.MethodParameters>
-                            <x:Type Type="{x:Type brc:FermentableType}" />
-                        </ObjectDataProvider.MethodParameters>
-                    </ObjectDataProvider>
                 </Grid.Resources>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="30" />
@@ -206,13 +201,7 @@
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
-                                <GridViewColumn Header="Type" Width="90">
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <ComboBox ItemsSource="{Binding Source={StaticResource FermentableTypeValues}}" SelectedItem="{Binding FermentableInfo.Characteristics.Type}" Width="70" />
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
+                                <GridViewColumn Header="Type" Width="90" DisplayMemberBinding="{Binding FermentableInfo.Characteristics.Type}" />
                                 <GridViewColumn Header="Color">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
