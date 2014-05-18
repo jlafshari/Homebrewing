@@ -81,6 +81,7 @@
                     <RowDefinition Height="30" />
                     <RowDefinition Height="30" />
                     <RowDefinition Height="30" />
+                    <RowDefinition Height="25" />
                     <RowDefinition MinHeight="100" MaxHeight="220" Height="150*" />
                     <RowDefinition MinHeight="100" MaxHeight="220" Height="150*" />
                     <RowDefinition Height="90" />
@@ -109,8 +110,9 @@
                     <TextBox Text="{Binding CurrentRecipe.Size}" MinWidth="50" MaxWidth="70" HorizontalAlignment="Left" />
                     <TextBlock>Gallons</TextBlock>
                 </StackPanel>
-                <TextBlock Grid.Row="4" Grid.Column="0" VerticalAlignment="Top" Height="16">Hops</TextBlock>
-                <StackPanel Grid.Row="4" Grid.Column="1" Margin="4">
+                <TextBlock Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" FontSize="16" Margin="0,4,0,0">Ingredients</TextBlock>
+                <TextBlock Grid.Row="5" Grid.Column="0" VerticalAlignment="Top" Height="16">Hops</TextBlock>
+                <StackPanel Grid.Row="5" Grid.Column="1" Margin="4">
                     <ListView ItemsSource="{Binding CurrentRecipe.HopsIngredients}" SelectionChanged="ListView_SelectionChanged" MinHeight="50" MaxHeight="180">
                         <ListView.View>
                             <GridView>
@@ -188,8 +190,8 @@
                         </Button>
                     </StackPanel>
                 </StackPanel>
-                <TextBlock  Grid.Row="5" Grid.Column="0" VerticalAlignment="Top" Height="16">Fermentables</TextBlock>
-                <StackPanel Grid.Row="5" Grid.Column="1" Margin="4">
+                <TextBlock  Grid.Row="6" Grid.Column="0" VerticalAlignment="Top" Height="16">Fermentables</TextBlock>
+                <StackPanel Grid.Row="6" Grid.Column="1" Margin="4">
                     <ListView ItemsSource="{Binding CurrentRecipe.FermentableIngredients}" SelectionChanged="ListView_SelectionChanged" MinHeight="50" MaxHeight="180">
                         <ListView.View>
                             <GridView>
@@ -265,8 +267,8 @@
                         </Button>
                     </StackPanel>
                 </StackPanel>
-                <TextBlock Grid.Row="6" Grid.Column="0" VerticalAlignment="Top" Height="16" Margin="0,4,0,4">Yeast</TextBlock>
-                <Grid Grid.Row="6" Grid.Column="1" Margin="4,4,4,0">
+                <TextBlock Grid.Row="7" Grid.Column="0" VerticalAlignment="Top" Height="16" Margin="0,4,0,4">Yeast</TextBlock>
+                <Grid Grid.Row="7" Grid.Column="1" Margin="4,4,4,0">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="15" />
                         <RowDefinition Height="30" />
