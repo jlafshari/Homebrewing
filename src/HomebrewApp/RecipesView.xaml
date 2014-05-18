@@ -310,8 +310,8 @@
                 <!-- TODO: mash schedule -->
             </Grid>
             <DockPanel Grid.Row="1">
-                <TextBlock DockPanel.Dock="Top" FontSize="14">Projected Outcome</TextBlock>
-                <Grid>
+                <TextBlock DockPanel.Dock="Top" FontSize="16">Projected Outcome</TextBlock>
+                <Grid Margin="0,4,0,0">
                     <Grid.Resources>
                         <DataTemplate DataType="{x:Type brcm:StyleThresholdComparisonDataModel}">
                             <Grid>
