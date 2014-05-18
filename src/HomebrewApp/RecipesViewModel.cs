@@ -35,6 +35,9 @@ namespace HomebrewApp
             m_savedRecipes = new ObservableCollection<RecipeDataModel>(RecipeUtility.GetSavedRecipes(beerStyles));
 
             GetSettings();
+
+            // set the current recipe to the first in the collection
+            CurrentRecipe = m_savedRecipes.FirstOrDefault();
         }
 
         public ObservableCollection<RecipeDataModel> SavedRecipes
