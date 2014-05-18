@@ -68,6 +68,8 @@
     <Compile Include="HopsUtility.cs" />
     <Compile Include="Models\RecipeDataModel.cs" />
     <Compile Include="Models\SettingsDataModel.cs" />
+    <Compile Include="Models\StyleThresholdComparisonDataModel.cs" />
+    <Compile Include="Models\StyleThresholdStatus.cs" />
     <Compile Include="RecipeUtility.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">

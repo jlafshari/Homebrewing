@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Linq;
 using BeerRecipeCore.Formulas;
 using MvvmFoundation.Wpf;
 
@@ -48,6 +49,8 @@ namespace BeerRecipeCore.Data.Models
             set
             {
                 m_style = value;
+                GetNewThresholdComparers();
+                UpdateRecipeOutcome();
                 RaisePropertyChanged("Style");
             }
         }
@@ -169,22 +172,86 @@ namespace BeerRecipeCore.Data.Models
             set { m_extractionEfficiency = value; }
         }
 
+        public StyleThresholdComparisonDataModel OriginalGravityStyleComparison
+        {
+            get { return m_originalGravityStyleComparison; }
+            set
+            {
+                m_originalGravityStyleComparison = value;
+                RaisePropertyChanged("OriginalGravityStyleComparison");
+            }
+        }
+
+        public StyleThresholdComparisonDataModel FinalGravityStyleComparison
+        {
+            get { return m_finalGravityStyleComparison; }
+            set
+            {
+                m_finalGravityStyleComparison = value;
+                RaisePropertyChanged("FinalGravityStyleComparison");
+            }
+        }
+
+        public StyleThresholdComparisonDataModel AbvStyleComparison
+        {
+            get { return m_abvStyleComparison; }
+            set
+            {
+                m_abvStyleComparison = value;
+                RaisePropertyChanged("AbvStyleComparison");
+            }
+        }
+
+        public StyleThresholdComparisonDataModel BitternessStyleComparison
+        {
+            get { return m_bitternessStyleComparison; }
+            set
+            {
+                m_bitternessStyleComparison = value;
+                RaisePropertyChanged("BitternessStyleComparison");
+            }
+        }
+
+        public StyleThresholdComparisonDataModel ColorStyleComparison
+        {
+            get { return m_colorStyleComparison; }
+            set
+            {
+                m_colorStyleComparison = value;
+                RaisePropertyChanged("ColorStyleComparison");
+            }
+        }
+
         public void UpdateRecipeOutcome()
         {
             if (m_size == 0)
                 return;
 
             OriginalGravity = AlcoholUtility.GetOriginalGravity(m_fermentableIngredients, m_size, m_extractionEfficiency);
+            if (OriginalGravityStyleComparison != null)
+                OriginalGravityStyleComparison.Compare(m_originalGravity);
 
             if (m_yeastIngredient != null && m_yeastIngredient.YeastInfo != null)
+            {
                 FinalGravity = AlcoholUtility.GetFinalGravity(m_originalGravity, m_yeastIngredient.YeastInfo.Characteristics.Attenuation);
+                if (FinalGravityStyleComparison != null)
+                    FinalGravityStyleComparison.Compare(m_finalGravity);
+            }
 
             if (m_finalGravity != 0)
+            {
                 AlcoholByVolume = AlcoholUtility.GetAlcoholByVolume(m_originalGravity, m_finalGravity);
+                if (AbvStyleComparison != null)
+                    AbvStyleComparison.Compare(m_alcoholByVolume);
+            }
 
             AlcoholByWeight = AlcoholUtility.GetAlcoholByWeight(m_alcoholByVolume);
             Bitterness = BitternessUtility.GetBitterness(m_hopsIngredients, m_size, m_originalGravity);
+            if (BitternessStyleComparison != null)
+                BitternessStyleComparison.Compare(m_bitterness);
             Color = ColorUtility.GetColorInSrm(m_fermentableIngredients, m_size);
+            if (ColorStyleComparison != null)
+                ColorStyleComparison.Compare((float) m_color);
         }
 
         public void Ingredient_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -195,6 +262,19 @@ namespace BeerRecipeCore.Data.Models
         private void Ingredients_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             UpdateRecipeOutcome();
+        }
+
+        private void GetNewThresholdComparers()
+        {
+            if (m_style == null)
+                return;
+
+            ReadOnlyCollection<StyleThreshold> thresholds = m_style.Thresholds;
+            OriginalGravityStyleComparison = new StyleThresholdComparisonDataModel(thresholds.Single(threshold => threshold.Value == "og"));
+            FinalGravityStyleComparison = new StyleThresholdComparisonDataModel(thresholds.Single(threshold => threshold.Value == "fg"));
+            AbvStyleComparison = new StyleThresholdComparisonDataModel(thresholds.Single(threshold => threshold.Value == "abv"));
+            BitternessStyleComparison = new StyleThresholdComparisonDataModel(thresholds.Single(threshold => threshold.Value == "ibu"));
+            ColorStyleComparison = new StyleThresholdComparisonDataModel(thresholds.Single(threshold => threshold.Value == "color"));
         }
 
         int m_recipeId;
@@ -213,5 +293,10 @@ namespace BeerRecipeCore.Data.Models
         int m_bitterness;
         double m_color;
         float m_extractionEfficiency;
+        StyleThresholdComparisonDataModel m_originalGravityStyleComparison;
+        StyleThresholdComparisonDataModel m_finalGravityStyleComparison;
+        StyleThresholdComparisonDataModel m_abvStyleComparison;
+        StyleThresholdComparisonDataModel m_bitternessStyleComparison;
+        StyleThresholdComparisonDataModel m_colorStyleComparison;
     }
 }

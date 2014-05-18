@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:brc="clr-namespace:BeerRecipeCore;assembly=BeerRecipeCore"
+             xmlns:brcm="clr-namespace:BeerRecipeCore.Data.Models;assembly=BeerRecipeCore.Data"
              xmlns:vw="clr-namespace:HomebrewApp"
              mc:Ignorable="d" GotFocus="UserControl_GotFocus">
     <UserControl.Resources>
@@ -311,6 +312,35 @@
             <DockPanel Grid.Row="1">
                 <TextBlock DockPanel.Dock="Top" FontSize="14">Projected Outcome</TextBlock>
                 <Grid>
+                    <Grid.Resources>
+                        <DataTemplate DataType="{x:Type brcm:StyleThresholdComparisonDataModel}">
+                            <Grid>
+                                <Grid.Style>
+                                    <Style TargetType="{x:Type Grid}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Status}" Value="WithinRange">
+                                                <Setter Property="Visibility" Value="Hidden" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Grid.Style>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="35" />
+                                    <ColumnDefinition Width="80" />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding Status}" />
+                                <TextBlock Grid.Row="0" Grid.Column="1" Margin="2,0,0,0">style range by</TextBlock>
+                                <TextBlock Grid.Row="0" Grid.Column="2" Margin="2,0,0,0" Text="{Binding Difference}" />
+                            </Grid>
+                        </DataTemplate>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Setter Property="VerticalAlignment" Value="Bottom" />
+                        </Style>
+                    </Grid.Resources>
                     <Grid.RowDefinitions>
                         <RowDefinition />
                         <RowDefinition />
@@ -320,19 +350,22 @@
                         <RowDefinition />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                        <ColumnDefinition />
+                        <ColumnDefinition Width="100" />
+                        <ColumnDefinition Width="100" />
+                        <ColumnDefinition Width="200" />
                     </Grid.ColumnDefinitions>
                     <TextBlock Grid.Row="0" Grid.Column="0">Original gravity</TextBlock>
                     <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding CurrentRecipe.OriginalGravity, Mode=OneWay}" />
+                    <ContentControl Grid.Row="0" Grid.Column="2" Content="{Binding CurrentRecipe.OriginalGravityStyleComparison}" />
                     <TextBlock Grid.Row="1" Grid.Column="0">Final gravity</TextBlock>
                     <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding CurrentRecipe.FinalGravity, Mode=OneWay}" />
+                    <ContentControl Grid.Row="1" Grid.Column="2" Content="{Binding CurrentRecipe.FinalGravityStyleComparison}" />
                     <TextBlock Grid.Row="2" Grid.Column="0" Margin="0,4,0,0">ABV</TextBlock>
                     <StackPanel Grid.Row="2" Grid.Column="1" Margin="0,4,0,0" Orientation="Horizontal">
                         <TextBlock Text="{Binding CurrentRecipe.AlcoholByVolume, Mode=OneWay}" />
                         <TextBlock>%</TextBlock>
                     </StackPanel>
+                    <ContentControl Grid.Row="2" Grid.Column="2" Margin="0,4,0,0" Content="{Binding CurrentRecipe.AbvStyleComparison}" />
                     <TextBlock Grid.Row="3" Grid.Column="0">ABW</TextBlock>
                     <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal">
                         <TextBlock Text="{Binding CurrentRecipe.AlcoholByWeight, Mode=OneWay}" />
@@ -343,12 +376,14 @@
                         <TextBlock Text="{Binding CurrentRecipe.Bitterness, Mode=OneWay}" />
                         <TextBlock Margin="2,0,0,0">IBU</TextBlock>
                     </StackPanel>
-                    <TextBlock Grid.Row="5" Grid.Column="0">Color</TextBlock>
-                    <StackPanel Grid.Row="5" Grid.Column="1" Orientation="Horizontal">
-                        <TextBlock Text="{Binding CurrentRecipe.Color, Mode=OneWay}" VerticalAlignment="Bottom" />
-                        <TextBlock VerticalAlignment="Bottom" Margin="2,0,0,0">SRM</TextBlock>
+                    <ContentControl Grid.Row="4" Grid.Column="2" Margin="0,4,0,0" Content="{Binding CurrentRecipe.BitternessStyleComparison}" />
+                    <TextBlock Grid.Row="5" Grid.Column="0" Margin="0,4,0,0">Color</TextBlock>
+                    <StackPanel Grid.Row="5" Grid.Column="1" Margin="0,4,0,0" Orientation="Horizontal">
+                        <TextBlock Text="{Binding CurrentRecipe.Color, Mode=OneWay}" />
+                        <TextBlock Margin="2,0,0,0">SRM</TextBlock>
                         <Rectangle Fill="{Binding CurrentRecipe.Color, Converter={StaticResource srmColorConverter}}" Width="40" Height="18" Margin="4,0,0,0" VerticalAlignment="Bottom" />
                     </StackPanel>
+                    <ContentControl Grid.Row="5" Grid.Column="2" Margin="0,4,0,0" Content="{Binding CurrentRecipe.ColorStyleComparison}" />
                 </Grid>
             </DockPanel>
         </Grid>
