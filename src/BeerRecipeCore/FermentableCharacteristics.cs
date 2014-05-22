@@ -32,6 +32,9 @@
             get { return m_color; }
         }
 
+        /// <summary>
+        /// The diastatic power in Lintner degree units. If the FermentableType is not a grain or adjunct, then this value is null.
+        /// </summary>
         public float? DiastaticPower
         {
             get { return m_diastaticPower; }
