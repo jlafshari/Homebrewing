@@ -11,7 +11,7 @@ namespace BeerRecipeCore.Data
         public static IEnumerable<Fermentable> GetAvailableFermentables(SQLiteConnection connection)
         {
             SQLiteCommand selectFermentablesCommand = connection.CreateCommand();
-            selectFermentablesCommand.CommandText = "SELECT name, yield, yieldByWeight, color, origin, notes, diastaticPower, type, gravityPoint FROM Fermentables";
+            selectFermentablesCommand.CommandText = "SELECT name, yield, yieldByWeight, color, origin, notes, diastaticPower, type, maltCategory, gravityPoint FROM Fermentables";
             using (SQLiteDataReader reader = selectFermentablesCommand.ExecuteReader())
             {
                 while (reader.Read())
@@ -27,10 +27,12 @@ namespace BeerRecipeCore.Data
                     string diastaticPowerValue = reader[6].ToString();
                     float? diastaticPower = !diastaticPowerValue.IsNullOrEmpty() ? (float?) float.Parse(diastaticPowerValue) : null;
                     FermentableType type = (FermentableType) EnumConverter.Parse(typeof(FermentableType), reader.GetString(7));
-                    int gravityPoint = reader.GetInt32(8);
+                    string maltCategoryValue = reader[8].ToString();
+                    MaltCategory? maltCategory = !maltCategoryValue.IsNullOrEmpty() ? (MaltCategory?) EnumConverter.Parse(typeof(MaltCategory), maltCategoryValue) : null;
+                    int gravityPoint = reader.GetInt32(9);
 
                     FermentableCharacteristics characteristics = new FermentableCharacteristics(yield, color, diastaticPower) {
-                        YieldByWeight = yieldByWeight, Type = type, GravityPoint = gravityPoint };
+                        YieldByWeight = yieldByWeight, Type = type, MaltCategory = maltCategory, GravityPoint = gravityPoint };
                     yield return new Fermentable(name, characteristics, notes, origin);
                 }
             }
@@ -80,7 +82,7 @@ namespace BeerRecipeCore.Data
         {
             using (SQLiteCommand selectIngredientsCommand = connection.CreateCommand())
             {
-                selectIngredientsCommand.CommandText = "SELECT FermentableIngredients.id, FermentableIngredients.amount, Fermentables.name, Fermentables.yield, Fermentables.yieldByWeight, Fermentables.color, Fermentables.origin, Fermentables.notes, Fermentables.diastaticPower, Fermentables.type, Fermentables.gravityPoint FROM FermentableIngredients " +
+                selectIngredientsCommand.CommandText = "SELECT FermentableIngredients.id, FermentableIngredients.amount, Fermentables.name, Fermentables.yield, Fermentables.yieldByWeight, Fermentables.color, Fermentables.origin, Fermentables.notes, Fermentables.diastaticPower, Fermentables.type, Fermentables.maltCategory, Fermentables.gravityPoint FROM FermentableIngredients " +
                     "JOIN FermentablesInRecipe ON FermentablesInRecipe.fermentableIngredient = FermentableIngredients.id AND FermentablesInRecipe.recipe = @recipeId " +
                     "JOIN Fermentables ON Fermentables.id = FermentableIngredients.fermentableInfo";
                 selectIngredientsCommand.Parameters.AddWithValue("recipeId", recipeId);
@@ -94,10 +96,13 @@ namespace BeerRecipeCore.Data
                         float? yieldByWeight = !yieldByWeightValue.IsNullOrEmpty() ? (float?) float.Parse(yieldByWeightValue) : null;
                         string diastaticPowerValue = reader[8].ToString();
                         float? diastaticPower = !diastaticPowerValue.IsNullOrEmpty() ? (float?) float.Parse(diastaticPowerValue) : null;
+                        string maltCategoryValue = reader[10].ToString();
+                        MaltCategory? maltCategory = !maltCategoryValue.IsNullOrEmpty() ? (MaltCategory?) EnumConverter.Parse(typeof(MaltCategory), maltCategoryValue) : null;
                         FermentableCharacteristics characteristics = new FermentableCharacteristics(yield, reader.GetFloat(5), diastaticPower)
                         {
-                            GravityPoint = reader.GetInt32(10),
+                            GravityPoint = reader.GetInt32(11),
                             Type = (FermentableType) EnumConverter.Parse(typeof(FermentableType), reader.GetString(9)),
+                            MaltCategory = maltCategory,
                             YieldByWeight = yieldByWeight
                         };
                         Fermentable fermentableInfo = new Fermentable(reader.GetString(2), characteristics, reader.GetString(7), reader.GetString(6));

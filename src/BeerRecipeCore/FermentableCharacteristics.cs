@@ -46,6 +46,12 @@
             set { m_type = value; }
         }
 
+        public MaltCategory? MaltCategory
+        {
+            get { return m_maltCategory; }
+            set { m_maltCategory = value; }
+        }
+
         public int GravityPoint
         {
             get { return m_gravityPoint; }
@@ -57,6 +63,7 @@
         private double m_color;
         private float? m_diastaticPower;
         private FermentableType m_type;
+        private MaltCategory? m_maltCategory;
         private int m_gravityPoint;
     }
 }

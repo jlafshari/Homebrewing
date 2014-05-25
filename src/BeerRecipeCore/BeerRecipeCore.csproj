@@ -86,6 +86,7 @@
     </Compile>
     <Compile Include="IRecipe.cs" />
     <Compile Include="IYeastIngredient.cs" />
+    <Compile Include="MaltCategory.cs" />
     <Compile Include="MashProfile.cs" />
     <Compile Include="MashStep.cs" />
     <Compile Include="MashType.cs" />

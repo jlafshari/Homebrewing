@@ -202,6 +202,7 @@
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
                                 <GridViewColumn Header="Type" Width="90" DisplayMemberBinding="{Binding FermentableInfo.Characteristics.Type}" />
+                                <GridViewColumn Header="Malt Category" Width="80" DisplayMemberBinding="{Binding FermentableInfo.Characteristics.MaltCategory}" />
                                 <GridViewColumn Header="Color">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
