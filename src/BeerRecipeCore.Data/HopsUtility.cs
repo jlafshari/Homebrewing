@@ -100,12 +100,13 @@ namespace BeerRecipeCore.Data
         {
             using (SQLiteCommand updateCommand = connection.CreateCommand())
             {
-                updateCommand.CommandText = "UPDATE HopsIngredients SET amount = @amount, time = @time, type = @type, form = @form WHERE id = @id";
+                updateCommand.CommandText = "UPDATE HopsIngredients SET amount = @amount, time = @time, type = @type, form = @form, use = @use WHERE id = @id";
                 updateCommand.Parameters.AddWithValue("id", hopsIngredient.HopsId);
                 updateCommand.Parameters.AddWithValue("amount", hopsIngredient.Amount);
                 updateCommand.Parameters.AddWithValue("time", hopsIngredient.Time);
                 updateCommand.Parameters.AddWithValue("type", hopsIngredient.FlavorType);
                 updateCommand.Parameters.AddWithValue("form", hopsIngredient.Form);
+                updateCommand.Parameters.AddWithValue("use", hopsIngredient.Use);
                 updateCommand.ExecuteNonQuery();
             }
         }
