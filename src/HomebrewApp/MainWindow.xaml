@@ -6,7 +6,7 @@
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
         <TabControl>
             <TabItem Header="Recipes" HorizontalContentAlignment="Left" VerticalContentAlignment="Top">
-                <vw:RecipesView />
+                <vw:RecipesView x:Name="RecipesView" />
             </TabItem>
             <TabItem Header="Batches"></TabItem>
             <TabItem Header="Settings" HorizontalContentAlignment="Left" VerticalContentAlignment="Top">

@@ -129,7 +129,7 @@ namespace HomebrewApp
                 recipe.ExtractionEfficiency = m_settings.ExtractionEfficiency;
         }
 
-        private void SaveCurrentRecipe()
+        public void SaveCurrentRecipe()
         {
             if (IsRecipeSelected)
                 RecipeUtility.SaveRecipe(CurrentRecipe);
