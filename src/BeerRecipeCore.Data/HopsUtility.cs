@@ -11,21 +11,20 @@ namespace BeerRecipeCore.Data
         public static IEnumerable<Hops> GetAvailableHopsVarieties(SQLiteConnection connection)
         {
             SQLiteCommand selectHopsCommand = connection.CreateCommand();
-            selectHopsCommand.CommandText = "SELECT name, alpha, use, notes, beta, hsi, origin FROM Hops";
+            selectHopsCommand.CommandText = "SELECT name, alpha, notes, beta, hsi, origin FROM Hops";
             using (SQLiteDataReader reader = selectHopsCommand.ExecuteReader())
             {
                 while (reader.Read())
                 {
                     string name = reader.GetString(0);
                     float alphaAcid = reader.GetFloat(1);
-                    string use = reader.GetString(2);
-                    string notes = reader.GetString(3);
-                    float betaAcid = reader.GetFloat(4);
-                    float hsi = reader.GetFloat(5);
-                    string origin = reader.GetString(6);
+                    string notes = reader.GetString(2);
+                    float betaAcid = reader.GetFloat(3);
+                    float hsi = reader.GetFloat(4);
+                    string origin = reader.GetString(5);
 
                     HopsCharacteristics characteristics = new HopsCharacteristics(alphaAcid, betaAcid) { Hsi = hsi };
-                    yield return new Hops(name, characteristics, use, notes, origin);
+                    yield return new Hops(name, characteristics, notes, origin);
                 }
             }
         }
@@ -54,7 +53,7 @@ namespace BeerRecipeCore.Data
         {
             using (SQLiteCommand insertCommand = connection.CreateCommand())
             {
-                insertCommand.CommandText = "INSERT INTO HopsIngredients (amount, time, type, form, hopsInfo) VALUES(0, 0, 'Bittering', 'Leaf', (SELECT id FROM Hops WHERE name = @name))";
+                insertCommand.CommandText = "INSERT INTO HopsIngredients (amount, time, type, form, use, hopsInfo) VALUES(0, 0, 'Bittering', 'Leaf', 'Boil', (SELECT id FROM Hops WHERE name = @name))";
                 insertCommand.Parameters.AddWithValue("name", hopsInfo.Name);
                 insertCommand.ExecuteNonQuery();
             }
@@ -74,7 +73,7 @@ namespace BeerRecipeCore.Data
         {
             using (SQLiteCommand selectIngredientsCommand = connection.CreateCommand())
             {
-                selectIngredientsCommand.CommandText = "SELECT HopsIngredients.id, HopsIngredients.amount, HopsIngredients.time, HopsIngredients.type, HopsIngredients.form, Hops.name, Hops.alpha, Hops.use, Hops.notes, Hops.beta, Hops.hsi, Hops.origin FROM HopsIngredients " +
+                selectIngredientsCommand.CommandText = "SELECT HopsIngredients.id, HopsIngredients.amount, HopsIngredients.time, HopsIngredients.type, HopsIngredients.form, Hops.name, Hops.alpha, HopsIngredients.use, Hops.notes, Hops.beta, Hops.hsi, Hops.origin FROM HopsIngredients " +
                     "JOIN HopsInRecipe ON HopsInRecipe.hopsIngredient = HopsIngredients.id AND HopsInRecipe.recipe = @recipeId " +
                     "JOIN Hops ON Hops.id = HopsIngredients.hopsInfo";
                 selectIngredientsCommand.Parameters.AddWithValue("recipeId", recipeId);
@@ -83,13 +82,14 @@ namespace BeerRecipeCore.Data
                     while (reader.Read())
                     {
                         HopsCharacteristics characteristics = new HopsCharacteristics(reader.GetFloat(6), reader.GetFloat(9)) { Hsi = reader.GetFloat(10) };
-                        Hops hopsInfo = new Hops(reader.GetString(5), characteristics, reader.GetString(7), reader.GetString(8), reader.GetString(11));
+                        Hops hopsInfo = new Hops(reader.GetString(5), characteristics, reader.GetString(8), reader.GetString(11));
                         yield return new HopsIngredientDataModel(hopsInfo, reader.GetInt32(0))
                         {
                             Amount = reader.GetFloat(1),
                             Time = reader.GetInt32(2),
                             FlavorType = (HopsFlavorType) EnumConverter.Parse(typeof(HopsFlavorType), reader[3].ToString()),
-                            Form = (HopsForm) EnumConverter.Parse(typeof(HopsForm), reader[4].ToString())
+                            Form = (HopsForm) EnumConverter.Parse(typeof(HopsForm), reader[4].ToString()),
+                            Use = (HopsUse) EnumConverter.Parse(typeof(HopsUse), reader.GetString(7))
                         };
                     }
                 }

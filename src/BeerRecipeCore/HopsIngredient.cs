@@ -37,6 +37,12 @@
             set { m_form = value; }
         }
 
+        public HopsUse Use
+        {
+            get { return m_use; }
+            set { m_use = value; }
+        }
+
         public Hops HopsInfo
         {
             get { return m_hopsInfo; }
@@ -46,6 +52,7 @@
         private int m_time;
         private HopsFlavorType m_flavorType;
         private HopsForm m_form;
+        private HopsUse m_use;
         private Hops m_hopsInfo;
     }
 }

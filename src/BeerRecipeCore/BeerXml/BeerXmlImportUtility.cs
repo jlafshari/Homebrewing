@@ -17,11 +17,10 @@ namespace BeerRecipeCore.BeerXml
             string origin = hopsEntry.Element("ORIGIN").Value;
             float alphaAcid = (float) Convert.ToDouble(hopsEntry.Element("ALPHA").Value);
             float betaAcid = (float) Convert.ToDouble(hopsEntry.Element("BETA").Value);
-            string use = hopsEntry.Element("USE").Value;
             string notes = GetNotesFromRecord(hopsEntry);
             float hsi = (float) Convert.ToDouble(hopsEntry.Element("HSI").Value);
             HopsCharacteristics hopsCharacteristics = new HopsCharacteristics(alphaAcid, betaAcid) { Hsi = hsi };
-            return new Hops(name, hopsCharacteristics, use, notes, origin);
+            return new Hops(name, hopsCharacteristics, notes, origin);
         }
 
         public static Fermentable GetFermentable(XElement fermentableEntry)

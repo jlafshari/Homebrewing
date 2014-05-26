@@ -68,6 +68,19 @@ namespace BeerRecipeCore.Data.Models
             }
         }
 
+        public HopsUse Use
+        {
+            get
+            {
+                return m_use;
+            }
+            set
+            {
+                m_use = value;
+                RaisePropertyChanged("Use");
+            }
+        }
+
         public Hops HopsInfo
         {
             get { return m_hopsInfo; }
@@ -78,6 +91,7 @@ namespace BeerRecipeCore.Data.Models
         int m_time;
         HopsFlavorType m_flavorType;
         HopsForm m_form;
+        HopsUse m_use;
         Hops m_hopsInfo;
     }
 }

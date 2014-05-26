@@ -4,11 +4,10 @@ namespace BeerRecipeCore
 {
     public class Hops : IngredientTypeBase
     {
-        public Hops(string name, HopsCharacteristics characteristics, string use, string notes, string origin)
+        public Hops(string name, HopsCharacteristics characteristics, string notes, string origin)
             : base(name, notes)
         {
             m_characteristics = characteristics;
-            m_use = (HopsUse) EnumConverter.Parse(typeof(HopsUse), use);
             m_origin = origin;
         }
 
@@ -17,17 +16,11 @@ namespace BeerRecipeCore
             get { return m_characteristics; }
         }
 
-        public HopsUse Use
-        {
-            get { return m_use; }
-        }
-
         public string Origin
         {
             get { return m_origin; }
         }
 
-        private HopsUse m_use;
         private string m_origin = "";
         private HopsCharacteristics m_characteristics;
     }

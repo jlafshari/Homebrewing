@@ -14,6 +14,7 @@
 
         HopsFlavorType FlavorType { get; set; }
         HopsForm Form { get; set; }
+        HopsUse Use { get; set; }
         Hops HopsInfo { get; }
     }
 }
