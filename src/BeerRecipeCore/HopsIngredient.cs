@@ -25,6 +25,12 @@
             set { m_time = value; }
         }
 
+        public int? DryHopTime
+        {
+            get { return m_dryHopTime; }
+            set { m_dryHopTime = value; }
+        }
+
         public HopsFlavorType FlavorType
         {
             get { return m_flavorType; }
@@ -50,6 +56,7 @@
 
         private float m_amount;
         private int m_time;
+        private int? m_dryHopTime;
         private HopsFlavorType m_flavorType;
         private HopsForm m_form;
         private HopsUse m_use;

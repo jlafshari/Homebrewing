@@ -42,6 +42,19 @@ namespace BeerRecipeCore.Data.Models
             }
         }
 
+        public int? DryHopTime
+        {
+            get
+            {
+                return m_dryHopTime;
+            }
+            set
+            {
+                m_dryHopTime = value;
+                RaisePropertyChanged("DryHopTime");
+            }
+        }
+
         public HopsFlavorType FlavorType
         {
             get
@@ -89,6 +102,7 @@ namespace BeerRecipeCore.Data.Models
         int m_hopsId;
         float m_amount;
         int m_time;
+        int? m_dryHopTime;
         HopsFlavorType m_flavorType;
         HopsForm m_form;
         HopsUse m_use;
