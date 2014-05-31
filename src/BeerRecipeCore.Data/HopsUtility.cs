@@ -73,7 +73,7 @@ namespace BeerRecipeCore.Data
         {
             using (SQLiteCommand selectIngredientsCommand = connection.CreateCommand())
             {
-                selectIngredientsCommand.CommandText = "SELECT HopsIngredients.id, HopsIngredients.amount, HopsIngredients.time, HopsIngredients.type, HopsIngredients.form, Hops.name, Hops.alpha, HopsIngredients.use, Hops.notes, Hops.beta, Hops.hsi, Hops.origin FROM HopsIngredients " +
+                selectIngredientsCommand.CommandText = "SELECT HopsIngredients.id, HopsIngredients.amount, HopsIngredients.time, HopsIngredients.type, HopsIngredients.form, Hops.name, Hops.alpha, HopsIngredients.use, Hops.notes, Hops.beta, Hops.hsi, Hops.origin, HopsIngredients.dryHopTime FROM HopsIngredients " +
                     "JOIN HopsInRecipe ON HopsInRecipe.hopsIngredient = HopsIngredients.id AND HopsInRecipe.recipe = @recipeId " +
                     "JOIN Hops ON Hops.id = HopsIngredients.hopsInfo";
                 selectIngredientsCommand.Parameters.AddWithValue("recipeId", recipeId);
@@ -83,13 +83,16 @@ namespace BeerRecipeCore.Data
                     {
                         HopsCharacteristics characteristics = new HopsCharacteristics(reader.GetFloat(6), reader.GetFloat(9)) { Hsi = reader.GetFloat(10) };
                         Hops hopsInfo = new Hops(reader.GetString(5), characteristics, reader.GetString(8), reader.GetString(11));
+                        string dryHopTimeValue = reader[12].ToString();
+                        int? dryHopTime = dryHopTimeValue.IsNullOrEmpty() ? null : (int?) int.Parse(dryHopTimeValue);
                         yield return new HopsIngredientDataModel(hopsInfo, reader.GetInt32(0))
                         {
                             Amount = reader.GetFloat(1),
                             Time = reader.GetInt32(2),
                             FlavorType = (HopsFlavorType) EnumConverter.Parse(typeof(HopsFlavorType), reader[3].ToString()),
                             Form = (HopsForm) EnumConverter.Parse(typeof(HopsForm), reader[4].ToString()),
-                            Use = (HopsUse) EnumConverter.Parse(typeof(HopsUse), reader.GetString(7))
+                            Use = (HopsUse) EnumConverter.Parse(typeof(HopsUse), reader.GetString(7)),
+                            DryHopTime = dryHopTime
                         };
                     }
                 }
@@ -100,13 +103,14 @@ namespace BeerRecipeCore.Data
         {
             using (SQLiteCommand updateCommand = connection.CreateCommand())
             {
-                updateCommand.CommandText = "UPDATE HopsIngredients SET amount = @amount, time = @time, type = @type, form = @form, use = @use WHERE id = @id";
+                updateCommand.CommandText = "UPDATE HopsIngredients SET amount = @amount, time = @time, type = @type, form = @form, use = @use, dryHopTime = @dryHopTime WHERE id = @id";
                 updateCommand.Parameters.AddWithValue("id", hopsIngredient.HopsId);
                 updateCommand.Parameters.AddWithValue("amount", hopsIngredient.Amount);
                 updateCommand.Parameters.AddWithValue("time", hopsIngredient.Time);
                 updateCommand.Parameters.AddWithValue("type", hopsIngredient.FlavorType);
                 updateCommand.Parameters.AddWithValue("form", hopsIngredient.Form);
                 updateCommand.Parameters.AddWithValue("use", hopsIngredient.Use);
+                updateCommand.Parameters.AddWithValue("dryHopTime", hopsIngredient.DryHopTime);
                 updateCommand.ExecuteNonQuery();
             }
         }
