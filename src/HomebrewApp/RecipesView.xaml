@@ -11,6 +11,7 @@
     <UserControl.Resources>
         <vw:SrmColorConverter x:Key="srmColorConverter" />
         <vw:HopsUseConverter x:Key="hopsUseConverter" />
+        <vw:FermentableTypeConverter x:Key="fermentableTypeConverter" />
     </UserControl.Resources>
     <UserControl.DataContext>
         <vw:RecipesViewModel />
@@ -249,7 +250,13 @@
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
-                                <GridViewColumn Header="Type" Width="90" DisplayMemberBinding="{Binding FermentableInfo.Characteristics.Type}" />
+                                <GridViewColumn Header="Type" Width="90">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding FermentableInfo.Characteristics.Type, Converter={StaticResource fermentableTypeConverter}}" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
                                 <GridViewColumn Header="Malt Category" Width="80" DisplayMemberBinding="{Binding FermentableInfo.Characteristics.MaltCategory}" />
                                 <GridViewColumn Header="Color">
                                     <GridViewColumn.CellTemplate>
