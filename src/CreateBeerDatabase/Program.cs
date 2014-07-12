@@ -235,7 +235,13 @@ namespace CreateBeerDatabase
             "CREATE TABLE GravityReadingsInBatch (id INTEGER PRIMARY KEY, gravityReading INTEGER, batch INTEGER, FOREIGN KEY(gravityReading) REFERENCES GravityReadings, FOREIGN KEY(batch) REFERENCES Batches)",
 
             "CREATE TABLE Recipes (id INTEGER PRIMARY KEY, size NUMERIC NOT NULL, boilTime INTEGER NOT NULL, name TEXT NOT NULL, yeastIngredientInfo INTEGER, beerStyleInfo INTEGER, mashProfileInfo INTEGER, FOREIGN KEY(yeastIngredientInfo) REFERENCES YeastIngredients(id), FOREIGN KEY(beerStyleInfo) REFERENCES Styles(id), FOREIGN KEY(mashProfileInfo) REFERENCES MashProfiles(id))",
-            "CREATE TABLE Batches (id INTEGER PRIMARY KEY, brewerName TEXT, assistantBrewerName TEXT, brewingDate TEXT, recipeInfo INTEGER, FOREIGN KEY(recipeInfo) REFERENCES Recipes(id))"
+            "CREATE TABLE Batches (id INTEGER PRIMARY KEY, brewerName TEXT, assistantBrewerName TEXT, brewingDate TEXT, recipeInfo INTEGER, FOREIGN KEY(recipeInfo) REFERENCES Recipes(id))",
+
+            // table indexes
+            "CREATE INDEX FermentableNameIndex ON Fermentables (name)",
+            "CREATE INDEX HopsNameIndex ON Hops (name)",
+            "CREATE INDEX YeastNameIndex ON Yeasts (name)",
+            "CREATE INDEX StylesNameIndex ON Styles (name)"
         };
     }
 }
