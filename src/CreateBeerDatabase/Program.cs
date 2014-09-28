@@ -195,10 +195,11 @@ namespace CreateBeerDatabase
         {
             using (SQLiteCommand insertCommand = connection.CreateCommand())
             {
-                insertCommand.CommandText = "INSERT INTO Settings (recipeSize, boilTime, extractionEfficiency) VALUES (@recipeSize, @boilTime, @extractionEfficiency)";
+                insertCommand.CommandText = "INSERT INTO Settings (recipeSize, boilTime, extractionEfficiency, yeastWeight) VALUES (@recipeSize, @boilTime, @extractionEfficiency, @yeastWeight)";
                 insertCommand.Parameters.AddWithValue("recipeSize", RecipeDefaultSettings.Size);
                 insertCommand.Parameters.AddWithValue("boilTime", RecipeDefaultSettings.BoilTime);
                 insertCommand.Parameters.AddWithValue("extractionEfficiency", RecipeDefaultSettings.ExtractionEfficiency);
+                insertCommand.Parameters.AddWithValue("yeastWeight", RecipeDefaultSettings.YeastWeight);
                 insertCommand.ExecuteNonQuery();
             }
         }
@@ -224,7 +225,7 @@ namespace CreateBeerDatabase
             "CREATE TABLE YeastIngredients (id INTEGER PRIMARY KEY, weight NUMERIC, volume NUMERIC, yeastInfo INTEGER, FOREIGN KEY(yeastInfo) REFERENCES Yeasts(id))",
             "CREATE TABLE MiscellaneousIngredientInRecipe (id INTEGER PRIMARY KEY, time NUMERIC, amount NUMERIC, amountIsWeight INT, miscellaneousIngredientInfo INTEGER, FOREIGN KEY(miscellaneousIngredientInfo) REFERENCES MiscellaneousIngredients(id))",
 
-            "CREATE TABLE Settings (id INTEGER PRIMARY KEY, recipeSize NUMERIC, boilTime INTEGER, extractionEfficiency NUMERIC)",
+            "CREATE TABLE Settings (id INTEGER PRIMARY KEY, recipeSize NUMERIC, boilTime INTEGER, extractionEfficiency NUMERIC, yeastWeight NUMERIC)",
             
             // junction tables
             "CREATE TABLE HopsInRecipe (id INTEGER PRIMARY KEY, hopsIngredient INTEGER, recipe INTEGER, FOREIGN KEY(hopsIngredient) REFERENCES HopsIngredients(id), FOREIGN KEY(recipe) REFERENCES Recipes(id))",

@@ -143,6 +143,7 @@ namespace HomebrewApp
             CurrentRecipe.Size = m_settings.RecipeSize;
             CurrentRecipe.BoilTime = m_settings.BoilTime;
             CurrentRecipe.ExtractionEfficiency = m_settings.ExtractionEfficiency;
+            CurrentRecipe.YeastIngredient.Weight = m_settings.YeastWeight;
             SavedRecipes.Add(CurrentRecipe);
             RaisePropertyChanged("IsRecipeSelected");
         }

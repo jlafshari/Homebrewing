@@ -20,6 +20,7 @@ namespace BeerRecipeCore.Data
                     settings.RecipeSize = reader.GetFloat(1);
                     settings.BoilTime = reader.GetInt32(2);
                     settings.ExtractionEfficiency = reader.GetFloat(3);
+                    settings.YeastWeight = reader.GetFloat(4);
                 }
             }
             return settings;
@@ -30,11 +31,12 @@ namespace BeerRecipeCore.Data
             using (SQLiteConnection connection = DatabaseUtility.GetNewConnection())
             using (SQLiteCommand updateCommand = connection.CreateCommand())
             {
-                updateCommand.CommandText = "UPDATE Settings SET recipeSize = @recipeSize, boilTime = @boilTime, extractionEfficiency = @extractionEfficiency WHERE id = @id";
+                updateCommand.CommandText = "UPDATE Settings SET recipeSize = @recipeSize, boilTime = @boilTime, extractionEfficiency = @extractionEfficiency, yeastWeight = @yeastWeight WHERE id = @id";
                 updateCommand.Parameters.AddWithValue("id", settings.SettingsId);
                 updateCommand.Parameters.AddWithValue("recipeSize", settings.RecipeSize);
                 updateCommand.Parameters.AddWithValue("boilTime", settings.BoilTime);
                 updateCommand.Parameters.AddWithValue("extractionEfficiency", settings.ExtractionEfficiency);
+                updateCommand.Parameters.AddWithValue("yeastWeight", settings.YeastWeight);
                 updateCommand.ExecuteNonQuery();
             }
         }

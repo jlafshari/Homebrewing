@@ -28,5 +28,13 @@
         {
             get { return 60f; }
         }
+
+        /// <summary>
+        /// The amount of yeast used, in pounds.
+        /// </summary>
+        public static float YeastWeight
+        {
+            get { return 0.1f; }
+        }
     }
 }

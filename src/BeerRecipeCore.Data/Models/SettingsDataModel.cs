@@ -44,9 +44,20 @@ namespace BeerRecipeCore.Data.Models
             }
         }
 
+        public float YeastWeight
+        {
+            get { return m_yeastWeight; }
+            set
+            {
+                m_yeastWeight = value;
+                RaisePropertyChanged("YeastWeight");
+            }
+        }
+
         int m_settingsId;
         float m_recipeSize;
         int m_boilTime;
         float m_extractionEfficiency;
+        float m_yeastWeight;
     }
 }

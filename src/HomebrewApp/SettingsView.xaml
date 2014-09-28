@@ -19,6 +19,7 @@
             <RowDefinition />
             <RowDefinition />
             <RowDefinition />
+            <RowDefinition />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
@@ -38,6 +39,11 @@
         <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal">
             <TextBox Text="{Binding Settings.ExtractionEfficiency}" MinWidth="50" MaxWidth="70" HorizontalAlignment="Left" />
             <TextBlock>%</TextBlock>
+        </StackPanel>
+        <TextBlock Grid.Row="3" Grid.Column="0">Yeast Weight</TextBlock>
+        <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal">
+            <TextBox Text="{Binding Settings.YeastWeight}" MinWidth="50" MaxWidth="70" HorizontalAlignment="Left" />
+            <TextBlock>Pounds</TextBlock>
         </StackPanel>
     </Grid>
 </UserControl>
