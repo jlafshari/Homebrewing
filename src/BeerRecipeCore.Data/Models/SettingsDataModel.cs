@@ -54,10 +54,21 @@ namespace BeerRecipeCore.Data.Models
             }
         }
 
+        public float HopsAmount
+        {
+            get { return m_hopsAmount; }
+            set
+            {
+                m_hopsAmount = value;
+                RaisePropertyChanged("HopsAmount");
+            }
+        }
+
         int m_settingsId;
         float m_recipeSize;
         int m_boilTime;
         float m_extractionEfficiency;
         float m_yeastWeight;
+        float m_hopsAmount;
     }
 }

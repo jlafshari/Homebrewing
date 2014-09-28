@@ -20,6 +20,7 @@
             <RowDefinition />
             <RowDefinition />
             <RowDefinition />
+            <RowDefinition />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
@@ -44,6 +45,11 @@
         <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal">
             <TextBox Text="{Binding Settings.YeastWeight}" MinWidth="50" MaxWidth="70" HorizontalAlignment="Left" />
             <TextBlock>Pounds</TextBlock>
+        </StackPanel>
+        <TextBlock Grid.Row="4" Grid.Column="0">Hops Amount</TextBlock>
+        <StackPanel Grid.Row="4" Grid.Column="1" Orientation="Horizontal">
+            <TextBox Text="{Binding Settings.HopsAmount}" MinWidth="50" MaxWidth="70" HorizontalAlignment="Left" />
+            <TextBlock>Ounces</TextBlock>
         </StackPanel>
     </Grid>
 </UserControl>

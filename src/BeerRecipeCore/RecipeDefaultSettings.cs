@@ -36,5 +36,13 @@
         {
             get { return 0.1f; }
         }
+
+        /// <summary>
+        /// The amount of hops used, in ounces.
+        /// </summary>
+        public static float HopsAmount
+        {
+            get { return 1.0f; }
+        }
     }
 }

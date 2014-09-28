@@ -162,6 +162,7 @@ namespace HomebrewApp
         private void AddHopsIngredient(Hops hops)
         {
             HopsIngredientDataModel hopsIngredient = HopsUtility.CreateHopsIngredient(hops, CurrentRecipe.RecipeId);
+            hopsIngredient.Amount = m_settings.HopsAmount;
             hopsIngredient.PropertyChanged += CurrentRecipe.Ingredient_PropertyChanged;
             CurrentRecipe.HopsIngredients.Add(hopsIngredient);
         }
