@@ -293,7 +293,10 @@
                         <ComboBox Name="AvailableFermentables" ItemsSource="{Binding AvailableFermentables}" MinWidth="100" Margin="0,4,0,4">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding Name}" />
+                                    <StackPanel Orientation="Horizontal" Margin="0,2,0,2">
+                                        <Rectangle Fill="{Binding Characteristics.Color, Converter={StaticResource srmColorConverter}}" Width="40" Height="18" Margin="4,0,4,0" VerticalAlignment="Center" />
+                                        <TextBlock Text="{Binding Name}" />
+                                    </StackPanel>
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
                         </ComboBox>
