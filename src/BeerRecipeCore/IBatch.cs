@@ -9,8 +9,8 @@ namespace BeerRecipeCore
         string AssistantBrewerName { get; set; }
         DateTime BrewingDate { get; set; }
         IRecipe Recipe { get; set; }
-        GravityReading OriginalGravity { get; set; }
-        GravityReading FinalGravity { get; set; }
-        ObservableCollection<GravityReading> RecordedGravityReadings { get; }
+        IGravityReading OriginalGravity { get; set; }
+        IGravityReading FinalGravity { get; set; }
+        ObservableCollection<IGravityReading> RecordedGravityReadings { get; }
     }
 }

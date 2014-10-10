@@ -68,6 +68,7 @@
     <Compile Include="GravityReading.cs" />
     <Compile Include="IBatch.cs" />
     <Compile Include="IFermentableIngredient.cs" />
+    <Compile Include="IGravityReading.cs" />
     <Compile Include="IHopsIngredient.cs" />
     <Compile Include="IngredientTypeBase.cs" />
     <Compile Include="BeerXml\BeerXmlImportUtility.cs" />

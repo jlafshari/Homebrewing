@@ -2,7 +2,7 @@
 
 namespace BeerRecipeCore
 {
-    public class GravityReading
+    public class GravityReading : IGravityReading
     {
         public GravityReading(double value, DateTime date)
         {
