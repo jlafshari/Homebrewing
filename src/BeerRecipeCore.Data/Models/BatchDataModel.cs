@@ -57,7 +57,7 @@ namespace BeerRecipeCore.Data.Models
             }
         }
 
-        public GravityReading OriginalGravity
+        public IGravityReading OriginalGravity
         {
             get { return m_originalGravity; }
             set
@@ -67,7 +67,7 @@ namespace BeerRecipeCore.Data.Models
             }
         }
 
-        public GravityReading FinalGravity
+        public IGravityReading FinalGravity
         {
             get { return m_finalGravity; }
             set
@@ -77,7 +77,7 @@ namespace BeerRecipeCore.Data.Models
             }
         }
 
-        public ObservableCollection<GravityReading> RecordedGravityReadings
+        public ObservableCollection<IGravityReading> RecordedGravityReadings
         {
             get { return m_recordedGravityReadings; }
             private set
@@ -92,8 +92,8 @@ namespace BeerRecipeCore.Data.Models
         string m_assistantBrewerName;
         DateTime m_brewingDate;
         IRecipe m_recipe;
-        GravityReading m_originalGravity;
-        GravityReading m_finalGravity;
-        ObservableCollection<GravityReading> m_recordedGravityReadings = new ObservableCollection<GravityReading>();
+        IGravityReading m_originalGravity;
+        IGravityReading m_finalGravity;
+        ObservableCollection<IGravityReading> m_recordedGravityReadings = new ObservableCollection<IGravityReading>();
     }
 }
