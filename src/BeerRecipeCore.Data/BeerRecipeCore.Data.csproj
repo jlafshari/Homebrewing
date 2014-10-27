@@ -60,6 +60,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BatchUtility.cs" />
     <Compile Include="DatabaseUtility.cs" />
     <Compile Include="Models\BatchDataModel.cs" />
     <Compile Include="Models\FermentableIngredientDataModel.cs" />
