@@ -64,6 +64,7 @@
     <Compile Include="Models\BatchDataModel.cs" />
     <Compile Include="Models\FermentableIngredientDataModel.cs" />
     <Compile Include="FermentableUtility.cs" />
+    <Compile Include="Models\GravityReadingDataModel.cs" />
     <Compile Include="Models\HopsIngredientDataModel.cs" />
     <Compile Include="HopsUtility.cs" />
     <Compile Include="Models\RecipeDataModel.cs" />
