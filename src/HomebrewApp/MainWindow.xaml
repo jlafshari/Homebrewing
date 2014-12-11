@@ -8,7 +8,9 @@
             <TabItem Header="Recipes" HorizontalContentAlignment="Left" VerticalContentAlignment="Top">
                 <vw:RecipesView x:Name="RecipesView" />
             </TabItem>
-            <TabItem Header="Batches"></TabItem>
+            <TabItem Header="Batches" HorizontalContentAlignment="Left" VerticalContentAlignment="Top">
+                <vw:BatchesView x:Name="BatchesView" />
+            </TabItem>
             <TabItem Header="Settings" HorizontalContentAlignment="Left" VerticalContentAlignment="Top">
                 <vw:SettingsView />
             </TabItem>
