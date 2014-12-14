@@ -28,7 +28,7 @@ namespace BeerRecipeCore.BeerXml
             string name = GetNameFromRecord(fermentableEntry);
             string origin = fermentableEntry.Element("ORIGIN").Value;
             string notes = GetNotesFromRecord(fermentableEntry);
-            FermentableType type = (FermentableType) EnumConverter.Parse(typeof(FermentableType), fermentableEntry.Element("TYPE").Value);
+            FermentableType type = EnumConverter.Parse<FermentableType>(fermentableEntry.Element("TYPE").Value);
             float yieldValue = (float) Convert.ToDouble(fermentableEntry.Element("YIELD").Value);
             float? yield = type == FermentableType.Grain ? (float?) yieldValue : null;
             float? yieldByWeight = type != FermentableType.Grain ? (float?) yieldValue : null;

@@ -6,9 +6,9 @@ namespace BeerRecipeCore
     {
         public YeastCharacteristics(string type, string flocculation, string form)
         {
-            m_type = (YeastType) EnumConverter.Parse(typeof(YeastType), type);
-            m_flocculation = (Flocculation) EnumConverter.Parse(typeof(Flocculation), flocculation);
-            m_form = (YeastForm) EnumConverter.Parse(typeof(YeastForm), form);
+            m_type = EnumConverter.Parse<YeastType>(type);
+            m_flocculation = EnumConverter.Parse<Flocculation>(flocculation);
+            m_form = EnumConverter.Parse<YeastForm>(form);
         }
 
         public YeastType Type

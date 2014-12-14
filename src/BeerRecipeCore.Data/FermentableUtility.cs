@@ -26,9 +26,9 @@ namespace BeerRecipeCore.Data
                     string notes = reader.GetString(5);
                     string diastaticPowerValue = reader[6].ToString();
                     float? diastaticPower = !diastaticPowerValue.IsNullOrEmpty() ? (float?) float.Parse(diastaticPowerValue) : null;
-                    FermentableType type = (FermentableType) EnumConverter.Parse(typeof(FermentableType), reader.GetString(7));
+                    FermentableType type = EnumConverter.Parse<FermentableType>(reader.GetString(7));
                     string maltCategoryValue = reader[8].ToString();
-                    MaltCategory? maltCategory = !maltCategoryValue.IsNullOrEmpty() ? (MaltCategory?) EnumConverter.Parse(typeof(MaltCategory), maltCategoryValue) : null;
+                    MaltCategory? maltCategory = !maltCategoryValue.IsNullOrEmpty() ? (MaltCategory?) EnumConverter.Parse<MaltCategory>(maltCategoryValue) : null;
                     int gravityPoint = reader.GetInt32(9);
 
                     FermentableCharacteristics characteristics = new FermentableCharacteristics(yield, color, diastaticPower) {
@@ -97,11 +97,11 @@ namespace BeerRecipeCore.Data
                         string diastaticPowerValue = reader[8].ToString();
                         float? diastaticPower = !diastaticPowerValue.IsNullOrEmpty() ? (float?) float.Parse(diastaticPowerValue) : null;
                         string maltCategoryValue = reader[10].ToString();
-                        MaltCategory? maltCategory = !maltCategoryValue.IsNullOrEmpty() ? (MaltCategory?) EnumConverter.Parse(typeof(MaltCategory), maltCategoryValue) : null;
+                        MaltCategory? maltCategory = !maltCategoryValue.IsNullOrEmpty() ? (MaltCategory?) EnumConverter.Parse<MaltCategory>(maltCategoryValue) : null;
                         FermentableCharacteristics characteristics = new FermentableCharacteristics(yield, reader.GetFloat(5), diastaticPower)
                         {
                             GravityPoint = reader.GetInt32(11),
-                            Type = (FermentableType) EnumConverter.Parse(typeof(FermentableType), reader.GetString(9)),
+                            Type = EnumConverter.Parse<FermentableType>(reader.GetString(9)),
                             MaltCategory = maltCategory,
                             YieldByWeight = yieldByWeight
                         };

@@ -13,7 +13,7 @@ namespace BeerRecipeCore
         {
             m_name = name;
             m_number = number;
-            m_type = (StyleType) EnumConverter.Parse(typeof(StyleType), type);
+            m_type = EnumConverter.Parse<StyleType>(type);
         }
 
         public string Name

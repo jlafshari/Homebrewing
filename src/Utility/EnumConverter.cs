@@ -8,10 +8,10 @@ namespace Utility
         /// <summary>
         /// Performs the same conversion as <see cref="Enum.Parse"/>, except that spaces are removed from the value before converting.
         /// </summary>
-        public static object Parse(Type enumType, string value)
+        public static T Parse<T>(string value)
         {
             string valueNoSpaces = value.Replace(" ", "");
-            return Enum.Parse(enumType, valueNoSpaces);
+            return (T) Enum.Parse(typeof(T), valueNoSpaces);
         }
 
         /// <summary>

@@ -89,9 +89,9 @@ namespace BeerRecipeCore.Data
                         {
                             Amount = reader.GetFloat(1),
                             Time = reader.GetInt32(2),
-                            FlavorType = (HopsFlavorType) EnumConverter.Parse(typeof(HopsFlavorType), reader[3].ToString()),
-                            Form = (HopsForm) EnumConverter.Parse(typeof(HopsForm), reader[4].ToString()),
-                            Use = (HopsUse) EnumConverter.Parse(typeof(HopsUse), reader.GetString(7)),
+                            FlavorType = EnumConverter.Parse<HopsFlavorType>(reader[3].ToString()),
+                            Form = EnumConverter.Parse<HopsForm>(reader[4].ToString()),
+                            Use = EnumConverter.Parse<HopsUse>(reader.GetString(7)),
                             DryHopTime = dryHopTime
                         };
                     }
