@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
 
 namespace HomebrewApp
 {
@@ -19,6 +14,11 @@ namespace HomebrewApp
             RecipesView recipesView = (RecipesView) MainWindow.FindName("RecipesView");
             RecipesViewModel recipesViewModel = (RecipesViewModel) recipesView.DataContext;
             recipesViewModel.SaveCurrentRecipe();
+
+            // save the current batch before shutting down
+            BatchesView batchesView = (BatchesView) MainWindow.FindName("BatchesView");
+            BatchesViewModel batchesViewModel = (BatchesViewModel) batchesView.DataContext;
+            batchesViewModel.SaveCurrentBatch();
 
             base.OnDeactivated(e);
         }
