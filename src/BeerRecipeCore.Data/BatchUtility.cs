@@ -41,13 +41,15 @@ namespace BeerRecipeCore.Data
             BatchDataModel batch = null;
             using (SQLiteConnection connection = DatabaseUtility.GetNewConnection())
             {
+                DateTime currentDate = DateTime.Now;
                 using (SQLiteCommand insertCommand = connection.CreateCommand())
                 {
-                    insertCommand.CommandText = "INSERT INTO Batches (brewerName, assistantBrewerName, brewingDate, recipeInfo) VALUES ('', '', '', @recipeInfo)";
+                    insertCommand.CommandText = "INSERT INTO Batches (brewerName, assistantBrewerName, brewingDate, recipeInfo) VALUES ('', '', @brewingDate, @recipeInfo)";
+                    insertCommand.Parameters.AddWithValue("brewingDate", currentDate.ToString());
                     insertCommand.Parameters.AddWithValue("recipeInfo", recipeId);
                     insertCommand.ExecuteNonQuery();
                 }
-                batch = new BatchDataModel(DatabaseUtility.GetLastInsertedRowId(connection));
+                batch = new BatchDataModel(DatabaseUtility.GetLastInsertedRowId(connection)) { BrewingDate = currentDate };
                 connection.Close();
             }
             return batch;
