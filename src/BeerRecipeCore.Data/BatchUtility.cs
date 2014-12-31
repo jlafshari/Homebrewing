@@ -133,7 +133,7 @@ namespace BeerRecipeCore.Data
 
             using (SQLiteCommand insertJunctionCommand = connection.CreateCommand())
             {
-                insertJunctionCommand.CommandText = "INSERT INTO GravityReadingsInBatches (gravityReading, batch) VALUES(@gravityReading, @batch)";
+                insertJunctionCommand.CommandText = "INSERT INTO GravityReadingsInBatch (gravityReading, batch) VALUES(@gravityReading, @batch)";
                 insertJunctionCommand.Parameters.AddWithValue("gravityReading", gravityReading.GravityReadingId);
                 insertJunctionCommand.Parameters.AddWithValue("batch", batchId);
                 insertJunctionCommand.ExecuteNonQuery();
