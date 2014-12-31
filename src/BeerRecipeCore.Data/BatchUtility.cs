@@ -90,7 +90,7 @@ namespace BeerRecipeCore.Data
             }
         }
 
-        public static BatchDataModel CreateBatch(int recipeId)
+        public static BatchDataModel CreateBatch(RecipeDataModel recipe)
         {
             BatchDataModel batch = null;
             using (SQLiteConnection connection = DatabaseUtility.GetNewConnection())
@@ -100,10 +100,10 @@ namespace BeerRecipeCore.Data
                 {
                     insertCommand.CommandText = "INSERT INTO Batches (brewerName, assistantBrewerName, brewingDate, recipeInfo) VALUES ('', '', @brewingDate, @recipeInfo)";
                     insertCommand.Parameters.AddWithValue("brewingDate", currentDate.ToString());
-                    insertCommand.Parameters.AddWithValue("recipeInfo", recipeId);
+                    insertCommand.Parameters.AddWithValue("recipeInfo", recipe.RecipeId);
                     insertCommand.ExecuteNonQuery();
                 }
-                batch = new BatchDataModel(DatabaseUtility.GetLastInsertedRowId(connection)) { BrewingDate = currentDate };
+                batch = new BatchDataModel(DatabaseUtility.GetLastInsertedRowId(connection)) { BrewingDate = currentDate, Recipe = recipe };
                 connection.Close();
             }
             return batch;
