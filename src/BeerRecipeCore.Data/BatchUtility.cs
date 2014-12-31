@@ -23,8 +23,8 @@ namespace BeerRecipeCore.Data
                             int recipeId = reader.GetInt32(4);
                             BatchDataModel batch = new BatchDataModel(batchId)
                             {
-                                BrewerName = reader.GetString(1),
-                                AssistantBrewerName = reader.GetString(2),
+                                BrewerName = reader[1].ToString(),
+                                AssistantBrewerName = reader[2].ToString(),
                                 Recipe = availableRecipes.FirstOrDefault(recipe => recipe.RecipeId == recipeId)
                             };
 
