@@ -109,6 +109,22 @@ namespace BeerRecipeCore.Data
             return batch;
         }
 
+        public static void DeleteBatch(BatchDataModel batch)
+        {
+            using (SQLiteConnection connection = DatabaseUtility.GetNewConnection())
+            {
+                foreach (GravityReadingDataModel gravityReading in batch.RecordedGravityReadings)
+                    DeleteGravityReading(gravityReading.GravityReadingId, connection);
+
+                using (SQLiteCommand deleteBatchCommand = connection.CreateCommand())
+                {
+                    deleteBatchCommand.CommandText = "DELETE FROM Batches WHERE id = @id";
+                    deleteBatchCommand.Parameters.AddWithValue("id", batch.BatchId);
+                    deleteBatchCommand.ExecuteNonQuery();
+                }
+            }
+        }
+
         public static GravityReadingDataModel CreateGravityReading(int batchId)
         {
             GravityReadingDataModel gravityReading = null;
@@ -118,6 +134,15 @@ namespace BeerRecipeCore.Data
                 connection.Close();
             }
             return gravityReading;
+        }
+
+        public static void DeleteGravityReading(int gravityReadingId)
+        {
+            using (SQLiteConnection connection = DatabaseUtility.GetNewConnection())
+            {
+                DeleteGravityReading(gravityReadingId, connection);
+                connection.Close();
+            }
         }
 
         internal static GravityReadingDataModel CreateGravityReading(int batchId, SQLiteConnection connection)
@@ -140,6 +165,22 @@ namespace BeerRecipeCore.Data
             }
 
             return gravityReading;
+        }
+
+        internal static void DeleteGravityReading(int gravityReadingId, SQLiteConnection connection)
+        {
+            using (SQLiteCommand deleteReadingCommand = connection.CreateCommand())
+            {
+                deleteReadingCommand.CommandText = "DELETE FROM GravityReadings WHERE id = @id";
+                deleteReadingCommand.Parameters.AddWithValue("id", gravityReadingId);
+                deleteReadingCommand.ExecuteNonQuery();
+            }
+            using (SQLiteCommand deleteJunctionCommand = connection.CreateCommand())
+            {
+                deleteJunctionCommand.CommandText = "DELETE FROM GravityReadingsInBatch WHERE gravityReading = @id";
+                deleteJunctionCommand.Parameters.AddWithValue("id", gravityReadingId);
+                deleteJunctionCommand.ExecuteNonQuery();
+            }
         }
     }
 }
