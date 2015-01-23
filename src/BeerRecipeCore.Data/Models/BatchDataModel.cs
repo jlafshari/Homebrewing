@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.ComponentModel;
+using System.Linq;
 using BeerRecipeCore;
+using BeerRecipeCore.Formulas;
 using MvvmFoundation.Wpf;
 
 namespace BeerRecipeCore.Data.Models
@@ -10,6 +14,7 @@ namespace BeerRecipeCore.Data.Models
         public BatchDataModel(int batchId)
         {
             m_batchId = batchId;
+            m_recordedGravityReadings.CollectionChanged += Ingredients_CollectionChanged;
         }
 
         public int BatchId
@@ -87,6 +92,45 @@ namespace BeerRecipeCore.Data.Models
             }
         }
 
+        public float AlcoholByVolume
+        {
+            get { return m_alcoholByVolume; }
+            private set
+            {
+                m_alcoholByVolume = value;
+                RaisePropertyChanged("AlcoholByVolume");
+            }
+        }
+
+        public float AlcoholByWeight
+        {
+            get { return m_alcoholByWeight; }
+            private set
+            {
+                m_alcoholByWeight = value;
+                RaisePropertyChanged("AlcoholByWeight");
+            }
+        }
+
+        public void Ingredient_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            UpdateBatchOutcome();
+        }
+
+        private void Ingredients_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            UpdateBatchOutcome();
+        }
+
+        public void UpdateBatchOutcome()
+        {
+            if (m_recordedGravityReadings.Count > 1)
+            {
+                AlcoholByVolume = AlcoholUtility.GetAlcoholByVolume((float) m_recordedGravityReadings.First().Value, (float) m_recordedGravityReadings.Last().Value);
+                AlcoholByWeight = AlcoholUtility.GetAlcoholByWeight(m_alcoholByVolume);
+            }
+        }
+
         int m_batchId;
         string m_brewerName;
         string m_assistantBrewerName;
@@ -95,5 +139,7 @@ namespace BeerRecipeCore.Data.Models
         IGravityReading m_originalGravity;
         IGravityReading m_finalGravity;
         ObservableCollection<IGravityReading> m_recordedGravityReadings = new ObservableCollection<IGravityReading>();
+        float m_alcoholByVolume;
+        float m_alcoholByWeight;
     }
 }

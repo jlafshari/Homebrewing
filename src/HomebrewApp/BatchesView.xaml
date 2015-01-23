@@ -5,6 +5,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:vw="clr-namespace:HomebrewApp"
              mc:Ignorable="d">
+    <UserControl.Resources>
+        <vw:DateTimeDisplayConverter x:Key="dateTimeDisplayConverter" />
+    </UserControl.Resources>
     <UserControl.DataContext>
         <vw:BatchesViewModel />
     </UserControl.DataContext>
@@ -19,17 +22,34 @@
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="95" />
-                                <ColumnDefinition Width="45" />
+                                <ColumnDefinition Width="55" />
+                                <ColumnDefinition Width="40" />
                             </Grid.ColumnDefinitions>
                             <TextBlock Grid.Column="0" Text="{Binding Recipe.Name}" />
-                            <Button Grid.Column="1" Foreground="Gray" FontSize="9" Width="40" HorizontalAlignment="Right" Style="{DynamicResource DeleteButtonStyle}" Command="{Binding DataContext.DeleteBatchCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}" CommandParameter="{Binding}">
+                            <TextBlock Grid.Column="1" Text="{Binding BrewingDate, Converter={StaticResource dateTimeDisplayConverter}}" FontSize="10" Margin="4,0,0,0" />
+                            <Button Grid.Column="2" Foreground="Gray" FontSize="9" Width="35" HorizontalAlignment="Right" Style="{DynamicResource DeleteButtonStyle}" Command="{Binding DataContext.DeleteBatchCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}" CommandParameter="{Binding}">
                                 Delete
                             </Button>
                         </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <Button Width="80" Margin="0,4,0,0" HorizontalAlignment="Left">New batch</Button>
+            <TextBlock Margin="0,12,0,8" FontSize="14">New batch</TextBlock>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="45" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" VerticalAlignment="Center">Recipe:</TextBlock>
+                <ComboBox x:Name="AvailableRecipeComboBox" Grid.Column="1" ItemsSource="{Binding AvailableRecipes}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Name}" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+            </Grid>
+            <Button Width="100" Margin="0,8,0,0" HorizontalAlignment="Left" Command="{Binding AddNewBatchCommand}" CommandParameter="{Binding ElementName=AvailableRecipeComboBox, Path=SelectedItem}">Create new batch</Button>
         </StackPanel>
         
         <Grid>
@@ -56,28 +76,73 @@
                     <RowDefinition Height="30" />
                     <RowDefinition Height="30" />
                     <RowDefinition Height="30" />
+                    <RowDefinition MinHeight="100" MaxHeight="250" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="130" />
-                    <ColumnDefinition Width="100" />
+                    <ColumnDefinition Width="300" />
                 </Grid.ColumnDefinitions>
                 <TextBlock Grid.Row="0" Grid.Column="0">Brewer name</TextBlock>
-                <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding CurrentBatch.BrewerName}" />
+                <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding CurrentBatch.BrewerName}" MinWidth="130" MaxWidth="200" HorizontalAlignment="Left" />
                 <TextBlock Grid.Row="1" Grid.Column="0">Assistant brewer name</TextBlock>
-                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding CurrentBatch.AssistantBrewerName}" />
+                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding CurrentBatch.AssistantBrewerName}" MinWidth="130" MaxWidth="200" HorizontalAlignment="Left" />
                 <TextBlock Grid.Row="2" Grid.Column="0">Brewing date</TextBlock>
-                <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding CurrentBatch.BrewingDate}" />
+                <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding CurrentBatch.BrewingDate, Converter={StaticResource dateTimeDisplayConverter}}" Margin="4" />
                 <TextBlock Grid.Row="3" Grid.Column="0">Recipe</TextBlock>
-                <TextBlock Grid.Row="4" Grid.Column="0" Margin="12,4,0,0">Name</TextBlock>
-                <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding CurrentBatch.Recipe.Name}" />
-                <TextBlock Grid.Row="5" Grid.Column="0" Margin="12,4,0,0">Style</TextBlock>
-                <TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding CurrentBatch.Recipe.Style.Name}" />
+                <TextBlock Grid.Row="4" Grid.Column="0" Margin="12,0,0,0">Name</TextBlock>
+                <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding CurrentBatch.Recipe.Name}" Margin="4" />
+                <TextBlock Grid.Row="5" Grid.Column="0" Margin="12,0,0,0">Style</TextBlock>
+                <TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding CurrentBatch.Recipe.Style.Name}" Margin="4" />
+                <TextBlock Grid.Row="6" Grid.Column="0" VerticalAlignment="Top" Margin="0,4,0,0">Gravity readings</TextBlock>
+                <StackPanel Grid.Row="6" Grid.Column="1" Margin="4">
+                    <ListView ItemsSource="{Binding CurrentBatch.RecordedGravityReadings}" MinHeight="100" MaxHeight="350">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Date" DisplayMemberBinding="{Binding Date}" Width="140" />
+                                <GridViewColumn Header="Value" Width="80">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBox Text="{Binding Value}" Width="55" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn>
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Foreground="Gray" FontSize="9" Width="40" HorizontalAlignment="Right" Style="{DynamicResource DeleteButtonStyle}" Command="{Binding DataContext.DeleteGravityReadingCommand, RelativeSource={RelativeSource FindAncestor,  AncestorType={x:Type UserControl}}}" CommandParameter="{Binding}">
+                                                Delete
+                                            </Button>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                    <Button Margin="0,4,0,0" HorizontalAlignment="Left" Command="{Binding AddGravityReadingCommand}">Add</Button>
+                </StackPanel>
             </Grid>
             <DockPanel Grid.Row="1">
                 <TextBlock DockPanel.Dock="Top" FontSize="16" Margin="0,8,0,0">Outcome</TextBlock>
-                <!--<Grid Margin="0,4,0,0">
-                    
-                </Grid>-->
+                <Grid Margin="0,4,0,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100" />
+                        <ColumnDefinition Width="100" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Row="0" Grid.Column="0" Margin="0,4,0,0">ABV</TextBlock>
+                    <StackPanel Grid.Row="0" Grid.Column="1" Margin="0,4,0,0" Orientation="Horizontal">
+                        <TextBlock Text="{Binding CurrentBatch.AlcoholByVolume, Mode=OneWay}" />
+                        <TextBlock>%</TextBlock>
+                    </StackPanel>
+                    <TextBlock Grid.Row="1" Grid.Column="0" Margin="0,4,0,0">ABW</TextBlock>
+                    <StackPanel Grid.Row="1" Grid.Column="1" Margin="0,4,0,0" Orientation="Horizontal">
+                        <TextBlock Text="{Binding CurrentBatch.AlcoholByWeight, Mode=OneWay}" />
+                        <TextBlock>%</TextBlock>
+                    </StackPanel>
+                </Grid>
             </DockPanel>
         </Grid>
     </DockPanel>

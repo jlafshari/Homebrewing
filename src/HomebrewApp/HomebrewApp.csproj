@@ -80,6 +80,7 @@
       <DependentUpon>BatchesView.xaml</DependentUpon>
     </Compile>
     <Compile Include="BatchesViewModel.cs" />
+    <Compile Include="DateTimeDisplayConverter.cs" />
     <Compile Include="FermentableTypeConverter.cs" />
     <Compile Include="HopsUseConverter.cs" />
     <Compile Include="SettingsView.xaml.cs">

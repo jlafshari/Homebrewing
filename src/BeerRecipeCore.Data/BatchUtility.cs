@@ -47,6 +47,7 @@ namespace BeerRecipeCore.Data
                                         if (DateTime.TryParse(gravityReadingsReader.GetString(2), out gravityReadingDate))
                                             gravityReading.Date = gravityReadingDate;
 
+                                        gravityReading.PropertyChanged += batch.Ingredient_PropertyChanged;
                                         batch.RecordedGravityReadings.Add(gravityReading);
                                     }
                                 }
