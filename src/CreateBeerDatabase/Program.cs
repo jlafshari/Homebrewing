@@ -50,7 +50,7 @@ namespace CreateBeerDatabase
                 Fermentable fermentableInfo = BeerXmlImportUtility.GetFermentable(fermentableEntry);
                 XElement maltCategoryElement = fermentableEntry.Element("malt-category");
                 if (maltCategoryElement != null)
-                    fermentableInfo.Characteristics.MaltCategory = (MaltCategory?) EnumConverter.Parse(typeof(MaltCategory), maltCategoryElement.Value);
+                    fermentableInfo.Characteristics.MaltCategory = (MaltCategory?) EnumConverter.Parse<MaltCategory>(maltCategoryElement.Value);
 
                 SQLiteCommand insertCommand = connection.CreateCommand();
                 insertCommand.CommandText = "INSERT INTO Fermentables (name, yield, yieldByWeight, color, origin, notes, diastaticPower, type, maltCategory, gravityPoint)"
