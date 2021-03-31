@@ -1,4 +1,4 @@
-﻿namespace BeerRecipeCore
+﻿namespace BeerRecipeCore.Styles
 {
     public class StyleClassification
     {

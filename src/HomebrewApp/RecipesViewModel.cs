@@ -6,6 +6,7 @@ using System.Windows.Input;
 using BeerRecipeCore;
 using BeerRecipeCore.Data;
 using BeerRecipeCore.Data.Models;
+using BeerRecipeCore.Styles;
 using MvvmFoundation.Wpf;
 using Utility;
 

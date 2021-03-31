@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-namespace BeerRecipeCore
+namespace BeerRecipeCore.Styles
 {
     public class Style
     {

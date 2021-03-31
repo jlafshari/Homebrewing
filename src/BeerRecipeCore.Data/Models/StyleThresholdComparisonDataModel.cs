@@ -1,4 +1,5 @@
 ﻿using System;
+using BeerRecipeCore.Styles;
 using MvvmFoundation.Wpf;
 
 namespace BeerRecipeCore.Data.Models

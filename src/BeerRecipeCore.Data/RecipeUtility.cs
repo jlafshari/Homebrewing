@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Linq;
 using BeerRecipeCore.Data.Models;
+using BeerRecipeCore.Styles;
 
 namespace BeerRecipeCore.Data
 {

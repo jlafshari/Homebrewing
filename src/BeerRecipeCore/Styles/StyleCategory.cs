@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Utility;
 
-namespace BeerRecipeCore
+namespace BeerRecipeCore.Styles
 {
     public class StyleCategory
     {

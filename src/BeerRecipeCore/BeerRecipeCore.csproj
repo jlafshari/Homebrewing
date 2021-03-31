@@ -94,11 +94,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Recipe.cs" />
     <Compile Include="RecipeDefaultSettings.cs" />
-    <Compile Include="Style.cs" />
-    <Compile Include="StyleCategory.cs" />
-    <Compile Include="StyleClassification.cs" />
-    <Compile Include="StyleThreshold.cs" />
-    <Compile Include="StyleType.cs" />
+    <Compile Include="Styles\Style.cs" />
+    <Compile Include="Styles\StyleCategory.cs" />
+    <Compile Include="Styles\StyleClassification.cs" />
+    <Compile Include="Styles\StyleThreshold.cs" />
+    <Compile Include="Styles\StyleType.cs" />
     <Compile Include="Yeast.cs" />
     <Compile Include="YeastCharacteristics.cs" />
     <Compile Include="YeastForm.cs" />

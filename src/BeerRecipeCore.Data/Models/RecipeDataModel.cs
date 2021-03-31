@@ -3,6 +3,7 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using BeerRecipeCore.Formulas;
+using BeerRecipeCore.Styles;
 using MvvmFoundation.Wpf;
 
 namespace BeerRecipeCore.Data.Models

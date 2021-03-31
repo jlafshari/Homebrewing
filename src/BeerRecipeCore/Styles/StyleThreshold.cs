@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BeerRecipeCore
+namespace BeerRecipeCore.Styles
 {
     public class StyleThreshold
     {

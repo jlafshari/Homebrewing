@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using BeerRecipeCore.Formulas;
+using BeerRecipeCore.Styles;
 using Utility;
 
 namespace BeerRecipeCore.BeerXml
