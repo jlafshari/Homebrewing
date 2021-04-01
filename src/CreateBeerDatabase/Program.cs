@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Common;
 using System.Data.SQLite;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Xml.Linq;
 using BeerRecipeCore;
 using BeerRecipeCore.BeerXml;
+using BeerRecipeCore.Styles;
 using Utility;
 
 namespace CreateBeerDatabase
@@ -47,7 +46,7 @@ namespace CreateBeerDatabase
             List<XElement> fermentableEntries = fermentables.Descendants("FERMENTABLE").ToList();
             foreach (XElement fermentableEntry in fermentableEntries)
             {
-                Fermentable fermentableInfo = BeerXmlImportUtility.GetFermentable(fermentableEntry);
+                var fermentableInfo = BeerXmlImportUtility.GetFermentable(fermentableEntry);
                 XElement maltCategoryElement = fermentableEntry.Element("malt-category");
                 if (maltCategoryElement != null)
                     fermentableInfo.Characteristics.MaltCategory = (MaltCategory?) EnumConverter.Parse<MaltCategory>(maltCategoryElement.Value);
@@ -75,7 +74,7 @@ namespace CreateBeerDatabase
             List<XElement> hopEntries = hops.Descendants("HOP").ToList();
             foreach (XElement hopEntry in hopEntries)
             {
-                Hops hopsInfo = BeerXmlImportUtility.GetHops(hopEntry);
+                var hopsInfo = BeerXmlImportUtility.GetHops(hopEntry);
 
                 SQLiteCommand insertCommand = connection.CreateCommand();
                 insertCommand.CommandText = "INSERT INTO Hops (name, alpha, notes, beta, hsi, origin)"
@@ -96,7 +95,7 @@ namespace CreateBeerDatabase
             List<XElement> yeastEntries = yeasts.Descendants("YEAST").ToList();
             foreach (XElement yeastEntry in yeastEntries)
             {
-                Yeast yeastInfo = BeerXmlImportUtility.GetYeast(yeastEntry);
+                var yeastInfo = BeerXmlImportUtility.GetYeast(yeastEntry);
 
                 SQLiteCommand insertCommand = connection.CreateCommand();
                 insertCommand.CommandText = "INSERT INTO Yeasts (name, type, form, laboratory, productId, minTemperature, maxTemperature, flocculation, attenuation, notes)"
@@ -123,9 +122,9 @@ namespace CreateBeerDatabase
             List<StyleClassification> classificationsAdded = new List<StyleClassification>();
             foreach (XElement styleEntry in styleEntries)
             {
-                Style styleInfo = BeerXmlImportUtility.GetStyle(styleEntry);
+                var styleInfo = BeerXmlImportUtility.GetStyle(styleEntry);
 
-                StyleCategory category = styleInfo.Category;
+                var category = styleInfo.Category;
                 if (!categoriesAdded.Any(cat => cat.Name == category.Name && cat.Number == category.Number && cat.Type == category.Type))
                 {
                     categoriesAdded.Add(category);
