@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.SQLite;
 using BeerRecipeCore.Data.Models;
+using BeerRecipeCore.Fermentables;
 using Utility;
 
 namespace BeerRecipeCore.Data

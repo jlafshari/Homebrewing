@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using BeerRecipeCore.Fermentables;
 using BeerRecipeCore.Styles;
 
 namespace BeerRecipeCore

@@ -1,4 +1,4 @@
-﻿using BeerRecipeCore;
+﻿using BeerRecipeCore.Fermentables;
 using MvvmFoundation.Wpf;
 
 namespace BeerRecipeCore.Data.Models

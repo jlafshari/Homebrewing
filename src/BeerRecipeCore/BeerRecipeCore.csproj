@@ -59,21 +59,21 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Batch.cs" />
-    <Compile Include="FermentableIngredient.cs" />
-    <Compile Include="FermentableType.cs" />
+    <Compile Include="Fermentables\FermentableIngredient.cs" />
+    <Compile Include="Fermentables\FermentableType.cs" />
     <Compile Include="Formulas\AlcoholUtility.cs" />
     <Compile Include="Formulas\BitternessUtility.cs" />
     <Compile Include="Formulas\ColorUtility.cs" />
     <Compile Include="Formulas\MashUtility.cs" />
     <Compile Include="GravityReading.cs" />
     <Compile Include="IBatch.cs" />
-    <Compile Include="IFermentableIngredient.cs" />
+    <Compile Include="Fermentables\IFermentableIngredient.cs" />
     <Compile Include="IGravityReading.cs" />
     <Compile Include="IHopsIngredient.cs" />
     <Compile Include="IngredientTypeBase.cs" />
     <Compile Include="BeerXml\BeerXmlImportUtility.cs" />
-    <Compile Include="Fermentable.cs" />
-    <Compile Include="FermentableCharacteristics.cs" />
+    <Compile Include="Fermentables\Fermentable.cs" />
+    <Compile Include="Fermentables\FermentableCharacteristics.cs" />
     <Compile Include="Flocculation.cs" />
     <Compile Include="Hops.cs">
       <SubType>Code</SubType>

@@ -1,4 +1,4 @@
-﻿namespace BeerRecipeCore
+﻿namespace BeerRecipeCore.Fermentables
 {
     public class FermentableCharacteristics
     {

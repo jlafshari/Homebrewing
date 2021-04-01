@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using BeerRecipeCore.Fermentables;
 
 namespace BeerRecipeCore.Formulas
 {
