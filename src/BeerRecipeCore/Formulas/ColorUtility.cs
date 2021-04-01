@@ -26,7 +26,7 @@ namespace BeerRecipeCore.Formulas
             if (srmColor < 0)
                 throw new ArgumentException("srmColor must be a positive number");
 
-            int srmColorWholeNumber = (int) Math.Round(srmColor);
+            int srmColorWholeNumber = (int)Math.Round(srmColor);
             if (s_srmColors.ContainsKey(srmColorWholeNumber))
                 return s_srmColors[srmColorWholeNumber];
             else if (srmColorWholeNumber > c_darkestSupportedSrm)

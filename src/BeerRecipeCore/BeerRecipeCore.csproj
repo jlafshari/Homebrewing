@@ -1,122 +1,12 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{5AB9E40E-D72C-42BD-808C-26281AE50523}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>BeerRecipeCore</RootNamespace>
-    <AssemblyName>BeerRecipeCore</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
+	<TargetFramework>net5.0-windows</TargetFramework>
+	<UseWPF>true</UseWPF>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x86\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>ManagedMinimumRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <OutputPath>bin\x86\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>ManagedMinimumRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="PresentationCore" />
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
+    <ProjectReference Include="..\Utility\Utility.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Batch.cs" />
-    <Compile Include="Fermentables\FermentableIngredient.cs" />
-    <Compile Include="Fermentables\FermentableType.cs" />
-    <Compile Include="Formulas\AlcoholUtility.cs" />
-    <Compile Include="Formulas\BitternessUtility.cs" />
-    <Compile Include="Formulas\ColorUtility.cs" />
-    <Compile Include="Formulas\MashUtility.cs" />
-    <Compile Include="GravityReading.cs" />
-    <Compile Include="IBatch.cs" />
-    <Compile Include="Fermentables\IFermentableIngredient.cs" />
-    <Compile Include="IGravityReading.cs" />
-    <Compile Include="Hops\IHopsIngredient.cs" />
-    <Compile Include="IngredientTypeBase.cs" />
-    <Compile Include="BeerXml\BeerXmlImportUtility.cs" />
-    <Compile Include="Fermentables\Fermentable.cs" />
-    <Compile Include="Fermentables\FermentableCharacteristics.cs" />
-    <Compile Include="Flocculation.cs" />
-    <Compile Include="Hops\Hops.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Hops\HopsCharacteristics.cs" />
-    <Compile Include="Hops\HopsFlavorType.cs" />
-    <Compile Include="Hops\HopsForm.cs" />
-    <Compile Include="Hops\HopsIngredient.cs" />
-    <Compile Include="Hops\HopsUse.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="IRecipe.cs" />
-    <Compile Include="Yeast\IYeastIngredient.cs" />
-    <Compile Include="MaltCategory.cs" />
-    <Compile Include="MashProfile.cs" />
-    <Compile Include="MashStep.cs" />
-    <Compile Include="MashType.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Recipe.cs" />
-    <Compile Include="RecipeDefaultSettings.cs" />
-    <Compile Include="Styles\Style.cs" />
-    <Compile Include="Styles\StyleCategory.cs" />
-    <Compile Include="Styles\StyleClassification.cs" />
-    <Compile Include="Styles\StyleThreshold.cs" />
-    <Compile Include="Styles\StyleType.cs" />
-    <Compile Include="Yeast\Yeast.cs" />
-    <Compile Include="Yeast\YeastCharacteristics.cs" />
-    <Compile Include="Yeast\YeastForm.cs" />
-    <Compile Include="Yeast\YeastIngredient.cs" />
-    <Compile Include="Yeast\YeastType.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Utility\Utility.csproj">
-      <Project>{5f77a9fe-5df3-4127-a1c0-5acb2ee1d0a7}</Project>
-      <Name>Utility</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
 </Project>
