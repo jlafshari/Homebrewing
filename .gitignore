@@ -110,3 +110,4 @@ UpgradeLog*.XML
 /.vs/ProjectSettings.json
 /.vs/slnx.sqlite
 /src/HomebrewApp/.vs/HomebrewApp/v15/Server/sqlite3
+/src/HomebrewApp/.vs/HomebrewApp/v16/TestStore/0
