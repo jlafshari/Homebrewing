@@ -5,6 +5,7 @@ using BeerRecipeCore.Fermentables;
 using BeerRecipeCore.Formulas;
 using BeerRecipeCore.Hops;
 using BeerRecipeCore.Styles;
+using BeerRecipeCore.Yeast;
 using Utility;
 
 namespace BeerRecipeCore.BeerXml
@@ -42,7 +43,7 @@ namespace BeerRecipeCore.BeerXml
             return new Fermentable(name, characteristics, notes, origin);
         }
 
-        public static Yeast GetYeast(XElement yeastEntry)
+        public static Yeast.Yeast GetYeast(XElement yeastEntry)
         {
             string name = GetNameFromRecord(yeastEntry);
             string type = yeastEntry.Element("TYPE").Value;
@@ -56,7 +57,7 @@ namespace BeerRecipeCore.BeerXml
             string notes = GetNotesFromRecord(yeastEntry);
 
             YeastCharacteristics characteristics = new YeastCharacteristics(type, flocculation, form) { Attenuation = attenuation, MinTemperature = minTemperature, MaxTemperature = maxTemperature };
-            return new Yeast(name, characteristics, notes, laboratory, productId);
+            return new Yeast.Yeast(name, characteristics, notes, laboratory, productId);
         }
 
         public static Style GetStyle(XElement styleEntry)

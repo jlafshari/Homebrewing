@@ -1,11 +1,11 @@
-﻿using BeerRecipeCore;
+﻿using BeerRecipeCore.Yeast;
 using MvvmFoundation.Wpf;
 
 namespace BeerRecipeCore.Data.Models
 {
     public class YeastIngredientDataModel : ObservableObject, IYeastIngredient
     {
-        public YeastIngredientDataModel(Yeast yeastInfo, int yeastIngredientId)
+        public YeastIngredientDataModel(Yeast.Yeast yeastInfo, int yeastIngredientId)
         {
             m_yeastInfo = yeastInfo;
             m_yeastIngredientId = yeastIngredientId;
@@ -42,7 +42,7 @@ namespace BeerRecipeCore.Data.Models
             }
         }
 
-        public Yeast YeastInfo
+        public Yeast.Yeast YeastInfo
         {
             get
             {
@@ -58,6 +58,6 @@ namespace BeerRecipeCore.Data.Models
         int m_yeastIngredientId;
         float m_weight;
         float m_volume;
-        Yeast m_yeastInfo;
+        Yeast.Yeast m_yeastInfo;
     }
 }

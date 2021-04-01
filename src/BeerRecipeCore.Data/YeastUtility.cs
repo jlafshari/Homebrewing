@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Data.SQLite;
 using BeerRecipeCore.Data.Models;
+using BeerRecipeCore.Yeast;
 
 namespace BeerRecipeCore.Data
 {
     public static class YeastUtility
     {
-        public static IEnumerable<Yeast> GetAvailableYeasts(SQLiteConnection connection)
+        public static IEnumerable<Yeast.Yeast> GetAvailableYeasts(SQLiteConnection connection)
         {
             SQLiteCommand selectYeastCommand = connection.CreateCommand();
             selectYeastCommand.CommandText = "SELECT name, type, form, laboratory, productId, minTemperature, maxTemperature, flocculation, attenuation, notes FROM Yeasts";
@@ -32,7 +33,7 @@ namespace BeerRecipeCore.Data
                         MinTemperature = minTemperature,
                         MaxTemperature = maxTemperature
                     };
-                    yield return new Yeast(name, characteristics, notes, laboratory, productId);
+                    yield return new Yeast.Yeast(name, characteristics, notes, laboratory, productId);
                 }
             }
         }
@@ -77,7 +78,7 @@ namespace BeerRecipeCore.Data
                             MinTemperature = reader.GetFloat(9),
                             MaxTemperature = reader.GetFloat(10)
                         };
-                        Yeast yeastInfo = new Yeast(reader.GetString(4), characteristics, reader.GetString(13), reader.GetString(7), reader.GetString(8));
+                        var yeastInfo = new Yeast.Yeast(reader.GetString(4), characteristics, reader.GetString(13), reader.GetString(7), reader.GetString(8));
                         return new YeastIngredientDataModel(yeastInfo, reader.GetInt32(0)) { Volume = reader.GetFloat(2), Weight = reader.GetFloat(1) };
                     }
                 }

@@ -1,4 +1,4 @@
-﻿namespace BeerRecipeCore
+﻿namespace BeerRecipeCore.Yeast
 {
     public class Yeast : IngredientTypeBase
     {

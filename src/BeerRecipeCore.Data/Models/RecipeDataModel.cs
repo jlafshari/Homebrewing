@@ -6,6 +6,7 @@ using BeerRecipeCore.Fermentables;
 using BeerRecipeCore.Formulas;
 using BeerRecipeCore.Hops;
 using BeerRecipeCore.Styles;
+using BeerRecipeCore.Yeast;
 using MvvmFoundation.Wpf;
 
 namespace BeerRecipeCore.Data.Models

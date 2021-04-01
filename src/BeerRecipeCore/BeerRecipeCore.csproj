@@ -86,7 +86,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="IRecipe.cs" />
-    <Compile Include="IYeastIngredient.cs" />
+    <Compile Include="Yeast\IYeastIngredient.cs" />
     <Compile Include="MaltCategory.cs" />
     <Compile Include="MashProfile.cs" />
     <Compile Include="MashStep.cs" />
@@ -99,11 +99,11 @@
     <Compile Include="Styles\StyleClassification.cs" />
     <Compile Include="Styles\StyleThreshold.cs" />
     <Compile Include="Styles\StyleType.cs" />
-    <Compile Include="Yeast.cs" />
-    <Compile Include="YeastCharacteristics.cs" />
-    <Compile Include="YeastForm.cs" />
-    <Compile Include="YeastIngredient.cs" />
-    <Compile Include="YeastType.cs" />
+    <Compile Include="Yeast\Yeast.cs" />
+    <Compile Include="Yeast\YeastCharacteristics.cs" />
+    <Compile Include="Yeast\YeastForm.cs" />
+    <Compile Include="Yeast\YeastIngredient.cs" />
+    <Compile Include="Yeast\YeastType.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Utility\Utility.csproj">

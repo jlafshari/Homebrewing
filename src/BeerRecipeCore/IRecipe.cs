@@ -2,6 +2,7 @@
 using BeerRecipeCore.Fermentables;
 using BeerRecipeCore.Hops;
 using BeerRecipeCore.Styles;
+using BeerRecipeCore.Yeast;
 
 namespace BeerRecipeCore
 {
