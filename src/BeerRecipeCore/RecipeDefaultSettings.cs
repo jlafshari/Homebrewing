@@ -8,41 +8,26 @@
         /// <summary>
         /// The size in gallons.
         /// </summary>
-        public static float Size
-        {
-            get { return 5f; }
-        }
+        public const float Size = 5f;
 
         /// <summary>
         /// The boil time in minutes.
         /// </summary>
-        public static int BoilTime
-        {
-            get { return 60; }
-        }
+        public const int BoilTime = 60;
 
         /// <summary>
         /// The mash extraction efficiency percentage.
         /// </summary>
-        public static float ExtractionEfficiency
-        {
-            get { return 60f; }
-        }
+        public const float ExtractionEfficiency = 60f;
 
         /// <summary>
         /// The amount of yeast used, in pounds.
         /// </summary>
-        public static float YeastWeight
-        {
-            get { return 0.1f; }
-        }
+        public const float YeastWeight = 0.1f;
 
         /// <summary>
         /// The amount of hops used, in ounces.
         /// </summary>
-        public static float HopsAmount
-        {
-            get { return 1.0f; }
-        }
+        public const float HopsAmount = 1.0f;
     }
 }
