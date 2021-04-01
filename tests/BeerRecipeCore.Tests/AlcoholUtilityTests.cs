@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using BeerRecipeCore.Fermentables;
 using BeerRecipeCore.Formulas;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
