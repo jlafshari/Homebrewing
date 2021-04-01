@@ -1,11 +1,11 @@
-﻿using BeerRecipeCore;
+﻿using BeerRecipeCore.Hops;
 using MvvmFoundation.Wpf;
 
 namespace BeerRecipeCore.Data.Models
 {
     public class HopsIngredientDataModel : ObservableObject, IHopsIngredient
     {
-        public HopsIngredientDataModel(Hops hopsInfo, int hopsId)
+        public HopsIngredientDataModel(Hops.Hops hopsInfo, int hopsId)
         {
             m_hopsInfo = hopsInfo;
             m_hopsId = hopsId;
@@ -94,7 +94,7 @@ namespace BeerRecipeCore.Data.Models
             }
         }
 
-        public Hops HopsInfo
+        public Hops.Hops HopsInfo
         {
             get { return m_hopsInfo; }
         }
@@ -106,6 +106,6 @@ namespace BeerRecipeCore.Data.Models
         HopsFlavorType m_flavorType;
         HopsForm m_form;
         HopsUse m_use;
-        Hops m_hopsInfo;
+        Hops.Hops m_hopsInfo;
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Windows.Data;
-using BeerRecipeCore;
+using BeerRecipeCore.Hops;
 using Utility;
 
 namespace HomebrewApp

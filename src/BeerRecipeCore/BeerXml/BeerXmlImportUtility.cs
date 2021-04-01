@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Linq;
 using BeerRecipeCore.Fermentables;
 using BeerRecipeCore.Formulas;
+using BeerRecipeCore.Hops;
 using BeerRecipeCore.Styles;
 using Utility;
 
@@ -13,7 +11,7 @@ namespace BeerRecipeCore.BeerXml
 {
     public static class BeerXmlImportUtility
     {
-        public static Hops GetHops(XElement hopsEntry)
+        public static Hops.Hops GetHops(XElement hopsEntry)
         {
             string name = GetNameFromRecord(hopsEntry);
             string origin = hopsEntry.Element("ORIGIN").Value;
@@ -22,7 +20,7 @@ namespace BeerRecipeCore.BeerXml
             string notes = GetNotesFromRecord(hopsEntry);
             float hsi = (float) Convert.ToDouble(hopsEntry.Element("HSI").Value);
             HopsCharacteristics hopsCharacteristics = new HopsCharacteristics(alphaAcid, betaAcid) { Hsi = hsi };
-            return new Hops(name, hopsCharacteristics, notes, origin);
+            return new Hops.Hops(name, hopsCharacteristics, notes, origin);
         }
 
         public static Fermentable GetFermentable(XElement fermentableEntry)

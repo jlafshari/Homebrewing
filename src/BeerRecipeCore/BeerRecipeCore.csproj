@@ -69,20 +69,20 @@
     <Compile Include="IBatch.cs" />
     <Compile Include="Fermentables\IFermentableIngredient.cs" />
     <Compile Include="IGravityReading.cs" />
-    <Compile Include="IHopsIngredient.cs" />
+    <Compile Include="Hops\IHopsIngredient.cs" />
     <Compile Include="IngredientTypeBase.cs" />
     <Compile Include="BeerXml\BeerXmlImportUtility.cs" />
     <Compile Include="Fermentables\Fermentable.cs" />
     <Compile Include="Fermentables\FermentableCharacteristics.cs" />
     <Compile Include="Flocculation.cs" />
-    <Compile Include="Hops.cs">
+    <Compile Include="Hops\Hops.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="HopsCharacteristics.cs" />
-    <Compile Include="HopsFlavorType.cs" />
-    <Compile Include="HopsForm.cs" />
-    <Compile Include="HopsIngredient.cs" />
-    <Compile Include="HopsUse.cs">
+    <Compile Include="Hops\HopsCharacteristics.cs" />
+    <Compile Include="Hops\HopsFlavorType.cs" />
+    <Compile Include="Hops\HopsForm.cs" />
+    <Compile Include="Hops\HopsIngredient.cs" />
+    <Compile Include="Hops\HopsUse.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="IRecipe.cs" />

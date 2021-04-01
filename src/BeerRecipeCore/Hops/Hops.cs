@@ -1,6 +1,6 @@
 ﻿using Utility;
 
-namespace BeerRecipeCore
+namespace BeerRecipeCore.Hops
 {
     public class Hops : IngredientTypeBase
     {

@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Data.SQLite;
 using BeerRecipeCore.Data.Models;
+using BeerRecipeCore.Hops;
 using Utility;
 
 namespace BeerRecipeCore.Data
 {
     public static class HopsUtility
     {
-        public static IEnumerable<Hops> GetAvailableHopsVarieties(SQLiteConnection connection)
+        public static IEnumerable<Hops.Hops> GetAvailableHopsVarieties(SQLiteConnection connection)
         {
             SQLiteCommand selectHopsCommand = connection.CreateCommand();
             selectHopsCommand.CommandText = "SELECT name, alpha, notes, beta, hsi, origin FROM Hops";
@@ -24,12 +25,12 @@ namespace BeerRecipeCore.Data
                     string origin = reader.GetString(5);
 
                     HopsCharacteristics characteristics = new HopsCharacteristics(alphaAcid, betaAcid) { Hsi = hsi };
-                    yield return new Hops(name, characteristics, notes, origin);
+                    yield return new Hops.Hops(name, characteristics, notes, origin);
                 }
             }
         }
 
-        public static HopsIngredientDataModel CreateHopsIngredient(Hops hopsInfo, int recipeId)
+        public static HopsIngredientDataModel CreateHopsIngredient(Hops.Hops hopsInfo, int recipeId)
         {
             HopsIngredientDataModel hopsIngredient = null;
             using (SQLiteConnection connection = DatabaseUtility.GetNewConnection())
@@ -49,7 +50,7 @@ namespace BeerRecipeCore.Data
             }
         }
 
-        internal static HopsIngredientDataModel CreateHopsIngredient(Hops hopsInfo, int recipeId, SQLiteConnection connection)
+        internal static HopsIngredientDataModel CreateHopsIngredient(Hops.Hops hopsInfo, int recipeId, SQLiteConnection connection)
         {
             using (SQLiteCommand insertCommand = connection.CreateCommand())
             {
@@ -82,7 +83,7 @@ namespace BeerRecipeCore.Data
                     while (reader.Read())
                     {
                         HopsCharacteristics characteristics = new HopsCharacteristics(reader.GetFloat(6), reader.GetFloat(9)) { Hsi = reader.GetFloat(10) };
-                        Hops hopsInfo = new Hops(reader.GetString(5), characteristics, reader.GetString(8), reader.GetString(11));
+                        var hopsInfo = new Hops.Hops(reader.GetString(5), characteristics, reader.GetString(8), reader.GetString(11));
                         string dryHopTimeValue = reader[12].ToString();
                         int? dryHopTime = dryHopTimeValue.IsNullOrEmpty() ? null : (int?) int.Parse(dryHopTimeValue);
                         yield return new HopsIngredientDataModel(hopsInfo, reader.GetInt32(0))

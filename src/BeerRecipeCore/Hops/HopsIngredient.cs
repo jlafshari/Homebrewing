@@ -1,4 +1,4 @@
-﻿namespace BeerRecipeCore
+﻿namespace BeerRecipeCore.Hops
 {
     public class HopsIngredient : IHopsIngredient
     {

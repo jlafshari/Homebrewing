@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using BeerRecipeCore.Fermentables;
 using BeerRecipeCore.Formulas;
+using BeerRecipeCore.Hops;
 using BeerRecipeCore.Styles;
 using MvvmFoundation.Wpf;
 

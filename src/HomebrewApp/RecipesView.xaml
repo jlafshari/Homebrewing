@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:brc="clr-namespace:BeerRecipeCore;assembly=BeerRecipeCore"
+             xmlns:brchops="clr-namespace:BeerRecipeCore.Hops;assembly=BeerRecipeCore"
              xmlns:brcm="clr-namespace:BeerRecipeCore.Data.Models;assembly=BeerRecipeCore.Data"
              xmlns:vw="clr-namespace:HomebrewApp"
              mc:Ignorable="d" GotFocus="UserControl_GotFocus">
@@ -69,12 +70,12 @@
                     </Style>
                     <ObjectDataProvider x:Key="HopsFormValues" MethodName="GetValues" ObjectType="{x:Type sys:Enum}">
                         <ObjectDataProvider.MethodParameters>
-                            <x:Type Type="{x:Type brc:HopsForm}" />
+                            <x:Type Type="{x:Type brchops:HopsForm}" />
                         </ObjectDataProvider.MethodParameters>
                     </ObjectDataProvider>
                     <ObjectDataProvider x:Key="HopsUseValues" MethodName="GetValues" ObjectType="{x:Type sys:Enum}">
                         <ObjectDataProvider.MethodParameters>
-                            <x:Type Type="{x:Type brc:HopsUse}" />
+                            <x:Type Type="{x:Type brchops:HopsUse}" />
                         </ObjectDataProvider.MethodParameters>
                     </ObjectDataProvider>
                 </Grid.Resources>

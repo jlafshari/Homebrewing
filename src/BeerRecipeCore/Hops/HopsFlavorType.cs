@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BeerRecipeCore
+namespace BeerRecipeCore.Hops
 {
     [Flags]
     public enum HopsFlavorType
