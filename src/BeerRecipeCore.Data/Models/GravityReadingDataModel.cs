@@ -7,13 +7,10 @@ namespace BeerRecipeCore.Data.Models
     {
         public GravityReadingDataModel(int gravityReadingId)
         {
-            m_gravityReadingId = gravityReadingId;
+            GravityReadingId = gravityReadingId;
         }
 
-        public int GravityReadingId
-        {
-            get { return m_gravityReadingId; }
-        }
+        public int GravityReadingId { get; }
 
         public double Value
         {
@@ -35,7 +32,6 @@ namespace BeerRecipeCore.Data.Models
             }
         }
 
-        int m_gravityReadingId;
         double m_value;
         DateTime m_date;
     }

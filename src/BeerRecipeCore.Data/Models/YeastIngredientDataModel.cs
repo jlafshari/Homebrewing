@@ -8,13 +8,10 @@ namespace BeerRecipeCore.Data.Models
         public YeastIngredientDataModel(Yeast.Yeast yeastInfo, int yeastIngredientId)
         {
             m_yeastInfo = yeastInfo;
-            m_yeastIngredientId = yeastIngredientId;
+            YeastIngredientId = yeastIngredientId;
         }
 
-        public int YeastIngredientId
-        {
-            get { return m_yeastIngredientId; }
-        }
+        public int YeastIngredientId { get; }
 
         public float Weight
         {
@@ -55,7 +52,6 @@ namespace BeerRecipeCore.Data.Models
             }
         }
 
-        int m_yeastIngredientId;
         float m_weight;
         float m_volume;
         Yeast.Yeast m_yeastInfo;

@@ -6,13 +6,10 @@ namespace BeerRecipeCore.Data.Models
     {
         public SettingsDataModel(int settingsId)
         {
-            m_settingsId = settingsId;
+            SettingsId = settingsId;
         }
 
-        public int SettingsId
-        {
-            get { return m_settingsId; }
-        }
+        public int SettingsId { get; }
 
         public float RecipeSize
         {
@@ -64,7 +61,6 @@ namespace BeerRecipeCore.Data.Models
             }
         }
 
-        int m_settingsId;
         float m_recipeSize;
         int m_boilTime;
         float m_extractionEfficiency;

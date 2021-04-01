@@ -4,62 +4,27 @@
     {
         public HopsIngredient(Hops hopsInfo)
         {
-            m_hopsInfo = hopsInfo;
+            HopsInfo = hopsInfo;
         }
 
         /// <summary>
         /// The amount of hops used, in ounces.
         /// </summary>
-        public float Amount
-        {
-            get { return m_amount; }
-            set { m_amount = value; }
-        }
+        public float Amount { get; set; }
 
         /// <summary>
         /// The amount of time the hops is used, in minutes.
         /// </summary>
-        public int Time
-        {
-            get { return m_time; }
-            set { m_time = value; }
-        }
+        public int Time { get; set; }
 
-        public int? DryHopTime
-        {
-            get { return m_dryHopTime; }
-            set { m_dryHopTime = value; }
-        }
+        public int? DryHopTime { get; set; }
 
-        public HopsFlavorType FlavorType
-        {
-            get { return m_flavorType; }
-            set { m_flavorType = value; }
-        }
+        public HopsFlavorType FlavorType { get; set; }
 
-        public HopsForm Form
-        {
-            get { return m_form; }
-            set { m_form = value; }
-        }
+        public HopsForm Form { get; set; }
 
-        public HopsUse Use
-        {
-            get { return m_use; }
-            set { m_use = value; }
-        }
+        public HopsUse Use { get; set; }
 
-        public Hops HopsInfo
-        {
-            get { return m_hopsInfo; }
-        }
-
-        private float m_amount;
-        private int m_time;
-        private int? m_dryHopTime;
-        private HopsFlavorType m_flavorType;
-        private HopsForm m_form;
-        private HopsUse m_use;
-        private Hops m_hopsInfo;
+        public Hops HopsInfo { get; }
     }
 }

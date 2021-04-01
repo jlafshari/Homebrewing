@@ -13,14 +13,11 @@ namespace BeerRecipeCore.Data.Models
     {
         public BatchDataModel(int batchId)
         {
-            m_batchId = batchId;
+            BatchId = batchId;
             m_recordedGravityReadings.CollectionChanged += Ingredients_CollectionChanged;
         }
 
-        public int BatchId
-        {
-            get { return m_batchId; }
-        }
+        public int BatchId { get; }
 
         public string BrewerName
         {
@@ -131,7 +128,6 @@ namespace BeerRecipeCore.Data.Models
             }
         }
 
-        int m_batchId;
         string m_brewerName;
         string m_assistantBrewerName;
         DateTime m_brewingDate;

@@ -4,21 +4,12 @@
     {
         public StyleClassification(string styleLetter, string styleGuide)
         {
-            m_styleLetter = styleLetter;
-            m_styleGuide = styleGuide;
+            StyleLetter = styleLetter;
+            StyleGuide = styleGuide;
         }
 
-        public string StyleLetter
-        {
-            get { return m_styleLetter; }
-        }
+        public string StyleLetter { get; }
 
-        public string StyleGuide
-        {
-            get { return m_styleGuide; }
-        }
-
-        private string m_styleLetter;
-        private string m_styleGuide;
+        public string StyleGuide { get; }
     }
 }

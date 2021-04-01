@@ -4,21 +4,12 @@
     {
         public IngredientTypeBase(string name, string notes)
         {
-            m_name = name;
-            m_notes = notes;
+            Name = name;
+            Notes = notes;
         }
 
-        public string Name
-        {
-            get { return m_name; }
-        }
+        public string Name { get; }
 
-        public string Notes
-        {
-            get { return m_notes; }
-        }
-
-        private string m_name;
-        private string m_notes;
+        public string Notes { get; }
     }
 }

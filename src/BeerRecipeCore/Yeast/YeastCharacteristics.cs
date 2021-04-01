@@ -6,58 +6,30 @@ namespace BeerRecipeCore.Yeast
     {
         public YeastCharacteristics(string type, string flocculation, string form)
         {
-            m_type = EnumConverter.Parse<YeastType>(type);
-            m_flocculation = EnumConverter.Parse<Flocculation>(flocculation);
-            m_form = EnumConverter.Parse<YeastForm>(form);
+            Type = EnumConverter.Parse<YeastType>(type);
+            Flocculation = EnumConverter.Parse<Flocculation>(flocculation);
+            Form = EnumConverter.Parse<YeastForm>(form);
         }
 
-        public YeastType Type
-        {
-            get { return m_type; }
-        }
+        public YeastType Type { get; }
 
-        public Flocculation Flocculation
-        {
-            get { return m_flocculation; }
-        }
+        public Flocculation Flocculation { get; }
 
-        public YeastForm Form
-        {
-            get { return m_form; }
-        }
+        public YeastForm Form { get; }
 
         /// <summary>
         /// The minimum fermenting temperature, in degrees Celsius.
         /// </summary>
-        public float MinTemperature
-        {
-            get { return m_minTemperature; }
-            set { m_minTemperature = value; }
-        }
+        public float MinTemperature { get; set; }
 
         /// <summary>
         /// The maximum fermenting temperature, in degrees Celsius.
         /// </summary>
-        public float MaxTemperature
-        {
-            get { return m_maxTemperature; }
-            set { m_maxTemperature = value; }
-        }
+        public float MaxTemperature { get; set; }
 
         /// <summary>
         /// The average attenuation percentage.
         /// </summary>
-        public float Attenuation
-        {
-            get { return m_attenuation; }
-            set { m_attenuation = value; }
-        }
-
-        private YeastType m_type;
-        private YeastForm m_form;
-        private float m_minTemperature;
-        private float m_maxTemperature;
-        private Flocculation m_flocculation;
-        private float m_attenuation;
+        public float Attenuation { get; set; }
     }
 }

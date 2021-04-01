@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Utility;
+﻿using Utility;
 
 namespace BeerRecipeCore.Styles
 {
@@ -11,28 +6,15 @@ namespace BeerRecipeCore.Styles
     {
         public StyleCategory(string name, int number, string type)
         {
-            m_name = name;
-            m_number = number;
-            m_type = EnumConverter.Parse<StyleType>(type);
+            Name = name;
+            Number = number;
+            Type = EnumConverter.Parse<StyleType>(type);
         }
 
-        public string Name
-        {
-            get { return m_name; }
-        }
+        public string Name { get; }
 
-        public int Number
-        {
-            get { return m_number; }
-        }
+        public int Number { get; }
 
-        public StyleType Type
-        {
-            get { return m_type; }
-        }
-
-        private string m_name;
-        private int m_number;
-        private StyleType m_type;
+        public StyleType Type { get; }
     }
 }

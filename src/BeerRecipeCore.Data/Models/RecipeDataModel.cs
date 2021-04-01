@@ -15,15 +15,12 @@ namespace BeerRecipeCore.Data.Models
     {
         public RecipeDataModel(int recipeId)
         {
-            m_recipeId = recipeId;
+            RecipeId = recipeId;
             m_fermentableIngredients.CollectionChanged += Ingredients_CollectionChanged;
             m_hopsIngredients.CollectionChanged += Ingredients_CollectionChanged;
         }
 
-        public int RecipeId
-        {
-            get { return m_recipeId; }
-        }
+        public int RecipeId { get; }
 
         public float Size
         {
@@ -170,11 +167,7 @@ namespace BeerRecipeCore.Data.Models
             }
         }
 
-        public float ExtractionEfficiency
-        {
-            get { return m_extractionEfficiency; }
-            set { m_extractionEfficiency = value; }
-        }
+        public float ExtractionEfficiency { get; set; }
 
         public StyleThresholdComparisonDataModel OriginalGravityStyleComparison
         {
@@ -231,7 +224,7 @@ namespace BeerRecipeCore.Data.Models
             if (m_size == 0)
                 return;
 
-            OriginalGravity = AlcoholUtility.GetOriginalGravity(m_fermentableIngredients, m_size, m_extractionEfficiency);
+            OriginalGravity = AlcoholUtility.GetOriginalGravity(m_fermentableIngredients, m_size, ExtractionEfficiency);
             if (OriginalGravityStyleComparison != null)
                 OriginalGravityStyleComparison.Compare(m_originalGravity);
 
@@ -281,7 +274,6 @@ namespace BeerRecipeCore.Data.Models
             ColorStyleComparison = new StyleThresholdComparisonDataModel(thresholds.Single(threshold => threshold.Value == "color"));
         }
 
-        int m_recipeId;
         float m_size;
         int m_boilTime;
         Style m_style;
@@ -296,7 +288,6 @@ namespace BeerRecipeCore.Data.Models
         float m_alcoholByWeight;
         int m_bitterness;
         double m_color;
-        float m_extractionEfficiency;
         StyleThresholdComparisonDataModel m_originalGravityStyleComparison;
         StyleThresholdComparisonDataModel m_finalGravityStyleComparison;
         StyleThresholdComparisonDataModel m_abvStyleComparison;

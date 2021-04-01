@@ -6,35 +6,19 @@ namespace BeerRecipeCore
     {
         public MashProfile(int grainStartingTemperature)
         {
-            m_grainStartingTemperature = grainStartingTemperature;
+            GrainStartingTemperature = grainStartingTemperature;
         }
 
-        public Collection<MashStep> MashSteps
-        {
-            get { return m_mashSteps; }
-            private set { m_mashSteps = value; }
-        }
+        public Collection<MashStep> MashSteps { get; private set; } = new Collection<MashStep>();
 
         /// <summary>
         /// The initial temperature of the grain, in degrees Fahrenheit.
         /// </summary>
-        public int GrainStartingTemperature
-        {
-            get { return m_grainStartingTemperature; }
-            set { m_grainStartingTemperature = value; }
-        }
+        public int GrainStartingTemperature { get; set; }
 
         /// <summary>
         /// The water to grain ratio at the first mash step, in quarts per pound.
         /// </summary>
-        public float WaterToGrainRatio
-        {
-            get { return m_waterToGrainRatio; }
-            set { m_waterToGrainRatio = value; }
-        }
-
-        private Collection<MashStep> m_mashSteps = new Collection<MashStep>();
-        private int m_grainStartingTemperature;
-        private float m_waterToGrainRatio;
+        public float WaterToGrainRatio { get; set; }
     }
 }

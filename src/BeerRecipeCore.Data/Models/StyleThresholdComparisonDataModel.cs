@@ -8,13 +8,10 @@ namespace BeerRecipeCore.Data.Models
     {
         public StyleThresholdComparisonDataModel(StyleThreshold styleThreshold)
         {
-            m_styleThreshold = styleThreshold;
+            StyleThreshold = styleThreshold;
         }
 
-        public StyleThreshold StyleThreshold
-        {
-            get { return m_styleThreshold; }
-        }
+        public StyleThreshold StyleThreshold { get; }
 
         public StyleThresholdStatus Status
         {
@@ -39,15 +36,15 @@ namespace BeerRecipeCore.Data.Models
         public void Compare(float recipeValue)
         {
             const int decimalPlaces = 3;
-            if (recipeValue > m_styleThreshold.Maximum)
+            if (recipeValue > StyleThreshold.Maximum)
             {
                 Status = StyleThresholdStatus.Above;
-                Difference = (float) Math.Round(recipeValue - m_styleThreshold.Maximum, decimalPlaces);
+                Difference = (float) Math.Round(recipeValue - StyleThreshold.Maximum, decimalPlaces);
             }
-            else if (recipeValue < m_styleThreshold.Minimum)
+            else if (recipeValue < StyleThreshold.Minimum)
             {
                 Status = StyleThresholdStatus.Below;
-                Difference = (float) Math.Round(m_styleThreshold.Minimum - recipeValue, decimalPlaces);
+                Difference = (float) Math.Round(StyleThreshold.Minimum - recipeValue, decimalPlaces);
             }
             else
             {
@@ -56,7 +53,6 @@ namespace BeerRecipeCore.Data.Models
             }
         }
 
-        StyleThreshold m_styleThreshold;
         StyleThresholdStatus m_status;
         float m_difference;
     }

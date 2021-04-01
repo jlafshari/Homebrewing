@@ -4,66 +4,33 @@
     {
         public FermentableCharacteristics(float? yield, float color, float? diastaticPower)
         {
-            m_yield = yield;
-            m_color = color;
-            m_diastaticPower = diastaticPower;
-            m_yieldByWeight = null;
+            Yield = yield;
+            Color = color;
+            DiastaticPower = diastaticPower;
+            YieldByWeight = null;
         }
 
         /// <summary>
         /// The percent dry yield if the fermentable is a grain.
         /// </summary>
-        public float? Yield
-        {
-            get { return m_yield; }
-        }
+        public float? Yield { get; }
 
         /// <summary>
         /// The percent raw yield by weight if this is an extract, adjunct, or sugar.
         /// </summary>
-        public float? YieldByWeight
-        {
-            get { return m_yieldByWeight; }
-            set { m_yieldByWeight = value; }
-        }
+        public float? YieldByWeight { get; set; }
 
-        public double Color
-        {
-            get { return m_color; }
-        }
+        public double Color { get; }
 
         /// <summary>
         /// The diastatic power in Lintner degree units. If the FermentableType is not a grain or adjunct, then this value is null.
         /// </summary>
-        public float? DiastaticPower
-        {
-            get { return m_diastaticPower; }
-        }
+        public float? DiastaticPower { get; }
 
-        public FermentableType Type
-        {
-            get { return m_type; }
-            set { m_type = value; }
-        }
+        public FermentableType Type { get; set; }
 
-        public MaltCategory? MaltCategory
-        {
-            get { return m_maltCategory; }
-            set { m_maltCategory = value; }
-        }
+        public MaltCategory? MaltCategory { get; set; }
 
-        public int GravityPoint
-        {
-            get { return m_gravityPoint; }
-            set { m_gravityPoint = value; }
-        }
-
-        private float? m_yield;
-        private float? m_yieldByWeight;
-        private double m_color;
-        private float? m_diastaticPower;
-        private FermentableType m_type;
-        private MaltCategory? m_maltCategory;
-        private int m_gravityPoint;
+        public int GravityPoint { get; set; }
     }
 }

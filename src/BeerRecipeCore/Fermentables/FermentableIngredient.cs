@@ -4,24 +4,14 @@
     {
         public FermentableIngredient(Fermentable fermentableInfo)
         {
-            m_fermentableInfo = fermentableInfo;
+            FermentableInfo = fermentableInfo;
         }
 
         /// <summary>
         /// The amount of fermentable used, in pounds.
         /// </summary>
-        public float Amount
-        {
-            get { return m_amount; }
-            set { m_amount = value; }
-        }
+        public float Amount { get; set; }
 
-        public Fermentable FermentableInfo
-        {
-            get { return m_fermentableInfo; }
-        }
-
-        private float m_amount;
-        private Fermentable m_fermentableInfo;
+        public Fermentable FermentableInfo { get; }
     }
 }

@@ -7,14 +7,11 @@ namespace BeerRecipeCore.Data.Models
     {
         public HopsIngredientDataModel(Hops.Hops hopsInfo, int hopsId)
         {
-            m_hopsInfo = hopsInfo;
-            m_hopsId = hopsId;
+            HopsInfo = hopsInfo;
+            HopsId = hopsId;
         }
 
-        public int HopsId
-        {
-            get { return m_hopsId; }
-        }
+        public int HopsId { get; }
 
         public float Amount
         {
@@ -94,18 +91,13 @@ namespace BeerRecipeCore.Data.Models
             }
         }
 
-        public Hops.Hops HopsInfo
-        {
-            get { return m_hopsInfo; }
-        }
+        public Hops.Hops HopsInfo { get; }
 
-        int m_hopsId;
         float m_amount;
         int m_time;
         int? m_dryHopTime;
         HopsFlavorType m_flavorType;
         HopsForm m_form;
         HopsUse m_use;
-        Hops.Hops m_hopsInfo;
     }
 }

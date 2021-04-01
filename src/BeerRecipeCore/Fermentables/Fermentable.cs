@@ -5,21 +5,12 @@
         public Fermentable(string name, FermentableCharacteristics characteristics, string notes, string origin)
             : base(name, notes)
         {
-            m_characteristics = characteristics;
-            m_origin = origin;
+            Characteristics = characteristics;
+            Origin = origin;
         }
 
-        public FermentableCharacteristics Characteristics
-        {
-            get { return m_characteristics; }
-        }
+        public FermentableCharacteristics Characteristics { get; }
 
-        public string Origin
-        {
-            get { return m_origin; }
-        }
-
-        private string m_origin = "";
-        private FermentableCharacteristics m_characteristics;
+        public string Origin { get; } = "";
     }
 }
