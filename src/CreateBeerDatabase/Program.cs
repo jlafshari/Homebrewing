@@ -15,43 +15,39 @@ namespace CreateBeerDatabase
     {
         static void Main(string[] args)
         {
-            using (SQLiteConnection connection = new SQLiteConnection(c_connectionString))
+            using var connection = new SQLiteConnection(c_connectionString);
+            connection.Open();
+            using var transaction = connection.BeginTransaction();
+            // run create table commands
+            foreach (string tableCommandString in s_createTableCommands)
             {
-                connection.Open();
-                using (SQLiteTransaction transaction = connection.BeginTransaction())
-                {
-                    // run create table commands
-                    foreach (string tableCommandString in s_createTableCommands)
-                    {
-                        DbCommand createTablecommand = connection.CreateCommand();
-                        createTablecommand.CommandText = tableCommandString;
-                        createTablecommand.ExecuteNonQuery();
-                    }
-
-                    // add generic beer data to database
-                    AddHopsData(connection);
-                    AddFermentableData(connection);
-                    AddYeastData(connection);
-                    AddStylesData(connection);
-                    AddDefaultSettings(connection);
-                    transaction.Commit();
-                }
-                connection.Close();
+                DbCommand createTablecommand = connection.CreateCommand();
+                createTablecommand.CommandText = tableCommandString;
+                createTablecommand.ExecuteNonQuery();
             }
+
+            // add generic beer data to database
+            AddHopsData(connection);
+            AddFermentableData(connection);
+            AddYeastData(connection);
+            AddStylesData(connection);
+            AddDefaultSettings(connection);
+            transaction.Commit();
+            connection.Close();
         }
 
         private static void AddFermentableData(SQLiteConnection connection)
         {
-            XDocument fermentables = XDocument.Load(Path.Combine(c_beerDataLocation, @"grain.xml"));
-            List<XElement> fermentableEntries = fermentables.Descendants("FERMENTABLE").ToList();
+            var fermentables = XDocument.Load(Path.Combine(c_beerDataLocation, @"grain.xml"));
+            var fermentableEntries = fermentables.Descendants("FERMENTABLE").ToList();
             foreach (XElement fermentableEntry in fermentableEntries)
             {
                 var fermentableInfo = BeerXmlImportUtility.GetFermentable(fermentableEntry);
-                XElement maltCategoryElement = fermentableEntry.Element("malt-category");
+                var maltCategoryElement = fermentableEntry.Element("malt-category");
                 if (maltCategoryElement != null)
                     fermentableInfo.Characteristics.MaltCategory = (MaltCategory?) EnumConverter.Parse<MaltCategory>(maltCategoryElement.Value);
 
-                SQLiteCommand insertCommand = connection.CreateCommand();
+                var insertCommand = connection.CreateCommand();
                 insertCommand.CommandText = "INSERT INTO Fermentables (name, yield, yieldByWeight, color, origin, notes, diastaticPower, type, maltCategory, gravityPoint)"
                     + "VALUES (@name, @yield, @yieldByWeight, @color, @origin, @notes, @diastaticPower, @type, @maltCategory, @gravityPoint)";
                 insertCommand.Parameters.AddWithValue("name", fermentableInfo.Name);
@@ -71,12 +67,12 @@ namespace CreateBeerDatabase
         private static void AddHopsData(SQLiteConnection connection)
         {
             XDocument hops = XDocument.Load(Path.Combine(c_beerDataLocation, @"hops.xml"));
-            List<XElement> hopEntries = hops.Descendants("HOP").ToList();
+            var hopEntries = hops.Descendants("HOP").ToList();
             foreach (XElement hopEntry in hopEntries)
             {
                 var hopsInfo = BeerXmlImportUtility.GetHops(hopEntry);
 
-                SQLiteCommand insertCommand = connection.CreateCommand();
+                var insertCommand = connection.CreateCommand();
                 insertCommand.CommandText = "INSERT INTO Hops (name, alpha, notes, beta, hsi, origin)"
                     + "VALUES (@name, @alpha, @notes, @beta, @hsi, @origin)";
                 insertCommand.Parameters.AddWithValue("name", hopsInfo.Name);
@@ -92,12 +88,12 @@ namespace CreateBeerDatabase
         private static void AddYeastData(SQLiteConnection connection)
         {
             XDocument yeasts = XDocument.Load(Path.Combine(c_beerDataLocation, @"yeast.xml"));
-            List<XElement> yeastEntries = yeasts.Descendants("YEAST").ToList();
+            var yeastEntries = yeasts.Descendants("YEAST").ToList();
             foreach (XElement yeastEntry in yeastEntries)
             {
                 var yeastInfo = BeerXmlImportUtility.GetYeast(yeastEntry);
 
-                SQLiteCommand insertCommand = connection.CreateCommand();
+                var insertCommand = connection.CreateCommand();
                 insertCommand.CommandText = "INSERT INTO Yeasts (name, type, form, laboratory, productId, minTemperature, maxTemperature, flocculation, attenuation, notes)"
                     + "VALUES (@name, @type, @form, @laboratory, @productId, @minTemperature, @maxTemperature, @flocculation, @attenuation, @notes)";
                 insertCommand.Parameters.AddWithValue("name", yeastInfo.Name);
@@ -117,9 +113,9 @@ namespace CreateBeerDatabase
         private static void AddStylesData(SQLiteConnection connection)
         {
             XDocument styles = XDocument.Load(Path.Combine(c_beerDataLocation, "style.xml"));
-            List<XElement> styleEntries = styles.Descendants("STYLE").ToList();
-            List<StyleCategory> categoriesAdded = new List<StyleCategory>();
-            List<StyleClassification> classificationsAdded = new List<StyleClassification>();
+            var styleEntries = styles.Descendants("STYLE").ToList();
+            var categoriesAdded = new List<StyleCategory>();
+            var classificationsAdded = new List<StyleClassification>();
             foreach (XElement styleEntry in styleEntries)
             {
                 var styleInfo = BeerXmlImportUtility.GetStyle(styleEntry);
@@ -130,7 +126,7 @@ namespace CreateBeerDatabase
                     categoriesAdded.Add(category);
 
                     // insert into StyleCategories table
-                    SQLiteCommand categoryInsertCommand = connection.CreateCommand();
+                    var categoryInsertCommand = connection.CreateCommand();
                     categoryInsertCommand.CommandText = "INSERT INTO StyleCategories (name, number, type) VALUES(@name, @number, @type)";
                     categoryInsertCommand.Parameters.AddWithValue("name", category.Name);
                     categoryInsertCommand.Parameters.AddWithValue("number", category.Number);
@@ -138,13 +134,13 @@ namespace CreateBeerDatabase
                     categoryInsertCommand.ExecuteNonQuery();
                 }
 
-                StyleClassification classification = styleInfo.Classification;
+                var classification = styleInfo.Classification;
                 if (!classificationsAdded.Any(cls => cls.StyleGuide == classification.StyleGuide && cls.StyleLetter == classification.StyleLetter))
                 {
                     classificationsAdded.Add(classification);
 
                     // insert into StyleClassifications table
-                    SQLiteCommand classificationInsertCommand = connection.CreateCommand();
+                    using var classificationInsertCommand = connection.CreateCommand();
                     classificationInsertCommand.CommandText = "INSERT INTO StyleClassifications (letter, guide) VALUES(@letter, @guide)";
                     classificationInsertCommand.Parameters.AddWithValue("letter", classification.StyleLetter);
                     classificationInsertCommand.Parameters.AddWithValue("guide", classification.StyleGuide);
@@ -152,7 +148,7 @@ namespace CreateBeerDatabase
                 }
 
                 // insert into Styles table
-                SQLiteCommand styleInsertCommand = connection.CreateCommand();
+                using var styleInsertCommand = connection.CreateCommand();
                 styleInsertCommand.CommandText = "INSERT INTO Styles (name, category, classification, notes, profile, ingredients, examples)"
                     + " VALUES(@name, (SELECT id FROM StyleCategories WHERE name = @categoryName), "
                     + "(SELECT id FROM StyleClassifications WHERE letter = @styleLetter AND guide = @styleGuide), @notes, @profile, @ingredients, @examples)";
@@ -167,9 +163,9 @@ namespace CreateBeerDatabase
                 styleInsertCommand.ExecuteNonQuery();
 
                 // style thresholds
-                foreach (StyleThreshold threshold in styleInfo.Thresholds)
+                foreach (var threshold in styleInfo.Thresholds)
                 {
-                    SQLiteCommand thresholdInsertCommand = connection.CreateCommand();
+                    using var thresholdInsertCommand = connection.CreateCommand();
                     thresholdInsertCommand.CommandText = "INSERT INTO StyleThresholds (value, minimum, maximum) VALUES(@value, @minimum, @maximum)";
                     thresholdInsertCommand.Parameters.AddWithValue("value", threshold.Value);
                     thresholdInsertCommand.Parameters.AddWithValue("minimum", threshold.Minimum);
@@ -177,7 +173,7 @@ namespace CreateBeerDatabase
                     thresholdInsertCommand.ExecuteNonQuery();
 
                     // insert into junction table
-                    SQLiteCommand thresholdJunctionInsertCommand = connection.CreateCommand();
+                    using var thresholdJunctionInsertCommand = connection.CreateCommand();
                     thresholdJunctionInsertCommand.CommandText = "INSERT INTO ThresholdsInStyle (threshold, style) VALUES("
                         + "(SELECT id FROM StyleThresholds WHERE value = @thresholdValue AND minimum = @minimum AND maximum = @maximum),"
                         + "(SELECT id FROM Styles WHERE name = @name))";
@@ -192,16 +188,14 @@ namespace CreateBeerDatabase
 
         private static void AddDefaultSettings(SQLiteConnection connection)
         {
-            using (SQLiteCommand insertCommand = connection.CreateCommand())
-            {
-                insertCommand.CommandText = "INSERT INTO Settings (recipeSize, boilTime, extractionEfficiency, yeastWeight, hopsAmount) VALUES (@recipeSize, @boilTime, @extractionEfficiency, @yeastWeight, @hopsAmount)";
-                insertCommand.Parameters.AddWithValue("recipeSize", RecipeDefaultSettings.Size);
-                insertCommand.Parameters.AddWithValue("boilTime", RecipeDefaultSettings.BoilTime);
-                insertCommand.Parameters.AddWithValue("extractionEfficiency", RecipeDefaultSettings.ExtractionEfficiency);
-                insertCommand.Parameters.AddWithValue("yeastWeight", RecipeDefaultSettings.YeastWeight);
-                insertCommand.Parameters.AddWithValue("hopsAmount", RecipeDefaultSettings.HopsAmount);
-                insertCommand.ExecuteNonQuery();
-            }
+            using var insertCommand = connection.CreateCommand();
+            insertCommand.CommandText = "INSERT INTO Settings (recipeSize, boilTime, extractionEfficiency, yeastWeight, hopsAmount) VALUES (@recipeSize, @boilTime, @extractionEfficiency, @yeastWeight, @hopsAmount)";
+            insertCommand.Parameters.AddWithValue("recipeSize", RecipeDefaultSettings.Size);
+            insertCommand.Parameters.AddWithValue("boilTime", RecipeDefaultSettings.BoilTime);
+            insertCommand.Parameters.AddWithValue("extractionEfficiency", RecipeDefaultSettings.ExtractionEfficiency);
+            insertCommand.Parameters.AddWithValue("yeastWeight", RecipeDefaultSettings.YeastWeight);
+            insertCommand.Parameters.AddWithValue("hopsAmount", RecipeDefaultSettings.HopsAmount);
+            insertCommand.ExecuteNonQuery();
         }
 
         const string c_beerDataLocation = @"C:\Beer data test";

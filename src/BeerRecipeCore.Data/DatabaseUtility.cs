@@ -7,16 +7,14 @@ namespace BeerRecipeCore.Data
     {
         internal static int GetLastInsertedRowId(SQLiteConnection connection)
         {
-            using (SQLiteCommand getRowIdCommand = connection.CreateCommand())
-            {
-                getRowIdCommand.CommandText = "SELECT last_insert_rowid()";
-                return Convert.ToInt32(getRowIdCommand.ExecuteScalar());
-            }
+            using SQLiteCommand getRowIdCommand = connection.CreateCommand();
+            getRowIdCommand.CommandText = "SELECT last_insert_rowid()";
+            return Convert.ToInt32(getRowIdCommand.ExecuteScalar());
         }
 
         internal static SQLiteConnection GetNewConnection()
         {
-            SQLiteConnection connection = new SQLiteConnection(DatabaseConnectionString);
+            var connection = new SQLiteConnection(DatabaseConnectionString);
             connection.Open();
             return connection;
         }
