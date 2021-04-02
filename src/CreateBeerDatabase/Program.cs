@@ -204,7 +204,7 @@ namespace CreateBeerDatabase
             }
         }
 
-        const string c_beerDataLocation = @"C:\Beer data";
+        const string c_beerDataLocation = @"C:\Beer data test";
         const string c_connectionString = @"Data Source=" + c_beerDataLocation + @"\Beer.db";
         static readonly string[] s_createTableCommands = new string[]
         {
