@@ -1,14 +1,13 @@
 ﻿using System.Collections.Generic;
 using BeerRecipeCore.Formulas;
 using BeerRecipeCore.Hops;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace BeerRecipeCore.Tests
 {
-    [TestClass]
     public class BitternessUtilityTests
     {
-        [TestMethod]
+        [Fact]
         public void GetBitternessTest()
         {
             var fuggles = new Hops.Hops("Fuggles", new HopsCharacteristics(4.50f, 2.00f), "Test Notes", "UK");
@@ -19,7 +18,7 @@ namespace BeerRecipeCore.Tests
 
             List<HopsIngredient> hopsUsed = new List<HopsIngredient>() { fugglesInRecipe, goldingsInRecipe };
             int bitterness = BitternessUtility.GetBitterness(hopsUsed, 5f, 1.054f);
-            Assert.AreEqual(23, bitterness);
+            Assert.Equal(23, bitterness);
         }
     }
 }

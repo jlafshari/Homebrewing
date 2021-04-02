@@ -1,23 +1,22 @@
 ﻿using BeerRecipeCore.Formulas;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace BeerRecipeCore.Tests
 {
-    [TestClass]
     public class MashUtilityTests
     {
-        [TestMethod]
+        [Fact]
         public void GetInitialStrikeTemperatureTest()
         {
             int actualStrikeTemperature = MashUtility.GetInitialStrikeTemperature(1f, 70, 104);
-            Assert.AreEqual(111, actualStrikeTemperature);
+            Assert.Equal(111, actualStrikeTemperature);
         }
 
-        [TestMethod]
+        [Fact]
         public void GetMashStepWaterAmountTest()
         {
             float actualMashStepWaterAmount = MashUtility.GetMashStepWaterAmount(104, 140, 8, 8, 210);
-            Assert.AreEqual(4.9f, actualMashStepWaterAmount);
+            Assert.Equal(4.9f, actualMashStepWaterAmount);
         }
     }
 }
