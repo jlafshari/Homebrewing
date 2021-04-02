@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using BeerRecipeCore.Fermentables;
 using BeerRecipeCore.Formulas;
+using Moq;
 using Xunit;
 
 namespace BeerRecipeCore.Tests
@@ -26,14 +27,22 @@ namespace BeerRecipeCore.Tests
         [Fact]
         public void GetSpecificAndFinalGravityTest()
         {
-            Fermentable crystal60 = new Fermentable("Caramel/Crystal Malt - 60L", new FermentableCharacteristics(74, 60, 0) { Type = FermentableType.Grain, GravityPoint = 34 }, "Test Notes", "US");
-            FermentableIngredient crystal60InRecipe = new FermentableIngredient(crystal60) { Amount = 0.50f };
-            Fermentable chocolateMalt = new Fermentable("Chocolate Malt", new FermentableCharacteristics(60, 350, 0) { Type = FermentableType.Grain, GravityPoint = 28 }, "Test Notes", "US");
-            FermentableIngredient chocolateMaltInRecipe = new FermentableIngredient(chocolateMalt) { Amount = 1 };
-            Fermentable marisOtter = new Fermentable("Pale Malt, Maris Otter", new FermentableCharacteristics(82.5f, 3, 120) { Type = FermentableType.Grain, GravityPoint = 38 }, "Test Notes", "US");
-            FermentableIngredient marisOtterInRecipe = new FermentableIngredient(marisOtter) { Amount = 8 };
+            var crystal60InRecipe = new Mock<IFermentableIngredient>();
+            crystal60InRecipe.Setup(f => f.Amount).Returns(0.50f);
+            crystal60InRecipe.Setup(f => f.FermentableInfo).Returns(new Fermentable("Caramel/Crystal Malt - 60L",
+                new FermentableCharacteristics(74, 60, 0) { Type = FermentableType.Grain, GravityPoint = 34 }, "Test Notes", "US"));
 
-            List<FermentableIngredient> fermentablesInRecipe = new List<FermentableIngredient>() { crystal60InRecipe, chocolateMaltInRecipe, marisOtterInRecipe };
+            var chocolateMaltInRecipe = new Mock<IFermentableIngredient>();
+            chocolateMaltInRecipe.Setup(f => f.Amount).Returns(1);
+            chocolateMaltInRecipe.Setup(f => f.FermentableInfo).Returns(new Fermentable("Chocolate Malt",
+                new FermentableCharacteristics(60, 350, 0) { Type = FermentableType.Grain, GravityPoint = 28 }, "Test Notes", "US"));
+
+            var marisOtterInRecipe = new Mock<IFermentableIngredient>();
+            marisOtterInRecipe.Setup(f => f.Amount).Returns(8);
+            marisOtterInRecipe.Setup(f => f.FermentableInfo).Returns(new Fermentable("Pale Malt, Maris Otter",
+                new FermentableCharacteristics(82.5f, 3, 120) { Type = FermentableType.Grain, GravityPoint = 38 }, "Test Notes", "US"));
+
+            var fermentablesInRecipe = new List<IFermentableIngredient>() { crystal60InRecipe.Object, chocolateMaltInRecipe.Object, marisOtterInRecipe.Object };
             float actualSpecificGravity = AlcoholUtility.GetOriginalGravity(fermentablesInRecipe, 5, 70);
             Assert.Equal(1.049f, actualSpecificGravity);
             float actualFinalGravity = AlcoholUtility.GetFinalGravity(actualSpecificGravity, 75);

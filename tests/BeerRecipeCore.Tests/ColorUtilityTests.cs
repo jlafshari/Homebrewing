@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using BeerRecipeCore.Fermentables;
 using BeerRecipeCore.Formulas;
+using Moq;
 using Xunit;
 
 namespace BeerRecipeCore.Tests
@@ -10,16 +11,20 @@ namespace BeerRecipeCore.Tests
         [Fact]
         public void GetColorInSrmTest()
         {
-            Fermentable crystal60 = new Fermentable("Caramel/Crystal Malt - 60L", new FermentableCharacteristics(74, 60, 0) { Type = FermentableType.Grain }, "Test Notes", "US");
-            FermentableIngredient crystal60InRecipe = new FermentableIngredient(crystal60) { Amount = 0.50f };
+            var crystal60InRecipe = new Mock<IFermentableIngredient>();
+            crystal60InRecipe.Setup(f => f.Amount).Returns(0.50f);
+            crystal60InRecipe.Setup(f => f.FermentableInfo).Returns(new Fermentable("Caramel/Crystal Malt - 60L",
+                new FermentableCharacteristics(74, 60, 0) { Type = FermentableType.Grain }, "Test Notes", "US"));
 
-            double crystal60Color = ColorUtility.GetColorInSrm(new[] { crystal60InRecipe }, 5);
+            double crystal60Color = ColorUtility.GetColorInSrm(new[] { crystal60InRecipe.Object }, 5);
             Assert.Equal(5.1, crystal60Color);
 
-            Fermentable marisOtter = new Fermentable("Pale Malt, Maris Otter", new FermentableCharacteristics(82.5f, 3, 120) { Type = FermentableType.Grain }, "Test Notes", "US");
-            FermentableIngredient marisOtterInRecipe = new FermentableIngredient(marisOtter) { Amount = 8 };
+            var marisOtterInRecipe = new Mock<IFermentableIngredient>();
+            marisOtterInRecipe.Setup(f => f.Amount).Returns(8);
+            marisOtterInRecipe.Setup(f => f.FermentableInfo).Returns(new Fermentable("Pale Malt, Maris Otter",
+                new FermentableCharacteristics(82.5f, 3, 120) { Type = FermentableType.Grain }, "Test Notes", "US"));
 
-            List<FermentableIngredient> fermentablesUsed = new List<FermentableIngredient>() { marisOtterInRecipe, crystal60InRecipe };
+            var fermentablesUsed = new List<IFermentableIngredient>() { marisOtterInRecipe.Object, crystal60InRecipe.Object };
             double colorInSrm = ColorUtility.GetColorInSrm(fermentablesUsed, 5);
             Assert.Equal(7.6, colorInSrm);
         }
