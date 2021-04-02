@@ -23,7 +23,7 @@ namespace BeerRecipeCore.Data
                     float hsi = reader.GetFloat(4);
                     string origin = reader.GetString(5);
 
-                    HopsCharacteristics characteristics = new HopsCharacteristics(alphaAcid, betaAcid) { Hsi = hsi };
+                    var characteristics = new HopsCharacteristics(alphaAcid, betaAcid, hsi);
                     yield return new Hops.Hops(name, characteristics, notes, origin);
                 }
             }
@@ -81,7 +81,7 @@ namespace BeerRecipeCore.Data
                 {
                     while (reader.Read())
                     {
-                        HopsCharacteristics characteristics = new HopsCharacteristics(reader.GetFloat(6), reader.GetFloat(9)) { Hsi = reader.GetFloat(10) };
+                        HopsCharacteristics characteristics = new HopsCharacteristics(reader.GetFloat(6), reader.GetFloat(9), reader.GetFloat(10));
                         var hopsInfo = new Hops.Hops(reader.GetString(5), characteristics, reader.GetString(8), reader.GetString(11));
                         string dryHopTimeValue = reader[12].ToString();
                         int? dryHopTime = dryHopTimeValue.IsNullOrEmpty() ? null : (int?) int.Parse(dryHopTimeValue);

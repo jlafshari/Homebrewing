@@ -1,16 +1,5 @@
 ﻿namespace BeerRecipeCore.Hops
 {
-    public class Hops : IngredientTypeBase
-    {
-        public Hops(string name, HopsCharacteristics characteristics, string notes, string origin)
-            : base(name, notes)
-        {
-            Characteristics = characteristics;
-            Origin = origin;
-        }
-
-        public HopsCharacteristics Characteristics { get; }
-
-        public string Origin { get; } = "";
-    }
+    public record Hops(string Name, HopsCharacteristics Characteristics, string Notes, string Origin)
+        : IngredientTypeBase(Name, Notes);
 }

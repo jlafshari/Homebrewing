@@ -3,6 +3,7 @@ using System.Data.SQLite;
 using System.Linq;
 using BeerRecipeCore.Data.Models;
 using BeerRecipeCore.Styles;
+using Utility;
 
 namespace BeerRecipeCore.Data
 {
@@ -34,13 +35,13 @@ namespace BeerRecipeCore.Data
                 {
                     while (reader.Read())
                     {
-                        StyleCategory category = new StyleCategory(reader.GetString(5), reader.GetInt32(6), reader.GetString(7));
+                        var category = new StyleCategory(reader.GetString(5), reader.GetInt32(6), EnumConverter.Parse<StyleType>(reader.GetString(7)));
                         StyleClassification classification = new StyleClassification(reader.GetString(8), reader.GetString(9));
 
                         string styleName = reader.GetString(0);
                         List<StyleThreshold> thresholds = GetStyleThresholds(styleName, connection).ToList();
 
-                        yield return new Style(styleName, category, classification, thresholds)
+                        yield return new Style(styleName, category, classification, thresholds.AsReadOnly())
                         {
                             Notes = reader.GetString(1),
                             Profile = reader.GetString(2),

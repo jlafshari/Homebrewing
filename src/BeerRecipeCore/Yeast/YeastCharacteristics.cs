@@ -20,16 +20,16 @@ namespace BeerRecipeCore.Yeast
         /// <summary>
         /// The minimum fermenting temperature, in degrees Celsius.
         /// </summary>
-        public float MinTemperature { get; set; }
+        public float MinTemperature { get; init; }
 
         /// <summary>
         /// The maximum fermenting temperature, in degrees Celsius.
         /// </summary>
-        public float MaxTemperature { get; set; }
+        public float MaxTemperature { get; init; }
 
         /// <summary>
         /// The average attenuation percentage.
         /// </summary>
-        public float Attenuation { get; set; }
+        public float Attenuation { get; init; }
     }
 }

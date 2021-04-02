@@ -12,7 +12,6 @@ namespace BeerRecipeCore
             AssistantBrewerName = null;
             OriginalGravity = null;
             FinalGravity = null;
-            RecordedGravityReadings = new ObservableCollection<IGravityReading>();
         }
 
         public string BrewerName { get; set; }
@@ -27,6 +26,6 @@ namespace BeerRecipeCore
 
         public IGravityReading FinalGravity { get; set; }
 
-        public ObservableCollection<IGravityReading> RecordedGravityReadings { get; private set; }
+        public ObservableCollection<IGravityReading> RecordedGravityReadings { get; } = new ObservableCollection<IGravityReading>();
     }
 }

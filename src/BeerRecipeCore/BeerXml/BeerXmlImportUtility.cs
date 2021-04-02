@@ -20,7 +20,7 @@ namespace BeerRecipeCore.BeerXml
             float betaAcid = (float) Convert.ToDouble(hopsEntry.Element("BETA").Value);
             string notes = GetNotesFromRecord(hopsEntry);
             float hsi = (float) Convert.ToDouble(hopsEntry.Element("HSI").Value);
-            HopsCharacteristics hopsCharacteristics = new HopsCharacteristics(alphaAcid, betaAcid) { Hsi = hsi };
+            var hopsCharacteristics = new HopsCharacteristics(alphaAcid, betaAcid, hsi);
             return new Hops.Hops(name, hopsCharacteristics, notes, origin);
         }
 
@@ -75,14 +75,14 @@ namespace BeerRecipeCore.BeerXml
 
             string categoryName = styleEntry.Element("CATEGORY").Value;
             int categoryNumber = Convert.ToInt32(styleEntry.Element("CATEGORY_NUMBER").Value);
-            string type = styleEntry.Element("TYPE").Value;
-            StyleCategory category = new StyleCategory(categoryName, categoryNumber, type);
+            var type = EnumConverter.Parse<StyleType>(styleEntry.Element("TYPE").Value);
+            var category = new StyleCategory(categoryName, categoryNumber, type);
             
             string styleLetter = styleEntry.Element("STYLE_LETTER").Value;
             string styleGuide = styleEntry.Element("STYLE_GUIDE").Value;
             StyleClassification classification = new StyleClassification(styleLetter, styleGuide);
 
-            return new Style(name, category, classification, thresholds)
+            return new Style(name, category, classification, thresholds.AsReadOnly())
             {
                 Notes = GetNotesFromRecord(styleEntry),
                 Profile = styleEntry.Element("PROFILE").Value,

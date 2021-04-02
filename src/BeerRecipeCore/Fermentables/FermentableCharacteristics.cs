@@ -18,7 +18,7 @@
         /// <summary>
         /// The percent raw yield by weight if this is an extract, adjunct, or sugar.
         /// </summary>
-        public float? YieldByWeight { get; set; }
+        public float? YieldByWeight { get; init; }
 
         public double Color { get; }
 
@@ -27,10 +27,10 @@
         /// </summary>
         public float? DiastaticPower { get; }
 
-        public FermentableType Type { get; set; }
+        public FermentableType Type { get; init; }
 
         public MaltCategory? MaltCategory { get; set; }
 
-        public int GravityPoint { get; set; }
+        public int GravityPoint { get; init; }
     }
 }
