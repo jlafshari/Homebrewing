@@ -5,6 +5,7 @@ using System.Linq;
 using BeerRecipeCore.Fermentables;
 using BeerRecipeCore.Formulas;
 using BeerRecipeCore.Hops;
+using BeerRecipeCore.Mash;
 using BeerRecipeCore.Styles;
 using BeerRecipeCore.Yeast;
 using MvvmFoundation.Wpf;

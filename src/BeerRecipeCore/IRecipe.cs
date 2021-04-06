@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using BeerRecipeCore.Fermentables;
 using BeerRecipeCore.Hops;
+using BeerRecipeCore.Mash;
 using BeerRecipeCore.Styles;
 using BeerRecipeCore.Yeast;
 

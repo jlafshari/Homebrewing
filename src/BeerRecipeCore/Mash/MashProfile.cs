@@ -1,6 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 
-namespace BeerRecipeCore
+namespace BeerRecipeCore.Mash
 {
     public class MashProfile
     {
