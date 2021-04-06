@@ -29,7 +29,7 @@ namespace BeerRecipeCore.Data.Models
             {
                 m_size = value;
                 UpdateRecipeOutcome();
-                RaisePropertyChanged("Size");
+                RaisePropertyChanged(nameof(Size));
             }
         }
 
@@ -40,7 +40,7 @@ namespace BeerRecipeCore.Data.Models
             {
                 m_boilTime = value;
                 UpdateRecipeOutcome();
-                RaisePropertyChanged("BoilTime");
+                RaisePropertyChanged(nameof(BoilTime));
             }
         }
 
@@ -52,7 +52,7 @@ namespace BeerRecipeCore.Data.Models
                 m_style = value;
                 GetNewThresholdComparers();
                 UpdateRecipeOutcome();
-                RaisePropertyChanged("Style");
+                RaisePropertyChanged(nameof(Style));
             }
         }
 
@@ -62,7 +62,7 @@ namespace BeerRecipeCore.Data.Models
             private set
             {
                 m_hopsIngredients = value;
-                RaisePropertyChanged("HopsIngredients");
+                RaisePropertyChanged(nameof(HopsIngredients));
             }
         }
 
@@ -72,7 +72,7 @@ namespace BeerRecipeCore.Data.Models
             private set
             {
                 m_fermentableIngredients = value;
-                RaisePropertyChanged("FermentableIngredients");
+                RaisePropertyChanged(nameof(FermentableIngredients));
             }
         }
 
@@ -83,7 +83,7 @@ namespace BeerRecipeCore.Data.Models
             {
                 m_yeastIngredient = value;
                 UpdateRecipeOutcome();
-                RaisePropertyChanged("YeastIngredient");
+                RaisePropertyChanged(nameof(YeastIngredient));
             }
         }
 
@@ -93,7 +93,7 @@ namespace BeerRecipeCore.Data.Models
             set
             {
                 m_mashProfile = value;
-                RaisePropertyChanged("MashProfile");
+                RaisePropertyChanged(nameof(MashProfile));
             }
         }
 
@@ -103,7 +103,7 @@ namespace BeerRecipeCore.Data.Models
             set
             {
                 m_name = value;
-                RaisePropertyChanged("Name");
+                RaisePropertyChanged(nameof(Name));
             }
         }
 
@@ -113,7 +113,7 @@ namespace BeerRecipeCore.Data.Models
             private set
             {
                 m_originalGravity = value;
-                RaisePropertyChanged("OriginalGravity");
+                RaisePropertyChanged(nameof(OriginalGravity));
             }
         }
 
@@ -123,7 +123,7 @@ namespace BeerRecipeCore.Data.Models
             private set
             {
                 m_finalGravity = value;
-                RaisePropertyChanged("FinalGravity");
+                RaisePropertyChanged(nameof(FinalGravity));
             }
         }
 
@@ -133,7 +133,7 @@ namespace BeerRecipeCore.Data.Models
             private set
             {
                 m_alcoholByVolume = value;
-                RaisePropertyChanged("AlcoholByVolume");
+                RaisePropertyChanged(nameof(AlcoholByVolume));
             }
         }
 
@@ -143,7 +143,7 @@ namespace BeerRecipeCore.Data.Models
             private set
             {
                 m_alcoholByWeight = value;
-                RaisePropertyChanged("AlcoholByWeight");
+                RaisePropertyChanged(nameof(AlcoholByWeight));
             }
         }
 
@@ -153,7 +153,7 @@ namespace BeerRecipeCore.Data.Models
             private set
             {
                 m_bitterness = value;
-                RaisePropertyChanged("Bitterness");
+                RaisePropertyChanged(nameof(Bitterness));
             }
         }
 
@@ -163,7 +163,7 @@ namespace BeerRecipeCore.Data.Models
             set
             {
                 m_color = value;
-                RaisePropertyChanged("Color");
+                RaisePropertyChanged(nameof(Color));
             }
         }
 
@@ -175,7 +175,7 @@ namespace BeerRecipeCore.Data.Models
             set
             {
                 m_originalGravityStyleComparison = value;
-                RaisePropertyChanged("OriginalGravityStyleComparison");
+                RaisePropertyChanged(nameof(OriginalGravityStyleComparison));
             }
         }
 
@@ -185,7 +185,7 @@ namespace BeerRecipeCore.Data.Models
             set
             {
                 m_finalGravityStyleComparison = value;
-                RaisePropertyChanged("FinalGravityStyleComparison");
+                RaisePropertyChanged(nameof(FinalGravityStyleComparison));
             }
         }
 
@@ -195,7 +195,7 @@ namespace BeerRecipeCore.Data.Models
             set
             {
                 m_abvStyleComparison = value;
-                RaisePropertyChanged("AbvStyleComparison");
+                RaisePropertyChanged(nameof(AbvStyleComparison));
             }
         }
 
@@ -205,7 +205,7 @@ namespace BeerRecipeCore.Data.Models
             set
             {
                 m_bitternessStyleComparison = value;
-                RaisePropertyChanged("BitternessStyleComparison");
+                RaisePropertyChanged(nameof(BitternessStyleComparison));
             }
         }
 
@@ -215,7 +215,7 @@ namespace BeerRecipeCore.Data.Models
             set
             {
                 m_colorStyleComparison = value;
-                RaisePropertyChanged("ColorStyleComparison");
+                RaisePropertyChanged(nameof(ColorStyleComparison));
             }
         }
 

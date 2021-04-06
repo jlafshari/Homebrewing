@@ -49,7 +49,7 @@ namespace MvvmFoundation.Wpf
                 throw new ArgumentException("'message' cannot be null or empty.");
 
             if (callback == null)
-                throw new ArgumentNullException("callback");
+                throw new ArgumentNullException(nameof(callback));
 
             VerifyParameterType(message, parameterType);
 
@@ -151,10 +151,10 @@ namespace MvvmFoundation.Wpf
             internal void AddAction(string message, object target, MethodInfo method, Type actionType)
             {
                 if (message == null)
-                    throw new ArgumentNullException("message");
+                    throw new ArgumentNullException(nameof(message));
 
                 if (method == null)
-                    throw new ArgumentNullException("method");
+                    throw new ArgumentNullException(nameof(method));
 
                 lock (_map)
                 {
@@ -177,7 +177,7 @@ namespace MvvmFoundation.Wpf
             internal List<Delegate> GetActions(string message)
             {
                 if (message == null)
-                    throw new ArgumentNullException("message");
+                    throw new ArgumentNullException(nameof(message));
 
                 List<Delegate> actions;
                 lock (_map)
@@ -234,7 +234,7 @@ namespace MvvmFoundation.Wpf
             internal bool TryGetParameterType(string message, out Type parameterType)
             {
                 if (message == null)
-                    throw new ArgumentNullException("message");
+                    throw new ArgumentNullException(nameof(message));
 
                 parameterType = null;
                 List<WeakAction> weakActions;

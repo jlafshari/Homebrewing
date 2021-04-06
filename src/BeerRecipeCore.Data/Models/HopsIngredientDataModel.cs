@@ -22,7 +22,7 @@ namespace BeerRecipeCore.Data.Models
             set
             {
                 m_amount = value;
-                RaisePropertyChanged("Amount");
+                RaisePropertyChanged(nameof(Amount));
             }
         }
 
@@ -35,7 +35,7 @@ namespace BeerRecipeCore.Data.Models
             set
             {
                 m_time = value;
-                RaisePropertyChanged("Time");
+                RaisePropertyChanged(nameof(Time));
             }
         }
 
@@ -48,7 +48,7 @@ namespace BeerRecipeCore.Data.Models
             set
             {
                 m_dryHopTime = value;
-                RaisePropertyChanged("DryHopTime");
+                RaisePropertyChanged(nameof(DryHopTime));
             }
         }
 
@@ -61,7 +61,7 @@ namespace BeerRecipeCore.Data.Models
             set
             {
                 m_flavorType = value;
-                RaisePropertyChanged("FlavorType");
+                RaisePropertyChanged(nameof(FlavorType));
             }
         }
 
@@ -74,7 +74,7 @@ namespace BeerRecipeCore.Data.Models
             set
             {
                 m_form = value;
-                RaisePropertyChanged("Form");
+                RaisePropertyChanged(nameof(Form));
             }
         }
 
@@ -87,7 +87,7 @@ namespace BeerRecipeCore.Data.Models
             set
             {
                 m_use = value;
-                RaisePropertyChanged("Use");
+                RaisePropertyChanged(nameof(Use));
             }
         }
 

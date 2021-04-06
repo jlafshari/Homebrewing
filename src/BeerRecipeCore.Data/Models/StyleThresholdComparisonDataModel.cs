@@ -19,7 +19,7 @@ namespace BeerRecipeCore.Data.Models
             private set
             {
                 m_status = value;
-                RaisePropertyChanged("Status");
+                RaisePropertyChanged(nameof(Status));
             }
         }
 
@@ -29,7 +29,7 @@ namespace BeerRecipeCore.Data.Models
             private set
             {
                 m_difference = value;
-                RaisePropertyChanged("Difference");
+                RaisePropertyChanged(nameof(Difference));
             }
         }
 

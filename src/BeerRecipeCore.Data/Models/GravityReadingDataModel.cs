@@ -18,7 +18,7 @@ namespace BeerRecipeCore.Data.Models
             set
             {
                 m_value = value;
-                RaisePropertyChanged("Value");
+                RaisePropertyChanged(nameof(Value));
             }
         }
 
@@ -28,7 +28,7 @@ namespace BeerRecipeCore.Data.Models
             set
             {
                 m_date = value;
-                RaisePropertyChanged("Date");
+                RaisePropertyChanged(nameof(Date));
             }
         }
 

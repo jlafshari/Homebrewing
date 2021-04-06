@@ -31,7 +31,7 @@ namespace HomebrewApp
             set
             {
                 m_savedBatches = value;
-                RaisePropertyChanged("SavedBatches");
+                RaisePropertyChanged(nameof(SavedBatches));
             }
         }
 
@@ -42,7 +42,7 @@ namespace HomebrewApp
             {
                 SaveCurrentBatch();
                 m_currentBatch = value;
-                RaisePropertyChanged("CurrentBatch");
+                RaisePropertyChanged(nameof(CurrentBatch));
             }
         }
 
@@ -52,7 +52,7 @@ namespace HomebrewApp
             private set
             {
                 m_availableRecipes = value;
-                RaisePropertyChanged("AvailableRecipes");
+                RaisePropertyChanged(nameof(AvailableRecipes));
             }
         }
 

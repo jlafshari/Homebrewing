@@ -19,7 +19,7 @@ namespace BeerRecipeCore.Data.Models
             set
             {
                 m_amount = value;
-                RaisePropertyChanged("Amount");
+                RaisePropertyChanged(nameof(Amount));
             }
         }
 

@@ -24,7 +24,7 @@ namespace BeerRecipeCore.Data.Models
             set
             {
                 m_brewerName = value;
-                RaisePropertyChanged("BrewerName");
+                RaisePropertyChanged(nameof(BrewerName));
             }
         }
 
@@ -34,7 +34,7 @@ namespace BeerRecipeCore.Data.Models
             set
             {
                 m_assistantBrewerName = value;
-                RaisePropertyChanged("AssistantBrewerName");
+                RaisePropertyChanged(nameof(AssistantBrewerName));
             }
         }
 
@@ -44,7 +44,7 @@ namespace BeerRecipeCore.Data.Models
             set
             {
                 m_brewingDate = value;
-                RaisePropertyChanged("BrewingDate");
+                RaisePropertyChanged(nameof(BrewingDate));
             }
         }
 
@@ -54,7 +54,7 @@ namespace BeerRecipeCore.Data.Models
             set
             {
                 m_recipe = value;
-                RaisePropertyChanged("Recipe");
+                RaisePropertyChanged(nameof(Recipe));
             }
         }
 
@@ -64,7 +64,7 @@ namespace BeerRecipeCore.Data.Models
             set
             {
                 m_originalGravity = value;
-                RaisePropertyChanged("OriginalGravity");
+                RaisePropertyChanged(nameof(OriginalGravity));
             }
         }
 
@@ -74,7 +74,7 @@ namespace BeerRecipeCore.Data.Models
             set
             {
                 m_finalGravity = value;
-                RaisePropertyChanged("FinalGravity");
+                RaisePropertyChanged(nameof(FinalGravity));
             }
         }
 
@@ -84,7 +84,7 @@ namespace BeerRecipeCore.Data.Models
             private set
             {
                 m_recordedGravityReadings = value;
-                RaisePropertyChanged("RecordedGravityReadings");
+                RaisePropertyChanged(nameof(RecordedGravityReadings));
             }
         }
 
@@ -94,7 +94,7 @@ namespace BeerRecipeCore.Data.Models
             private set
             {
                 m_alcoholByVolume = value;
-                RaisePropertyChanged("AlcoholByVolume");
+                RaisePropertyChanged(nameof(AlcoholByVolume));
             }
         }
 
@@ -104,7 +104,7 @@ namespace BeerRecipeCore.Data.Models
             private set
             {
                 m_alcoholByWeight = value;
-                RaisePropertyChanged("AlcoholByWeight");
+                RaisePropertyChanged(nameof(AlcoholByWeight));
             }
         }
 

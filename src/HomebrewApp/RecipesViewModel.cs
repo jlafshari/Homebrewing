@@ -49,7 +49,7 @@ namespace HomebrewApp
             private set
             {
                 m_savedRecipes = value;
-                RaisePropertyChanged("SavedRecipes");
+                RaisePropertyChanged(nameof(SavedRecipes));
             }
         }
 
@@ -60,8 +60,8 @@ namespace HomebrewApp
             {
                 SaveCurrentRecipe();
                 m_currentRecipe = value;
-                RaisePropertyChanged("CurrentRecipe");
-                RaisePropertyChanged("IsRecipeSelected");
+                RaisePropertyChanged(nameof(CurrentRecipe));
+                RaisePropertyChanged(nameof(IsRecipeSelected));
             }
         }
 
@@ -148,7 +148,7 @@ namespace HomebrewApp
             CurrentRecipe.ExtractionEfficiency = m_settings.ExtractionEfficiency;
             CurrentRecipe.YeastIngredient.Weight = m_settings.YeastWeight;
             SavedRecipes.Add(CurrentRecipe);
-            RaisePropertyChanged("IsRecipeSelected");
+            RaisePropertyChanged(nameof(IsRecipeSelected));
         }
 
         private void DeleteRecipe(RecipeDataModel recipe)

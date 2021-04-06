@@ -17,7 +17,7 @@ namespace BeerRecipeCore.Data.Models
             set
             {
                 m_recipeSize = value;
-                RaisePropertyChanged("RecipeSize");
+                RaisePropertyChanged(nameof(RecipeSize));
             }
         }
 
@@ -27,7 +27,7 @@ namespace BeerRecipeCore.Data.Models
             set
             {
                 m_boilTime = value;
-                RaisePropertyChanged("BoilTime");
+                RaisePropertyChanged(nameof(BoilTime));
             }
         }
 
@@ -37,7 +37,7 @@ namespace BeerRecipeCore.Data.Models
             set
             {
                 m_extractionEfficiency = value;
-                RaisePropertyChanged("ExtractionEfficiency");
+                RaisePropertyChanged(nameof(ExtractionEfficiency));
             }
         }
 
@@ -47,7 +47,7 @@ namespace BeerRecipeCore.Data.Models
             set
             {
                 m_yeastWeight = value;
-                RaisePropertyChanged("YeastWeight");
+                RaisePropertyChanged(nameof(YeastWeight));
             }
         }
 
@@ -57,7 +57,7 @@ namespace BeerRecipeCore.Data.Models
             set
             {
                 m_hopsAmount = value;
-                RaisePropertyChanged("HopsAmount");
+                RaisePropertyChanged(nameof(HopsAmount));
             }
         }
 

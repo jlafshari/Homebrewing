@@ -22,7 +22,7 @@ namespace BeerRecipeCore.Data.Models
             set
             {
                 m_weight = value;
-                RaisePropertyChanged("Weight");
+                RaisePropertyChanged(nameof(Weight));
             }
         }
 
@@ -35,7 +35,7 @@ namespace BeerRecipeCore.Data.Models
             set
             {
                 m_volume = value;
-                RaisePropertyChanged("Volume");
+                RaisePropertyChanged(nameof(Volume));
             }
         }
 
@@ -48,7 +48,7 @@ namespace BeerRecipeCore.Data.Models
             set
             {
                 m_yeastInfo = value;
-                RaisePropertyChanged("YeastInfo");
+                RaisePropertyChanged(nameof(YeastInfo));
             }
         }
 

@@ -28,7 +28,7 @@ namespace MvvmFoundation.Wpf
         public PropertyObserver(TPropertySource propertySource)
         {
             if (propertySource == null)
-                throw new ArgumentNullException("propertySource");
+                throw new ArgumentNullException(nameof(propertySource));
 
             _propertySourceRef = new WeakReference(propertySource);
             _propertyNameToHandlerMap = new Dictionary<string, Action<TPropertySource>>();
@@ -51,14 +51,14 @@ namespace MvvmFoundation.Wpf
             Action<TPropertySource> handler)
         {
             if (expression == null)
-                throw new ArgumentNullException("expression");
+                throw new ArgumentNullException(nameof(expression));
 
             string propertyName = GetPropertyName(expression);
             if (propertyName.IsNullOrEmpty())
                 throw new ArgumentException("'expression' did not provide a property name.");
 
             if (handler == null)
-                throw new ArgumentNullException("handler");
+                throw new ArgumentNullException(nameof(handler));
 
             TPropertySource propertySource = GetPropertySource();
             if (propertySource != null)
@@ -84,7 +84,7 @@ namespace MvvmFoundation.Wpf
         public PropertyObserver<TPropertySource> UnregisterHandler(Expression<Func<TPropertySource, object>> expression)
         {
             if (expression == null)
-                throw new ArgumentNullException("expression");
+                throw new ArgumentNullException(nameof(expression));
 
             string propertyName = GetPropertyName(expression);
             if (propertyName.IsNullOrEmpty())
