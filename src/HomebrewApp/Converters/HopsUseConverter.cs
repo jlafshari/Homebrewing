@@ -1,21 +1,22 @@
 ﻿using System;
 using System.Globalization;
 using System.Windows.Data;
-using System.Windows.Media;
+using BeerRecipeCore.Hops;
+using Utility;
 
-namespace HomebrewApp
+namespace HomebrewApp.Converters
 {
-    [ValueConversion(typeof(double), typeof(SolidColorBrush))]
-    public class SrmColorConverter : IValueConverter
+    [ValueConversion(typeof(HopsUse), typeof(string))]
+    public class HopsUseConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return new SolidColorBrush(ColorUtility.GetColorFromSrm((double) value));
+            return ((HopsUse)value).SaveToString();
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return null;
+            return value;
         }
     }
 }

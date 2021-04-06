@@ -4,15 +4,15 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
-             xmlns:brc="clr-namespace:BeerRecipeCore;assembly=BeerRecipeCore"
              xmlns:brchops="clr-namespace:BeerRecipeCore.Hops;assembly=BeerRecipeCore"
              xmlns:brcm="clr-namespace:BeerRecipeCore.Data.Models;assembly=BeerRecipeCore.Data"
              xmlns:vw="clr-namespace:HomebrewApp"
+             xmlns:conv="clr-namespace:HomebrewApp.Converters"
              mc:Ignorable="d" GotFocus="UserControl_GotFocus">
     <UserControl.Resources>
-        <vw:SrmColorConverter x:Key="srmColorConverter" />
-        <vw:HopsUseConverter x:Key="hopsUseConverter" />
-        <vw:FermentableTypeConverter x:Key="fermentableTypeConverter" />
+        <conv:SrmColorConverter x:Key="srmColorConverter" />
+        <conv:HopsUseConverter x:Key="hopsUseConverter" />
+        <conv:FermentableTypeConverter x:Key="fermentableTypeConverter" />
     </UserControl.Resources>
     <UserControl.DataContext>
         <vw:RecipesViewModel />

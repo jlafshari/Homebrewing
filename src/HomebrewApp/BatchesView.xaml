@@ -4,9 +4,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:vw="clr-namespace:HomebrewApp"
+             xmlns:conv="clr-namespace:HomebrewApp.Converters"
              mc:Ignorable="d">
     <UserControl.Resources>
-        <vw:DateTimeDisplayConverter x:Key="dateTimeDisplayConverter" />
+        <conv:DateTimeDisplayConverter x:Key="dateTimeDisplayConverter" />
     </UserControl.Resources>
     <UserControl.DataContext>
         <vw:BatchesViewModel />
