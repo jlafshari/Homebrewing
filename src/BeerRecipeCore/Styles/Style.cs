@@ -2,7 +2,7 @@
 
 namespace BeerRecipeCore.Styles
 {
-    public record Style(string Name, StyleCategory Category, StyleClassification Classification, ReadOnlyCollection<StyleThreshold> Thresholds)
+    public record Style(string Name, StyleCategory Category, StyleClassification Classification, ReadOnlyCollection<StyleThreshold> Thresholds) : IStyle
     {
         public string Notes { get; init; }
 
