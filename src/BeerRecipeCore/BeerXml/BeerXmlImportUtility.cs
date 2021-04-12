@@ -82,7 +82,7 @@ namespace BeerRecipeCore.BeerXml
             string styleGuide = styleEntry.Element("STYLE_GUIDE").Value;
             StyleClassification classification = new StyleClassification(styleLetter, styleGuide);
 
-            return new Style(name, category, classification, thresholds.AsReadOnly())
+            return new Style(name, category, classification, thresholds)
             {
                 Notes = GetNotesFromRecord(styleEntry),
                 Profile = styleEntry.Element("PROFILE").Value,

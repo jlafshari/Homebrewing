@@ -1,15 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using HomebrewApi.Models;
+using HomebrewApi.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 
 namespace HomebrewApi
@@ -26,6 +22,11 @@ namespace HomebrewApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<HomebrewingDatabaseSettings>(Configuration.GetSection(nameof(HomebrewingDatabaseSettings)));
+            services.AddSingleton<IHomebrewingDatabaseSettings>(sp =>
+                sp.GetRequiredService<IOptions<HomebrewingDatabaseSettings>>().Value);
+
+            services.AddSingleton<HomebrewingDbService>();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>

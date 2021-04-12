@@ -1,8 +1,8 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
 
 namespace BeerRecipeCore.Styles
 {
-    public record Style(string Name, StyleCategory Category, StyleClassification Classification, ReadOnlyCollection<StyleThreshold> Thresholds) : IStyle
+    public record Style(string Name, StyleCategory Category, StyleClassification Classification, List<StyleThreshold> Thresholds) : IStyle
     {
         public string Notes { get; init; }
 

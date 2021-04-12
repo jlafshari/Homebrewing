@@ -1,4 +1,4 @@
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 
 namespace BeerRecipeCore.Styles
 {
@@ -7,6 +7,6 @@ namespace BeerRecipeCore.Styles
         public string Name { get; }
         public StyleCategory Category { get; }
         public StyleClassification Classification { get; }
-        public ReadOnlyCollection<StyleThreshold> Thresholds { get; }
+        public List<StyleThreshold> Thresholds { get; }
     }
 }
