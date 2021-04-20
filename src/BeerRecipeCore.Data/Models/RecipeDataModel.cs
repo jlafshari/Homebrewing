@@ -267,7 +267,7 @@ namespace BeerRecipeCore.Data.Models
             if (m_style == null)
                 return;
 
-            ReadOnlyCollection<StyleThreshold> thresholds = m_style.Thresholds;
+            var thresholds = m_style.Thresholds;
             OriginalGravityStyleComparison = new StyleThresholdComparisonDataModel(thresholds.Single(threshold => threshold.Value == "og"));
             FinalGravityStyleComparison = new StyleThresholdComparisonDataModel(thresholds.Single(threshold => threshold.Value == "fg"));
             AbvStyleComparison = new StyleThresholdComparisonDataModel(thresholds.Single(threshold => threshold.Value == "abv"));

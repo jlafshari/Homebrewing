@@ -37,7 +37,7 @@ namespace BeerRecipeCore.Data
                 string styleName = reader.GetString(0);
                 var thresholds = GetStyleThresholds(styleName, connection).ToList();
 
-                yield return new Style(styleName, category, classification, thresholds.AsReadOnly())
+                yield return new Style(styleName, category, classification, thresholds)
                 {
                     Notes = reader.GetString(1),
                     Profile = reader.GetString(2),
