@@ -15,10 +15,4 @@
     <ProjectReference Include="..\Utility\Utility.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Compile Update="YeastUtility.cs">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Compile>
-  </ItemGroup>
-
 </Project>
