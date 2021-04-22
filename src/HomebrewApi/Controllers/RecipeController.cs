@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using HomebrewApi.Models;
 using HomebrewApi.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -16,6 +17,12 @@ namespace HomebrewApi.Controllers
         {
             _logger = logger;
             _homebrewingDbService = homebrewingDbService;
+        }
+
+        [HttpGet("GetAll")]
+        public List<Recipe> GetRecipes()
+        {
+            return _homebrewingDbService.GetRecipes();
         }
 
         [HttpPost("GenerateRecipe")]

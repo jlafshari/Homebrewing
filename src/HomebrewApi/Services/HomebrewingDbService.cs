@@ -36,5 +36,11 @@ namespace HomebrewApi.Services
             recipeCollection.InsertOne(recipe);
             return recipe;
         }
+
+        public List<Recipe> GetRecipes()
+        {
+            var recipeCollection = _database.GetCollection<Recipe>(RecipeCollectionName);
+            return recipeCollection.FindSync(_ => true).ToList();
+        }
     }
 }
