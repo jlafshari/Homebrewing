@@ -8,6 +8,10 @@ namespace HomebrewApi.Models
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; init; }
-        public RecipeGenerationInfo GenerationInfo { get; init; }
+        public float Size { get; init; }
+        public string Name { get; init; }
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string StyleId { get; set; }
+        public RecipeProjectedOutcome ProjectedOutcome { get; set; }
     }
 }

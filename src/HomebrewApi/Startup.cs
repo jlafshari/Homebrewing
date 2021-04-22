@@ -1,3 +1,5 @@
+using AutoMapper;
+using HomebrewApi.AutoMapper;
 using HomebrewApi.Models;
 using HomebrewApi.Services;
 using Microsoft.AspNetCore.Builder;
@@ -27,6 +29,14 @@ namespace HomebrewApi
                 sp.GetRequiredService<IOptions<HomebrewingDatabaseSettings>>().Value);
 
             services.AddSingleton<HomebrewingDbService>();
+
+            var mapperConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new DefaultProfile());
+            });
+            services.AddSingleton(mapperConfig.CreateMapper());
+            
+            services.AddAutoMapper(typeof(Startup));
 
             services.AddControllers();
             services.AddSwaggerGen(c =>

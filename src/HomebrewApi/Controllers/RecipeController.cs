@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using HomebrewApi.Models;
+using HomebrewApi.Models.Dtos;
 using HomebrewApi.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -26,9 +27,9 @@ namespace HomebrewApi.Controllers
         }
 
         [HttpPost("GenerateRecipe")]
-        public Recipe GenerateRecipe(RecipeGenerationInfo recipeGenerationInfo)
+        public RecipeDto GenerateRecipe(RecipeGenerationInfoDto recipeGenerationInfoDto)
         {
-            return _homebrewingDbService.GenerateRecipe(recipeGenerationInfo);
+            return _homebrewingDbService.GenerateRecipe(recipeGenerationInfoDto);
         }
     }
 }
