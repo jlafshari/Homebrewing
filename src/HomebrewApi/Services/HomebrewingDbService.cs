@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using AutoMapper;
 using HomebrewApi.Models;
 using HomebrewApi.Models.Dtos;
@@ -39,8 +40,7 @@ namespace HomebrewApi.Services
             var recipeCollection = _database.GetCollection<Recipe>(RecipeCollectionName);
             recipeCollection.InsertOne(recipeToGenerate);
             var recipe = _mapper.Map<RecipeDto>(recipeToGenerate);
-            var style = GetStyle(recipeGenerationInfoDto.StyleId);
-            recipe.StyleName = style?.Name;
+            InitializeStyleName(recipeGenerationInfoDto, recipe);
             return recipe;
         }
 
@@ -50,10 +50,25 @@ namespace HomebrewApi.Services
             return styleCollection.FindSync(s => s.Id == styleId).SingleOrDefault();
         }
 
-        public List<Recipe> GetRecipes()
+        public List<RecipeDto> GetRecipes()
         {
+            var styles = GetBeerStyles();
             var recipeCollection = _database.GetCollection<Recipe>(RecipeCollectionName);
-            return recipeCollection.FindSync(_ => true).ToList();
+            var recipes = recipeCollection.FindSync(_ => true).ToEnumerable().Select(r => GetRecipeDto(r, styles)).ToList();
+            return recipes;
+        }
+
+        private RecipeDto GetRecipeDto(Recipe r, IEnumerable<Style> styles)
+        {
+            var recipe = _mapper.Map<Recipe, RecipeDto>(r);
+            recipe.StyleName = styles.FirstOrDefault(s => s.Id == r.StyleId)?.Name;
+            return recipe;
+        }
+
+        private void InitializeStyleName(RecipeGenerationInfoDto recipeGenerationInfoDto, RecipeDto recipe)
+        {
+            var style = GetStyle(recipeGenerationInfoDto.StyleId);
+            recipe.StyleName = style?.Name;
         }
     }
 }

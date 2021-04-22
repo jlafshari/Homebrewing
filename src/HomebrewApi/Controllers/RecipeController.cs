@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using HomebrewApi.Models;
 using HomebrewApi.Models.Dtos;
 using HomebrewApi.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -21,7 +20,7 @@ namespace HomebrewApi.Controllers
         }
 
         [HttpGet("GetAll")]
-        public List<Recipe> GetRecipes()
+        public List<RecipeDto> GetRecipes()
         {
             return _homebrewingDbService.GetRecipes();
         }
