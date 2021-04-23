@@ -25,6 +25,12 @@ namespace HomebrewApi.Controllers
             return _homebrewingDbService.GetRecipes();
         }
 
+        [HttpGet("{recipeId}")]
+        public RecipeDto GetRecipe([FromRoute] string recipeId)
+        {
+            return _homebrewingDbService.GetRecipe(recipeId);
+        }
+
         [HttpPost("GenerateRecipe")]
         public RecipeDto GenerateRecipe(RecipeGenerationInfoDto recipeGenerationInfoDto)
         {

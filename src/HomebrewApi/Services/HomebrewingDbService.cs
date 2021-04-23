@@ -52,9 +52,21 @@ namespace HomebrewApi.Services
 
         public List<RecipeDto> GetRecipes()
         {
+            var filter = Builders<Recipe>.Filter.Where(_ => true);
+            return GetRecipes(filter);
+        }
+
+        public RecipeDto GetRecipe(string recipeId)
+        {
+            var filter = Builders<Recipe>.Filter.Eq(r => r.Id, recipeId);
+            return GetRecipes(filter).SingleOrDefault();
+        }
+
+        private List<RecipeDto> GetRecipes(FilterDefinition<Recipe> filter)
+        {
             var styles = GetBeerStyles();
             var recipeCollection = _database.GetCollection<Recipe>(RecipeCollectionName);
-            var recipes = recipeCollection.FindSync(_ => true).ToEnumerable().Select(r => GetRecipeDto(r, styles)).ToList();
+            var recipes = recipeCollection.FindSync(filter).ToEnumerable().Select(r => GetRecipeDto(r, styles)).ToList();
             return recipes;
         }
 
