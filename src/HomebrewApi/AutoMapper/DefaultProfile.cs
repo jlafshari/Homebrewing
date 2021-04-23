@@ -12,6 +12,8 @@ namespace HomebrewApi.AutoMapper
             CreateMap<RecipeGenerationInfoDto, Recipe>()
                 .AfterMap((src, dest, context) => dest.ProjectedOutcome = context.Mapper.Map<RecipeGenerationInfoDto, RecipeProjectedOutcome>(src));
             CreateMap<Recipe, RecipeDto>();
+            
+            CreateMap<Style, StyleDto>();
         }
     }
 }

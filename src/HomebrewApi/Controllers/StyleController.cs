@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using HomebrewApi.Models;
+using HomebrewApi.Models.Dtos;
 using HomebrewApi.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -20,7 +21,7 @@ namespace HomebrewApi.Controllers
         }
 
         [HttpGet("GetAll")]
-        public List<Style> GetBeerStyles()
+        public List<StyleDto> GetBeerStyles()
         {
             return _homebrewingDbService.GetBeerStyles();
         }

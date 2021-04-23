@@ -27,10 +27,11 @@ namespace HomebrewApi.Services
             styleCollection.InsertOne(beerStyle);
         }
 
-        public List<Style> GetBeerStyles()
+        public List<StyleDto> GetBeerStyles()
         {
             var styleCollection = _database.GetCollection<Style>(StyleCollectionName);
-            return styleCollection.FindSync(s => true).ToList();
+            return styleCollection.FindSync(s => true).ToEnumerable()
+                .Select(s => _mapper.Map<StyleDto>(s)).ToList();
         }
 
         public RecipeDto GenerateRecipe(RecipeGenerationInfoDto recipeGenerationInfoDto)
@@ -76,7 +77,7 @@ namespace HomebrewApi.Services
             return recipes;
         }
 
-        private RecipeDto GetRecipeDto(Recipe r, IEnumerable<Style> styles)
+        private RecipeDto GetRecipeDto(Recipe r, IEnumerable<StyleDto> styles)
         {
             var recipe = _mapper.Map<Recipe, RecipeDto>(r);
             recipe.StyleName = styles.FirstOrDefault(s => s.Id == r.StyleId)?.Name;
