@@ -36,5 +36,11 @@ namespace HomebrewApi.Controllers
         {
             return _homebrewingDbService.GenerateRecipe(recipeGenerationInfoDto);
         }
+
+        [HttpDelete("{recipeId}")]
+        public void DeleteRecipe([FromRoute] string recipeId)
+        {
+            _homebrewingDbService.DeleteRecipe(recipeId);
+        }
     }
 }

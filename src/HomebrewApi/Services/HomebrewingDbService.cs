@@ -62,6 +62,12 @@ namespace HomebrewApi.Services
             return GetRecipes(filter).SingleOrDefault();
         }
 
+        public void DeleteRecipe(string recipeId)
+        {
+            var recipeCollection = _database.GetCollection<Recipe>(RecipeCollectionName);
+            recipeCollection.DeleteOne(r => r.Id == recipeId);
+        }
+        
         private List<RecipeDto> GetRecipes(FilterDefinition<Recipe> filter)
         {
             var styles = GetBeerStyles();
