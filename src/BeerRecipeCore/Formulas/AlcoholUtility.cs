@@ -12,7 +12,7 @@ namespace BeerRecipeCore.Formulas
         /// </summary>
         public static float GetAlcoholByVolume(float startingGravity, float finalGravity)
         {
-            return (float) Math.Round((1.05f * (startingGravity - finalGravity)) / (finalGravity * 0.79f) * 100, c_abvFractionalDigits);
+            return (float) Math.Round(132.9f * (startingGravity - finalGravity) / finalGravity, c_abvFractionalDigits);
         }
 
         /// <summary>
