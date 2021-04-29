@@ -3,7 +3,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace HomebrewApi.Models
 {
-    public class Recipe
+    internal class Recipe
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]

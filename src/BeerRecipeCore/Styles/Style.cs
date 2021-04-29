@@ -2,7 +2,8 @@
 
 namespace BeerRecipeCore.Styles
 {
-    public record Style(string Name, StyleCategory Category, StyleClassification Classification, List<StyleThreshold> Thresholds) : IStyle
+    public record Style(string Name, StyleCategory Category, StyleClassification Classification, List<StyleThreshold> Thresholds)
+        : IStyle
     {
         public string Notes { get; init; }
 
@@ -11,5 +12,6 @@ namespace BeerRecipeCore.Styles
         public string Ingredients { get; init; }
 
         public string Examples { get; init; }
+        public List<CommonGrain> CommonGrains { get; set; } = new();
     }
 }

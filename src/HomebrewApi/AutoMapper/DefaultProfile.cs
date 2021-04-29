@@ -1,4 +1,5 @@
 using AutoMapper;
+using BeerRecipeCore;
 using HomebrewApi.Models;
 using HomebrewApi.Models.Dtos;
 
@@ -8,9 +9,9 @@ namespace HomebrewApi.AutoMapper
     {
         public DefaultProfile()
         {
+            CreateMap<IRecipe, Recipe>()
+                .ForMember(r => r.StyleId, opt => opt.MapFrom(src => src.Style.Name));
             CreateMap<RecipeGenerationInfoDto, RecipeProjectedOutcome>();
-            CreateMap<RecipeGenerationInfoDto, Recipe>()
-                .AfterMap((src, dest, context) => dest.ProjectedOutcome = context.Mapper.Map<RecipeGenerationInfoDto, RecipeProjectedOutcome>(src));
             CreateMap<Recipe, RecipeDto>();
             
             CreateMap<Style, StyleDto>();

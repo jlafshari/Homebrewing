@@ -9,4 +9,10 @@
 
         Fermentable FermentableInfo { get; }
     }
+
+    internal class FermentableIngredient : IFermentableIngredient
+    {
+        public float Amount { get; set; }
+        public Fermentable FermentableInfo { get; set; }
+    }
 }

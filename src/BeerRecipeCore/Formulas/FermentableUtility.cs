@@ -9,7 +9,8 @@ namespace BeerRecipeCore.Formulas
         {
             var og = GetOriginalGravity(abv);
             var targetGravityUnit = AlcoholUtility.GetGravityUnit(og);
-            return (float) Math.Round(proportionOfGrist * recipeSize * targetGravityUnit / (mashEfficiency * optimumYield), 1);
+            var poundsRequired = proportionOfGrist * recipeSize * targetGravityUnit / (mashEfficiency * optimumYield);
+            return (float) Math.Round(poundsRequired, 1);
         }
 
         public static float GetOriginalGravity(float abv)
