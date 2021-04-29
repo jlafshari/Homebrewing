@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using BeerRecipeCore.Fermentables;
 
 namespace BeerRecipeCore.Formulas
@@ -9,13 +10,8 @@ namespace BeerRecipeCore.Formulas
         public static double GetColorInSrm(IEnumerable<IFermentableIngredient> fermentables, float recipeVolumeInGallons)
         {
             // calculate MCU from each fermentable
-            double totalMcu = 0;
-            foreach (IFermentableIngredient fermentable in fermentables)
-            {
-                double fermentableMcu = GetMaltColorUnit(fermentable, recipeVolumeInGallons);
-                totalMcu += fermentableMcu;
-            }
-            
+            var totalMcu = fermentables.Sum(fermentable => GetMaltColorUnit(fermentable, recipeVolumeInGallons));
+
             // get SRM color using Morey equation
             return Math.Round(1.4922 * Math.Pow(totalMcu, 0.6859), 1);
         }
