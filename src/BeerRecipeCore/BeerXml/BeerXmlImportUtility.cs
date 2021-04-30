@@ -16,10 +16,10 @@ namespace BeerRecipeCore.BeerXml
         {
             string name = GetNameFromRecord(hopsEntry);
             string origin = hopsEntry.GetChildElementValue("ORIGIN");
-            float alphaAcid = (float) Convert.ToDouble(hopsEntry.GetChildElementValue("ALPHA"));
-            float betaAcid = (float) Convert.ToDouble(hopsEntry.GetChildElementValue("BETA"));
+            float alphaAcid = Convert.ToSingle(hopsEntry.GetChildElementValue("ALPHA"));
+            float betaAcid = Convert.ToSingle(hopsEntry.GetChildElementValue("BETA"));
             string notes = GetNotesFromRecord(hopsEntry);
-            float hsi = (float) Convert.ToDouble(hopsEntry.GetChildElementValue("HSI"));
+            float hsi = Convert.ToSingle(hopsEntry.GetChildElementValue("HSI"));
             var hopsCharacteristics = new HopsCharacteristics(alphaAcid, betaAcid, hsi);
             return new Hops.Hops(name, hopsCharacteristics, notes, origin);
         }
@@ -30,9 +30,9 @@ namespace BeerRecipeCore.BeerXml
             var origin = fermentableEntry.GetChildElementValue("ORIGIN");
             var notes = GetNotesFromRecord(fermentableEntry);
             var type = EnumConverter.Parse<FermentableType>(fermentableEntry.GetChildElementValue("TYPE"));
-            var yieldValue = (float) Convert.ToDouble(fermentableEntry.GetChildElementValue("YIELD"));
+            var yieldValue = Convert.ToSingle(fermentableEntry.GetChildElementValue("YIELD"));
             var yield = type == FermentableType.Grain ? (float?) yieldValue : null;
-            var color = (float) Convert.ToDouble(fermentableEntry.GetChildElementValue("COLOR"));
+            var color = Convert.ToSingle(fermentableEntry.GetChildElementValue("COLOR"));
             var diastaticPower = float.TryParse(fermentableEntry.GetChildElementValue("DIASTATIC_POWER"), out var diastaticPowerParsed) ? (float?) diastaticPowerParsed : null;
             var potential = Convert.ToDouble(fermentableEntry.GetChildElementValue("POTENTIAL"));
             var maltCategoryValue = fermentableEntry.Element("malt-category")?.Value;
@@ -53,10 +53,10 @@ namespace BeerRecipeCore.BeerXml
             string form = yeastEntry.GetChildElementValue("FORM");
             string laboratory = yeastEntry.GetChildElementValue("LABORATORY");
             string productId = yeastEntry.GetChildElementValue("PRODUCT_ID");
-            float minTemperature = (float) Convert.ToDouble(yeastEntry.GetChildElementValue("MIN_TEMPERATURE"));
-            float maxTemperature = (float) Convert.ToDouble(yeastEntry.GetChildElementValue("MAX_TEMPERATURE"));
+            float minTemperature = Convert.ToSingle(yeastEntry.GetChildElementValue("MIN_TEMPERATURE"));
+            float maxTemperature = Convert.ToSingle(yeastEntry.GetChildElementValue("MAX_TEMPERATURE"));
             string flocculation = yeastEntry.GetChildElementValue("FLOCCULATION");
-            float attenuation = (float) Convert.ToDouble(yeastEntry.GetChildElementValue("ATTENUATION"));
+            float attenuation = Convert.ToSingle(yeastEntry.GetChildElementValue("ATTENUATION"));
             string notes = GetNotesFromRecord(yeastEntry);
 
             YeastCharacteristics characteristics = new YeastCharacteristics(type, flocculation, form) { Attenuation = attenuation, MinTemperature = minTemperature, MaxTemperature = maxTemperature };
@@ -68,12 +68,12 @@ namespace BeerRecipeCore.BeerXml
             string name = GetNameFromRecord(styleEntry);
             List<StyleThreshold> thresholds = new List<StyleThreshold>()
             {
-                new StyleThreshold("og", (float) Convert.ToDouble(styleEntry.GetChildElementValue("OG_MIN")), (float) Convert.ToDouble(styleEntry.GetChildElementValue("OG_MAX"))),
-                new StyleThreshold("fg", (float) Convert.ToDouble(styleEntry.GetChildElementValue("FG_MIN")), (float) Convert.ToDouble(styleEntry.GetChildElementValue("FG_MAX"))),
-                new StyleThreshold("ibu", (float) Convert.ToDouble(styleEntry.GetChildElementValue("IBU_MIN")), (float) Convert.ToDouble(styleEntry.GetChildElementValue("IBU_MAX"))),
-                new StyleThreshold("color", (float) Convert.ToDouble(styleEntry.GetChildElementValue("COLOR_MIN")), (float) Convert.ToDouble(styleEntry.GetChildElementValue("COLOR_MAX"))),
-                new StyleThreshold("carb", (float) Convert.ToDouble(styleEntry.GetChildElementValue("CARB_MIN")), (float) Convert.ToDouble(styleEntry.GetChildElementValue("CARB_MAX"))),
-                new StyleThreshold("abv", (float) Convert.ToDouble(styleEntry.GetChildElementValue("ABV_MIN")), (float) Convert.ToDouble(styleEntry.GetChildElementValue("ABV_MAX"))),
+                new StyleThreshold("og", Convert.ToSingle(styleEntry.GetChildElementValue("OG_MIN")), Convert.ToSingle(styleEntry.GetChildElementValue("OG_MAX"))),
+                new StyleThreshold("fg", Convert.ToSingle(styleEntry.GetChildElementValue("FG_MIN")), Convert.ToSingle(styleEntry.GetChildElementValue("FG_MAX"))),
+                new StyleThreshold("ibu", Convert.ToSingle(styleEntry.GetChildElementValue("IBU_MIN")), Convert.ToSingle(styleEntry.GetChildElementValue("IBU_MAX"))),
+                new StyleThreshold("color", Convert.ToSingle(styleEntry.GetChildElementValue("COLOR_MIN")), Convert.ToSingle(styleEntry.GetChildElementValue("COLOR_MAX"))),
+                new StyleThreshold("carb", Convert.ToSingle(styleEntry.GetChildElementValue("CARB_MIN")), Convert.ToSingle(styleEntry.GetChildElementValue("CARB_MAX"))),
+                new StyleThreshold("abv", Convert.ToSingle(styleEntry.GetChildElementValue("ABV_MIN")), Convert.ToSingle(styleEntry.GetChildElementValue("ABV_MAX"))),
             };
 
             string categoryName = styleEntry.GetChildElementValue("CATEGORY");
