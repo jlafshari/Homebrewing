@@ -5,7 +5,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace HomebrewApi.Models
 {
-    public record Style : IStyle
+    public record Style
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]

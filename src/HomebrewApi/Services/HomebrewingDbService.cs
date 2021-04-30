@@ -2,9 +2,11 @@ using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using BeerRecipeCore.Services;
+using BeerRecipeCore.Styles;
 using HomebrewApi.Models;
 using HomebrewApi.Models.Dtos;
 using MongoDB.Driver;
+using Style = HomebrewApi.Models.Style;
 
 namespace HomebrewApi.Services
 {
@@ -12,6 +14,7 @@ namespace HomebrewApi.Services
     {
         private readonly IMapper _mapper;
         private const string StyleCollectionName = "Styles";
+        private const string FermentableCollectionName = "Fermentables";
         private const string RecipeCollectionName = "Recipes";
         private readonly IMongoDatabase _database;
         private readonly RecipeService _recipeService;
@@ -39,7 +42,8 @@ namespace HomebrewApi.Services
 
         public RecipeDto GenerateRecipe(RecipeGenerationInfoDto recipeGenerationInfoDto)
         {
-            var style = GetStyle(recipeGenerationInfoDto.StyleId);
+            var styleFromDb = GetStyle(recipeGenerationInfoDto.StyleId);
+            var style = _mapper.Map<Style, BeerRecipeCore.Styles.Style>(styleFromDb);
             var generatedRecipe = _recipeService.GenerateRecipe(recipeGenerationInfoDto.Size, style, recipeGenerationInfoDto.Abv,
                 recipeGenerationInfoDto.ColorSrm, recipeGenerationInfoDto.Name);
             var recipeToInsert = _mapper.Map<Recipe>(generatedRecipe);
@@ -77,6 +81,12 @@ namespace HomebrewApi.Services
         {
             var recipeCollection = _database.GetCollection<Recipe>(RecipeCollectionName);
             recipeCollection.DeleteOne(r => r.Id == recipeId);
+        }
+
+        public void CreateFermentable(Fermentable fermentable)
+        {
+            var fermentableCollection = _database.GetCollection<Fermentable>(FermentableCollectionName);
+            fermentableCollection.InsertOne(fermentable);
         }
         
         private List<RecipeDto> GetRecipes(FilterDefinition<Recipe> filter)

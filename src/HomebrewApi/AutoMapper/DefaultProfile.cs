@@ -13,7 +13,8 @@ namespace HomebrewApi.AutoMapper
                 .ForMember(r => r.StyleId, opt => opt.MapFrom(src => src.Style.Name));
             CreateMap<RecipeGenerationInfoDto, RecipeProjectedOutcome>();
             CreateMap<Recipe, RecipeDto>();
-            
+
+            CreateMap<Style, BeerRecipeCore.Styles.Style>();
             CreateMap<Style, StyleDto>();
         }
     }
