@@ -39,7 +39,15 @@ namespace BeerRecipeCore.BeerXml
             float? diastaticPower = diastaticPowerIsntNull ? (float?) diastaticPowerParsed : null;
             double potential = Convert.ToDouble(fermentableEntry.Element("POTENTIAL").Value);
             int gravityUnit = AlcoholUtility.GetGravityUnit(potential);
-            FermentableCharacteristics characteristics = new FermentableCharacteristics(yield, color, diastaticPower) { Type = type, YieldByWeight = yieldByWeight, GravityPoint = gravityUnit };
+            var maltCategoryValue = fermentableEntry.Element("malt-category")?.Value;
+            MaltCategory? maltCategory = maltCategoryValue != null ? EnumConverter.Parse<MaltCategory>(maltCategoryValue) : null;
+            var characteristics = new FermentableCharacteristics(yield, color, diastaticPower)
+            {
+                Type = type,
+                YieldByWeight = yieldByWeight,
+                GravityPoint = gravityUnit,
+                MaltCategory = maltCategory
+            };
             return new Fermentable(name, characteristics, notes, origin);
         }
 
