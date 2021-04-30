@@ -26,27 +26,22 @@ namespace BeerRecipeCore.BeerXml
 
         public static Fermentable GetFermentable(XElement fermentableEntry)
         {
-            string name = GetNameFromRecord(fermentableEntry);
-            string origin = fermentableEntry.Element("ORIGIN").Value;
-            string notes = GetNotesFromRecord(fermentableEntry);
-            FermentableType type = EnumConverter.Parse<FermentableType>(fermentableEntry.Element("TYPE").Value);
-            float yieldValue = (float) Convert.ToDouble(fermentableEntry.Element("YIELD").Value);
-            float? yield = type == FermentableType.Grain ? (float?) yieldValue : null;
-            float? yieldByWeight = type != FermentableType.Grain ? (float?) yieldValue : null;
-            float color = (float) Convert.ToDouble(fermentableEntry.Element("COLOR").Value);
-            float diastaticPowerParsed;
-            bool diastaticPowerIsntNull = float.TryParse(fermentableEntry.Element("DIASTATIC_POWER").Value, out diastaticPowerParsed);
-            float? diastaticPower = diastaticPowerIsntNull ? (float?) diastaticPowerParsed : null;
-            double potential = Convert.ToDouble(fermentableEntry.Element("POTENTIAL").Value);
-            int gravityUnit = AlcoholUtility.GetGravityUnit(potential);
+            var name = GetNameFromRecord(fermentableEntry);
+            var origin = fermentableEntry.Element("ORIGIN").Value;
+            var notes = GetNotesFromRecord(fermentableEntry);
+            var type = EnumConverter.Parse<FermentableType>(fermentableEntry.Element("TYPE").Value);
+            var yieldValue = (float) Convert.ToDouble(fermentableEntry.Element("YIELD").Value);
+            var yield = type == FermentableType.Grain ? (float?) yieldValue : null;
+            var color = (float) Convert.ToDouble(fermentableEntry.Element("COLOR").Value);
+            var diastaticPower = float.TryParse(fermentableEntry.Element("DIASTATIC_POWER").Value, out var diastaticPowerParsed) ? (float?) diastaticPowerParsed : null;
+            var potential = Convert.ToDouble(fermentableEntry.Element("POTENTIAL").Value);
             var maltCategoryValue = fermentableEntry.Element("malt-category")?.Value;
-            MaltCategory? maltCategory = maltCategoryValue != null ? EnumConverter.Parse<MaltCategory>(maltCategoryValue) : null;
             var characteristics = new FermentableCharacteristics(yield, color, diastaticPower)
             {
                 Type = type,
-                YieldByWeight = yieldByWeight,
-                GravityPoint = gravityUnit,
-                MaltCategory = maltCategory
+                YieldByWeight = type != FermentableType.Grain ? yieldValue : null,
+                GravityPoint = AlcoholUtility.GetGravityUnit(potential),
+                MaltCategory = maltCategoryValue != null ? EnumConverter.Parse<MaltCategory>(maltCategoryValue) : null
             };
             return new Fermentable(name, characteristics, notes, origin);
         }
