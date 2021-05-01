@@ -1,11 +1,14 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
+using BeerRecipeCore;
 using BeerRecipeCore.Services;
 using BeerRecipeCore.Styles;
 using HomebrewApi.Models;
 using HomebrewApi.Models.Dtos;
 using MongoDB.Driver;
+using CommonGrain = HomebrewApi.Models.CommonGrain;
 using Style = HomebrewApi.Models.Style;
 
 namespace HomebrewApi.Services
@@ -42,15 +45,35 @@ namespace HomebrewApi.Services
 
         public RecipeDto GenerateRecipe(RecipeGenerationInfoDto recipeGenerationInfoDto)
         {
-            var styleFromDb = GetStyle(recipeGenerationInfoDto.StyleId);
-            var style = _mapper.Map<Style, BeerRecipeCore.Styles.Style>(styleFromDb);
-            var generatedRecipe = _recipeService.GenerateRecipe(recipeGenerationInfoDto.Size, style, recipeGenerationInfoDto.Abv,
-                recipeGenerationInfoDto.ColorSrm, recipeGenerationInfoDto.Name);
-            var recipeToInsert = _mapper.Map<Recipe>(generatedRecipe);
+            var style = GetStyle(recipeGenerationInfoDto.StyleId);
+            var recipeToInsert = GenerateRecipe(recipeGenerationInfoDto, style);
             InsertRecipe(recipeToInsert);
-            var recipeDto = _mapper.Map<RecipeDto>(recipeToInsert);
-            recipeDto.StyleName = style.Name;
+            var recipeDto = GetRecipeDto(recipeToInsert, new List<StyleDto> { _mapper.Map<StyleDto>(style) });
             return recipeDto;
+        }
+
+        private Recipe GenerateRecipe(RecipeGenerationInfoDto recipeGenerationInfoDto, Style style)
+        {
+            var styleForBeerRecipeCore = _mapper.Map<Style, BeerRecipeCore.Styles.Style>(style);
+            LoadFermentables(styleForBeerRecipeCore, style.CommonGrains);
+            
+            var generatedRecipe = _recipeService.GenerateRecipe(recipeGenerationInfoDto.Size, styleForBeerRecipeCore, recipeGenerationInfoDto.Abv,
+                recipeGenerationInfoDto.ColorSrm, recipeGenerationInfoDto.Name);
+            var recipeToInsert = ConvertRecipeToDbRecipe(recipeGenerationInfoDto, style, generatedRecipe);
+            return recipeToInsert;
+        }
+
+        private Recipe ConvertRecipeToDbRecipe(RecipeGenerationInfoDto recipeGenerationInfoDto, Style style, IRecipe generatedRecipe)
+        {
+            var recipeToInsert = _mapper.Map<Recipe>(generatedRecipe);
+            recipeToInsert.ProjectedOutcome = _mapper.Map<RecipeProjectedOutcome>(recipeGenerationInfoDto);
+            recipeToInsert.StyleId = recipeGenerationInfoDto.StyleId;
+            for (int i = 0; i < recipeToInsert.FermentableIngredients.Count; i++)
+            {
+                recipeToInsert.FermentableIngredients[i].FermentableId = style.CommonGrains[i].FermentableId;
+            }
+
+            return recipeToInsert;
         }
 
         private void InsertRecipe(Recipe recipeToGenerate)
@@ -62,7 +85,8 @@ namespace HomebrewApi.Services
         private Style GetStyle(string styleId)
         {
             var styleCollection = _database.GetCollection<Style>(StyleCollectionName);
-            return styleCollection.FindSync(s => s.Id == styleId).SingleOrDefault();
+            var style = styleCollection.FindSync(s => s.Id == styleId).SingleOrDefault();
+            return style;
         }
 
         public List<RecipeDto> GetRecipes()
@@ -88,6 +112,26 @@ namespace HomebrewApi.Services
             var fermentableCollection = _database.GetCollection<Fermentable>(FermentableCollectionName);
             fermentableCollection.InsertOne(fermentable);
         }
+
+        private void LoadFermentables(BeerRecipeCore.Styles.Style style, List<CommonGrain> commonGrains)
+        {
+            foreach (var commonGrain in commonGrains)
+            {
+                var fermentable = GetFermentable(commonGrain.FermentableId);
+                style.CommonGrains.Add(new BeerRecipeCore.Styles.CommonGrain
+                {
+                    Fermentable = fermentable, ProportionOfGrist = commonGrain.ProportionOfGrist
+                });
+            }
+        }
+
+        private BeerRecipeCore.Fermentables.Fermentable GetFermentable(string fermentableId)
+        {
+            var fermentableCollection = _database.GetCollection<Fermentable>(FermentableCollectionName);
+            var filter = Builders<Fermentable>.Filter.Eq(r => r.Id, fermentableId);
+            var fermentableFromDb = fermentableCollection.FindSync(filter).ToEnumerable().SingleOrDefault();
+            return _mapper.Map<Fermentable, BeerRecipeCore.Fermentables.Fermentable>(fermentableFromDb);
+        }
         
         private List<RecipeDto> GetRecipes(FilterDefinition<Recipe> filter)
         {
@@ -101,6 +145,11 @@ namespace HomebrewApi.Services
         {
             var recipe = _mapper.Map<Recipe, RecipeDto>(r);
             recipe.StyleName = styles.FirstOrDefault(s => s.Id == r.StyleId)?.Name;
+            foreach (var fermentableIngredient in r.FermentableIngredients)
+            {
+                var fermentable = GetFermentable(fermentableIngredient.FermentableId);
+                recipe.FermentableIngredients.Add(new FermentableIngredientDto(fermentableIngredient.Amount, fermentable.Name));
+            }
             return recipe;
         }
     }

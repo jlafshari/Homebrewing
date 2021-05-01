@@ -14,6 +14,6 @@ namespace HomebrewApi.Models
         public StyleCategory Category { get; init; }
         public StyleClassification Classification { get; init; }
         public List<StyleThreshold> Thresholds { get; init; }
-        public List<CommonGrain> CommonGrains { get; set; } = new();
+        public List<CommonGrain> CommonGrains { get; init; } = new();
     }
 }

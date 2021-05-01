@@ -1,7 +1,10 @@
 using AutoMapper;
 using BeerRecipeCore;
+using BeerRecipeCore.Fermentables;
 using HomebrewApi.Models;
 using HomebrewApi.Models.Dtos;
+using Fermentable = HomebrewApi.Models.Fermentable;
+using FermentableCharacteristics = HomebrewApi.Models.FermentableCharacteristics;
 
 namespace HomebrewApi.AutoMapper
 {
@@ -9,13 +12,18 @@ namespace HomebrewApi.AutoMapper
     {
         public DefaultProfile()
         {
-            CreateMap<IRecipe, Recipe>()
-                .ForMember(r => r.StyleId, opt => opt.MapFrom(src => src.Style.Name));
+            CreateMap<IRecipe, Recipe>();
             CreateMap<RecipeGenerationInfoDto, RecipeProjectedOutcome>();
-            CreateMap<Recipe, RecipeDto>();
+            CreateMap<Recipe, RecipeDto>()
+                .ForMember(s => s.FermentableIngredients, opt => opt.Ignore());
 
-            CreateMap<Style, BeerRecipeCore.Styles.Style>();
+            CreateMap<Style, BeerRecipeCore.Styles.Style>()
+                .ForMember(s => s.CommonGrains, opt => opt.Ignore());
             CreateMap<Style, StyleDto>();
+
+            CreateMap<Fermentable, BeerRecipeCore.Fermentables.Fermentable>();
+            CreateMap<FermentableCharacteristics, BeerRecipeCore.Fermentables.FermentableCharacteristics>();
+            CreateMap<IFermentableIngredient, FermentableIngredient>();
         }
     }
 }

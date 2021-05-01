@@ -1,12 +1,12 @@
-using BeerRecipeCore.Fermentables;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace HomebrewApi.Models
 {
-    public class CommonGrain
+    public record CommonGrain(int ProportionOfGrist)
     {
-        public Fermentable Fermentable { get; set; }
-        public int ProportionOfGrist { get; set; }
-
-        public MaltCategory Category => (MaltCategory) Fermentable.Characteristics.MaltCategory;
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string FermentableId { get; init; }
     }
 }
