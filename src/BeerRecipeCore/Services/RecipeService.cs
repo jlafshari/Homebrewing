@@ -28,20 +28,24 @@ namespace BeerRecipeCore.Services
         private static List<IFermentableIngredient> GetGrainBill(float size, IStyle style, float abv, int colorSrm)
         {
             float colorComparison;
-            List<IFermentableIngredient> grainBill;
+            var grainBill = new List<IFermentableIngredient>();
             var baseGrainProportionDifferential = 0;
-            var adjustedGristProportions = new Dictionary<CommonGrain, int>();
             do
             {
+                var adjustedGristProportions = GetAdjustedGristProportions(style.CommonGrains, grainBill, baseGrainProportionDifferential, size);
                 grainBill = GetGrainBillGivenAdjustedGristProportions(size, style, abv, adjustedGristProportions).ToList();
 
-                var colorBasedOnGrainBill = (float) ColorUtility.GetColorInSrm(grainBill, size);
-                colorComparison = colorBasedOnGrainBill - colorSrm;
-                baseGrainProportionDifferential = GetBaseGrainProportionDifferential(colorComparison, baseGrainProportionDifferential);
-                adjustedGristProportions = GetAdjustedGristProportions(style.CommonGrains, grainBill, baseGrainProportionDifferential, size);
+                colorComparison = GetColorComparisonOfGrainBillToDesiredColor(size, colorSrm, grainBill);
+                UpdateBaseGrainProportionDifferential(colorComparison, ref baseGrainProportionDifferential);
             } while (Math.Abs(colorComparison) >= 1);
 
             return grainBill.Where(g => g.Amount > 0).ToList();
+        }
+
+        private static float GetColorComparisonOfGrainBillToDesiredColor(float size, int colorSrm, IEnumerable<IFermentableIngredient> grainBill)
+        {
+            var colorBasedOnGrainBill = (float) ColorUtility.GetColorInSrm(grainBill, size);
+            return colorBasedOnGrainBill - colorSrm;
         }
 
         private static IEnumerable<IFermentableIngredient> GetGrainBillGivenAdjustedGristProportions(float size, IStyle style, float abv,
@@ -70,6 +74,7 @@ namespace BeerRecipeCore.Services
             int baseGrainProportionDifferential,
             float size)
         {
+            if (fermentableIngredients.Count == 0) return new Dictionary<CommonGrain, int>();
             var highestColorImpactGrain = GetGrainWithHighestColorImpact(styleCommonGrains, fermentableIngredients, size);
             return styleCommonGrains.ToDictionary(cg => cg, cg => GetAdjustedGrainProportion(baseGrainProportionDifferential, cg, highestColorImpactGrain));
         }
@@ -94,7 +99,7 @@ namespace BeerRecipeCore.Services
                 .Key;
         }
 
-        private static int GetBaseGrainProportionDifferential(float colorComparison, int grainProportionDifferential)
+        private static void UpdateBaseGrainProportionDifferential(float colorComparison, ref int grainProportionDifferential)
         {
             switch (colorComparison)
             {
@@ -105,8 +110,6 @@ namespace BeerRecipeCore.Services
                     grainProportionDifferential--;
                     break;
             }
-
-            return grainProportionDifferential;
         }
     }
 }
