@@ -14,6 +14,7 @@ namespace HomebrewApi.AutoMapper
         {
             CreateMap<IRecipe, Recipe>();
             CreateMap<RecipeGenerationInfoDto, RecipeProjectedOutcome>();
+            CreateMap<RecipeGenerationInfoDto, RecipeGenerationInfo>();
             CreateMap<Recipe, RecipeDto>()
                 .ForMember(s => s.FermentableIngredients, opt => opt.Ignore());
 

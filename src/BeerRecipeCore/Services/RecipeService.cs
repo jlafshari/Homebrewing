@@ -11,52 +11,53 @@ namespace BeerRecipeCore.Services
     {
         private const int MashEfficiency = 65;
         
-        public IRecipe GenerateRecipe(float size, IStyle style, float abv, int colorSrm, string name)
+        public IRecipe GenerateRecipe(RecipeGenerationInfo recipeGenerationInfo)
         {
-            var grainBill = GetGrainBill(size, style, abv, colorSrm);
+            var grainBill = GetGrainBill(recipeGenerationInfo);
 
             return new Recipe
             {
-                Name = name,
-                Size = size,
+                Name = recipeGenerationInfo.Name,
+                Size = recipeGenerationInfo.Size,
                 BoilTime = RecipeDefaultSettings.BoilTime,
-                Style = style,
+                Style = recipeGenerationInfo.Style,
                 FermentableIngredients = grainBill
             };
         }
 
-        private static List<IFermentableIngredient> GetGrainBill(float size, IStyle style, float abv, int colorSrm)
+        private static List<IFermentableIngredient> GetGrainBill(RecipeGenerationInfo recipeGenerationInfo)
         {
             float colorComparison;
             var grainBill = new List<IFermentableIngredient>();
             var baseGrainProportionDifferential = 0;
             do
             {
-                var adjustedGristProportions = GetAdjustedGristProportions(style.CommonGrains, grainBill, baseGrainProportionDifferential, size);
-                grainBill = GetGrainBillGivenAdjustedGristProportions(size, style, abv, adjustedGristProportions).ToList();
+                var adjustedGristProportions = GetAdjustedGristProportions(recipeGenerationInfo, grainBill, baseGrainProportionDifferential);
+                grainBill = GetGrainBillGivenAdjustedGristProportions(recipeGenerationInfo, adjustedGristProportions).ToList();
 
-                colorComparison = GetColorComparisonOfGrainBillToDesiredColor(size, colorSrm, grainBill);
+                colorComparison = GetColorComparisonOfGrainBillToDesiredColor(recipeGenerationInfo, grainBill);
                 UpdateBaseGrainProportionDifferential(colorComparison, ref baseGrainProportionDifferential);
             } while (Math.Abs(colorComparison) >= 1);
 
             return grainBill.Where(g => g.Amount > 0).ToList();
         }
 
-        private static float GetColorComparisonOfGrainBillToDesiredColor(float size, int colorSrm, IEnumerable<IFermentableIngredient> grainBill)
+        private static float GetColorComparisonOfGrainBillToDesiredColor(RecipeGenerationInfo recipeGenerationInfo, IEnumerable<IFermentableIngredient> grainBill)
         {
-            var colorBasedOnGrainBill = (float) ColorUtility.GetColorInSrm(grainBill, size);
-            return colorBasedOnGrainBill - colorSrm;
+            var colorBasedOnGrainBill = (float) ColorUtility.GetColorInSrm(grainBill, recipeGenerationInfo.Size);
+            return colorBasedOnGrainBill - recipeGenerationInfo.ColorSrm;
         }
 
-        private static IEnumerable<IFermentableIngredient> GetGrainBillGivenAdjustedGristProportions(float size, IStyle style, float abv,
+        private static IEnumerable<IFermentableIngredient> GetGrainBillGivenAdjustedGristProportions(RecipeGenerationInfo recipeGenerationInfo,
             Dictionary<CommonGrain, int> adjustedGristProportions)
         {
-            if (style.CommonGrains.Count == 0) throw new InvalidOperationException($"Style {style.Name} is missing common grains");
+            if (recipeGenerationInfo.Style.CommonGrains.Count == 0) throw new InvalidOperationException($"Style {recipeGenerationInfo.Style.Name} is missing common grains");
             
-            foreach (var commonGrain in style.CommonGrains)
+            foreach (var commonGrain in recipeGenerationInfo.Style.CommonGrains)
             {
                 var proportionOfGrist = GetAdjustedGristProportionForGrain(adjustedGristProportions, commonGrain);
-                var poundsOfCommonGrain = FermentableUtility.GetPoundsRequired(proportionOfGrist, size, abv, MashEfficiency, commonGrain.GravityPoint);
+                var poundsOfCommonGrain = FermentableUtility.GetPoundsRequired(proportionOfGrist, recipeGenerationInfo.Size, recipeGenerationInfo.Abv,
+                    MashEfficiency, commonGrain.GravityPoint);
                 yield return new FermentableIngredient { Amount = poundsOfCommonGrain, FermentableInfo = commonGrain.Fermentable };
             }
         }
@@ -69,14 +70,13 @@ namespace BeerRecipeCore.Services
             return proportionOfGrist;
         }
 
-        private static Dictionary<CommonGrain, int> GetAdjustedGristProportions(IReadOnlyCollection<CommonGrain> styleCommonGrains,
+        private static Dictionary<CommonGrain, int> GetAdjustedGristProportions(RecipeGenerationInfo recipeGenerationInfo,
             IReadOnlyCollection<IFermentableIngredient> fermentableIngredients,
-            int baseGrainProportionDifferential,
-            float size)
+            int baseGrainProportionDifferential)
         {
             if (fermentableIngredients.Count == 0) return new Dictionary<CommonGrain, int>();
-            var highestColorImpactGrain = GetGrainWithHighestColorImpact(styleCommonGrains, fermentableIngredients, size);
-            return styleCommonGrains.ToDictionary(cg => cg, cg => GetAdjustedGrainProportion(baseGrainProportionDifferential, cg, highestColorImpactGrain));
+            var highestColorImpactGrain = GetGrainWithHighestColorImpact(recipeGenerationInfo.Style.CommonGrains, fermentableIngredients, recipeGenerationInfo.Size);
+            return recipeGenerationInfo.Style.CommonGrains.ToDictionary(cg => cg, cg => GetAdjustedGrainProportion(baseGrainProportionDifferential, cg, highestColorImpactGrain));
         }
 
         private static int GetAdjustedGrainProportion(int baseGrainProportionDifferential, CommonGrain commonGrain, CommonGrain highestColorImpactGrain)

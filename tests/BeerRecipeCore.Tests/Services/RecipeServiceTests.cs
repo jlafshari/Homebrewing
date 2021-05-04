@@ -36,8 +36,9 @@ namespace BeerRecipeCore.Tests.Services
                     }
                 }
             };
+            var recipeGenerationInfo = new RecipeGenerationInfo(size, expectedAbv, expectedColorSrm, "FSB") { Style = style };
 
-            var recipe = _recipeService.GenerateRecipe(size, style, expectedAbv, expectedColorSrm, "FSB");
+            var recipe = _recipeService.GenerateRecipe(recipeGenerationInfo);
 
             AssertRecipeHasGrains(recipe);
             
@@ -77,8 +78,9 @@ namespace BeerRecipeCore.Tests.Services
                     }
                 }
             };
+            var recipeGenerationInfo = new RecipeGenerationInfo(size, expectedAbv, expectedColorSrm, "Brown Ale") { Style = style };
             
-            var recipe = _recipeService.GenerateRecipe(size, style, expectedAbv, expectedColorSrm, "Brown Ale");
+            var recipe = _recipeService.GenerateRecipe(recipeGenerationInfo);
 
             AssertRecipeHasGrains(recipe);
             

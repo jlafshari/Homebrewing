@@ -1,10 +1,8 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using BeerRecipeCore;
 using BeerRecipeCore.Services;
-using BeerRecipeCore.Styles;
 using HomebrewApi.Models;
 using HomebrewApi.Models.Dtos;
 using MongoDB.Driver;
@@ -54,13 +52,20 @@ namespace HomebrewApi.Services
 
         private Recipe GenerateRecipe(RecipeGenerationInfoDto recipeGenerationInfoDto, Style style)
         {
-            var styleForBeerRecipeCore = _mapper.Map<Style, BeerRecipeCore.Styles.Style>(style);
-            LoadFermentables(styleForBeerRecipeCore, style.CommonGrains);
-            
-            var generatedRecipe = _recipeService.GenerateRecipe(recipeGenerationInfoDto.Size, styleForBeerRecipeCore, recipeGenerationInfoDto.Abv,
-                recipeGenerationInfoDto.ColorSrm, recipeGenerationInfoDto.Name);
+            var recipeGenerationInfo = GetRecipeGenerationInfo(recipeGenerationInfoDto, style);
+
+            var generatedRecipe = _recipeService.GenerateRecipe(recipeGenerationInfo);
             var recipeToInsert = ConvertRecipeToDbRecipe(recipeGenerationInfoDto, style, generatedRecipe);
             return recipeToInsert;
+        }
+
+        private RecipeGenerationInfo GetRecipeGenerationInfo(RecipeGenerationInfoDto recipeGenerationInfoDto, Style style)
+        {
+            var styleForBeerRecipeCore = _mapper.Map<Style, BeerRecipeCore.Styles.Style>(style);
+            LoadFermentables(styleForBeerRecipeCore, style.CommonGrains);
+            var recipeGenerationInfo = _mapper.Map<RecipeGenerationInfo>(recipeGenerationInfoDto);
+            recipeGenerationInfo.Style = styleForBeerRecipeCore;
+            return recipeGenerationInfo;
         }
 
         private Recipe ConvertRecipeToDbRecipe(RecipeGenerationInfoDto recipeGenerationInfoDto, Style style, IRecipe generatedRecipe)
