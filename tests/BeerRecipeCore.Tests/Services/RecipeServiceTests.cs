@@ -39,10 +39,9 @@ namespace BeerRecipeCore.Tests.Services
 
             var recipe = _recipeService.GenerateRecipe(size, style, expectedAbv, expectedColorSrm, "FSB");
 
-            Assert.Equal(style.CommonGrains.Count, recipe.FermentableIngredients.Count);
-            Assert.Equal(style.CommonGrains[0].Fermentable, recipe.FermentableIngredients[0].FermentableInfo);
+            AssertRecipeHasGrains(recipe);
             
-            AssertAllGrainAmountsNonNegative(recipe);
+            AssertAllGrainAmountsAreAboveZero(recipe);
             
             AssertColorIsWithinOneSrm(recipe, size, expectedColorSrm);
 
@@ -81,19 +80,23 @@ namespace BeerRecipeCore.Tests.Services
             
             var recipe = _recipeService.GenerateRecipe(size, style, expectedAbv, expectedColorSrm, "Brown Ale");
 
-            Assert.Equal(style.CommonGrains.Count, recipe.FermentableIngredients.Count);
-            Assert.Equal(style.CommonGrains[0].Fermentable, recipe.FermentableIngredients[0].FermentableInfo);
+            AssertRecipeHasGrains(recipe);
             
-            AssertAllGrainAmountsNonNegative(recipe);
+            AssertAllGrainAmountsAreAboveZero(recipe);
             
             AssertColorIsWithinOneSrm(recipe, size, expectedColorSrm);
 
             AssertAbvIsEqual(recipe, size, expectedAbv);
         }
 
-        private static void AssertAllGrainAmountsNonNegative(IRecipe recipe)
+        private static void AssertRecipeHasGrains(IRecipe recipe)
         {
-            Assert.True(recipe.FermentableIngredients.All(f => f.Amount >= 0));
+            Assert.True(recipe.FermentableIngredients.Count > 0);
+        }
+
+        private static void AssertAllGrainAmountsAreAboveZero(IRecipe recipe)
+        {
+            Assert.True(recipe.FermentableIngredients.All(f => f.Amount > 0));
         }
 
         private static void AssertColorIsWithinOneSrm(IRecipe recipe, float size, int expectedColorSrm)

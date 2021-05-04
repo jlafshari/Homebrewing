@@ -34,7 +34,7 @@ namespace BeerRecipeCore.Services
                 Size = size,
                 BoilTime = RecipeDefaultSettings.BoilTime,
                 Style = style,
-                FermentableIngredients = grainBill
+                FermentableIngredients = grainBill.Where(g => g.Amount > 0).ToList()
             };
         }
 
