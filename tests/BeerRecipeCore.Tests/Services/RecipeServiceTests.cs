@@ -13,12 +13,14 @@ namespace BeerRecipeCore.Tests.Services
     {
         private readonly RecipeService _recipeService = new();
         
-        [Fact]
-        public void CanGenerateRecipeWithBaseAndCaramelGrain()
+        [Theory]
+        [InlineData(85, 15, 8, 5.5f)]
+        [InlineData(90, 10, 8, 5.5f)]
+        [InlineData(83, 17, 14, 5.0f)]
+        public void CanGenerateRecipeWithBaseAndCaramelGrain(int baseMaltProportion, int caramelMaltProportion,
+            int expectedColorSrm, float expectedAbv)
         {
             const float size = 5f;
-            const int expectedColorSrm = 8;
-            const float expectedAbv = 5.5f;
             var style = new Style("ESB", new StyleCategory("", 1, StyleType.Ale),
                 new StyleClassification("E", "test"), new List<StyleThreshold>())
             {
@@ -27,12 +29,12 @@ namespace BeerRecipeCore.Tests.Services
                     new()
                     {
                         Fermentable = MarisOtter,
-                        ProportionOfGrist = 85
+                        ProportionOfGrist = baseMaltProportion
                     },
                     new()
                     {
                         Fermentable = VictoryMalt,
-                        ProportionOfGrist = 15
+                        ProportionOfGrist = caramelMaltProportion
                     }
                 }
             };
