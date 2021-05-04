@@ -13,20 +13,7 @@ namespace BeerRecipeCore.Services
         
         public IRecipe GenerateRecipe(float size, IStyle style, float abv, int colorSrm, string name)
         {
-            float colorComparison;
-            List<IFermentableIngredient> grainBill;
-            var baseGrainProportionDifferential = 0;
-            var adjustedGristProportions = new Dictionary<CommonGrain, int>();
-            do
-            {
-                grainBill = GetGrainBill(size, style, abv, adjustedGristProportions).ToList();
-
-                var colorBasedOnGrainBill = (float) ColorUtility.GetColorInSrm(grainBill, size);
-                colorComparison = colorBasedOnGrainBill - colorSrm;
-                baseGrainProportionDifferential = GetBaseGrainProportionDifferential(colorComparison, baseGrainProportionDifferential);
-                adjustedGristProportions = GetAdjustedGristProportions(style.CommonGrains, grainBill, baseGrainProportionDifferential, size);
-            }
-            while (Math.Abs(colorComparison) >= 1);
+            var grainBill = GetGrainBill(size, style, abv, colorSrm);
 
             return new Recipe
             {
@@ -34,24 +21,48 @@ namespace BeerRecipeCore.Services
                 Size = size,
                 BoilTime = RecipeDefaultSettings.BoilTime,
                 Style = style,
-                FermentableIngredients = grainBill.Where(g => g.Amount > 0).ToList()
+                FermentableIngredients = grainBill
             };
         }
 
-        private static IEnumerable<IFermentableIngredient> GetGrainBill(float size, IStyle style, float abv,
+        private static List<IFermentableIngredient> GetGrainBill(float size, IStyle style, float abv, int colorSrm)
+        {
+            float colorComparison;
+            List<IFermentableIngredient> grainBill;
+            var baseGrainProportionDifferential = 0;
+            var adjustedGristProportions = new Dictionary<CommonGrain, int>();
+            do
+            {
+                grainBill = GetGrainBillGivenAdjustedGristProportions(size, style, abv, adjustedGristProportions).ToList();
+
+                var colorBasedOnGrainBill = (float) ColorUtility.GetColorInSrm(grainBill, size);
+                colorComparison = colorBasedOnGrainBill - colorSrm;
+                baseGrainProportionDifferential = GetBaseGrainProportionDifferential(colorComparison, baseGrainProportionDifferential);
+                adjustedGristProportions = GetAdjustedGristProportions(style.CommonGrains, grainBill, baseGrainProportionDifferential, size);
+            } while (Math.Abs(colorComparison) >= 1);
+
+            return grainBill.Where(g => g.Amount > 0).ToList();
+        }
+
+        private static IEnumerable<IFermentableIngredient> GetGrainBillGivenAdjustedGristProportions(float size, IStyle style, float abv,
             Dictionary<CommonGrain, int> adjustedGristProportions)
         {
             if (style.CommonGrains.Count == 0) throw new InvalidOperationException($"Style {style.Name} is missing common grains");
             
             foreach (var commonGrain in style.CommonGrains)
             {
-                adjustedGristProportions.TryGetValue(commonGrain, out var proportionOfGrist);
-                if (proportionOfGrist < 0) throw new InvalidOperationException("Can't have negative grain proportion");
-
-                var poundsOfCommonGrain = FermentableUtility.GetPoundsRequired(
-                    proportionOfGrist, size, abv, MashEfficiency, commonGrain.Fermentable.Characteristics.GravityPoint);
+                var proportionOfGrist = GetAdjustedGristProportionForGrain(adjustedGristProportions, commonGrain);
+                var poundsOfCommonGrain = FermentableUtility.GetPoundsRequired(proportionOfGrist, size, abv, MashEfficiency, commonGrain.GravityPoint);
                 yield return new FermentableIngredient { Amount = poundsOfCommonGrain, FermentableInfo = commonGrain.Fermentable };
             }
+        }
+
+        private static int GetAdjustedGristProportionForGrain(Dictionary<CommonGrain, int> adjustedGristProportions, CommonGrain commonGrain)
+        {
+            if (!adjustedGristProportions.TryGetValue(commonGrain, out var proportionOfGrist))
+                proportionOfGrist = commonGrain.ProportionOfGrist;
+            if (proportionOfGrist < 0) throw new InvalidOperationException("Can't have negative grain proportion");
+            return proportionOfGrist;
         }
 
         private static Dictionary<CommonGrain, int> GetAdjustedGristProportions(IReadOnlyCollection<CommonGrain> styleCommonGrains,
@@ -59,23 +70,28 @@ namespace BeerRecipeCore.Services
             int baseGrainProportionDifferential,
             float size)
         {
-            var highestColorImpactGrain = styleCommonGrains.ToDictionary(g => g, g =>
-            {
-                var fermentableIngredient = fermentableIngredients.Single(f => f.FermentableInfo == g.Fermentable);
-                return ColorUtility.GetMaltColorUnit(fermentableIngredient, size);
-            })
+            var highestColorImpactGrain = GetGrainWithHighestColorImpact(styleCommonGrains, fermentableIngredients, size);
+            return styleCommonGrains.ToDictionary(cg => cg, cg => GetAdjustedGrainProportion(baseGrainProportionDifferential, cg, highestColorImpactGrain));
+        }
+
+        private static int GetAdjustedGrainProportion(int baseGrainProportionDifferential, CommonGrain commonGrain, CommonGrain highestColorImpactGrain)
+        {
+            return commonGrain.Category == MaltCategory.Base ? commonGrain.ProportionOfGrist + baseGrainProportionDifferential :
+                commonGrain == highestColorImpactGrain ? commonGrain.ProportionOfGrist - baseGrainProportionDifferential :
+                commonGrain.ProportionOfGrist;
+        }
+
+        private static CommonGrain GetGrainWithHighestColorImpact(IEnumerable<CommonGrain> styleCommonGrains,
+            IReadOnlyCollection<IFermentableIngredient> fermentableIngredients, float size)
+        {
+            return styleCommonGrains.ToDictionary(g => g, g =>
+                {
+                    var fermentableIngredient = fermentableIngredients.Single(f => f.FermentableInfo == g.Fermentable);
+                    return ColorUtility.GetMaltColorUnit(fermentableIngredient, size);
+                })
                 .OrderByDescending(x => x.Value)
                 .First()
                 .Key;
-            var adjustedGristProportions = new Dictionary<CommonGrain, int>();
-            foreach (var commonGrain in styleCommonGrains)
-            {
-                var adjustedProportion = commonGrain.Category == MaltCategory.Base ? commonGrain.ProportionOfGrist + baseGrainProportionDifferential :
-                    commonGrain == highestColorImpactGrain ? commonGrain.ProportionOfGrist - baseGrainProportionDifferential :
-                    commonGrain.ProportionOfGrist;
-                adjustedGristProportions.Add(commonGrain, adjustedProportion);
-            }
-            return adjustedGristProportions;
         }
 
         private static int GetBaseGrainProportionDifferential(float colorComparison, int grainProportionDifferential)

@@ -18,5 +18,6 @@ namespace BeerRecipeCore.Styles
         public int ProportionOfGrist { get; set; }
 
         public MaltCategory Category => (MaltCategory) Fermentable.Characteristics.MaltCategory;
+        public int GravityPoint => Fermentable.Characteristics.GravityPoint;
     }
 }
