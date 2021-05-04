@@ -16,7 +16,7 @@ namespace BeerRecipeCore.Formulas
             return Math.Round(1.4922 * Math.Pow(totalMcu, 0.6859), 1);
         }
 
-        private static double GetMaltColorUnit(IFermentableIngredient fermentable, float recipeVolumeInGallons)
+        internal static double GetMaltColorUnit(IFermentableIngredient fermentable, float recipeVolumeInGallons)
         {
             return fermentable.FermentableInfo.Characteristics.Color * fermentable.Amount / recipeVolumeInGallons;
         }

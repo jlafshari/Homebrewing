@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using BeerRecipeCore.Fermentables;
 using BeerRecipeCore.Formulas;
 using BeerRecipeCore.Services;
@@ -41,17 +42,20 @@ namespace BeerRecipeCore.Tests.Services
             Assert.Equal(style.CommonGrains.Count, recipe.FermentableIngredients.Count);
             Assert.Equal(style.CommonGrains[0].Fermentable, recipe.FermentableIngredients[0].FermentableInfo);
             
+            AssertAllGrainAmountsNonNegative(recipe);
+            
             AssertColorIsWithinOneSrm(recipe, size, expectedColorSrm);
 
             AssertAbvIsEqual(recipe, size, expectedAbv);
         }
 
-        [Fact]
-        public void CanGenerateRecipeWithBaseAndRoastedAndCaramelGrain()
+        [Theory]
+        [InlineData(85, 13, 2, 16, 5.5f)]
+        [InlineData(85, 10, 5, 8, 5)]
+        public void CanGenerateRecipeWithBaseAndRoastedAndCaramelGrain(int baseMaltProportion, int caramelMaltProportion, int roastedMaltProportion,
+            int expectedColorSrm, float expectedAbv)
         {
             const float size = 5f;
-            const int expectedColorSrm = 16;
-            const float expectedAbv = 5.5f;
             var style = new Style("ESB", new StyleCategory("", 1, StyleType.Ale),
                 new StyleClassification("E", "test"), new List<StyleThreshold>())
             {
@@ -60,17 +64,17 @@ namespace BeerRecipeCore.Tests.Services
                     new()
                     {
                         Fermentable = MarisOtter,
-                        ProportionOfGrist = 85
+                        ProportionOfGrist = baseMaltProportion
                     },
                     new()
                     {
                         Fermentable = VictoryMalt,
-                        ProportionOfGrist = 13
+                        ProportionOfGrist = caramelMaltProportion
                     },
                     new()
                     {
                         Fermentable = ChocolateMalt,
-                        ProportionOfGrist = 2
+                        ProportionOfGrist = roastedMaltProportion
                     }
                 }
             };
@@ -80,9 +84,16 @@ namespace BeerRecipeCore.Tests.Services
             Assert.Equal(style.CommonGrains.Count, recipe.FermentableIngredients.Count);
             Assert.Equal(style.CommonGrains[0].Fermentable, recipe.FermentableIngredients[0].FermentableInfo);
             
+            AssertAllGrainAmountsNonNegative(recipe);
+            
             AssertColorIsWithinOneSrm(recipe, size, expectedColorSrm);
 
             AssertAbvIsEqual(recipe, size, expectedAbv);
+        }
+
+        private static void AssertAllGrainAmountsNonNegative(IRecipe recipe)
+        {
+            Assert.True(recipe.FermentableIngredients.All(f => f.Amount >= 0));
         }
 
         private static void AssertColorIsWithinOneSrm(IRecipe recipe, float size, int expectedColorSrm)
@@ -95,7 +106,7 @@ namespace BeerRecipeCore.Tests.Services
         {
             var originalGravity = AlcoholUtility.GetOriginalGravity(recipe.FermentableIngredients, size, 65);
             var actualAbv = Math.Round(AlcoholUtility.GetAlcoholByVolume(originalGravity, 1.010f), 1);
-            Assert.Equal(expectedAbv, actualAbv);
+            Assert.True(Math.Abs(expectedAbv - actualAbv) < 0.1f);
         }
 
         private static Fermentable VictoryMalt =>
