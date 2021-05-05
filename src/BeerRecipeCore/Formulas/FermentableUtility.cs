@@ -4,7 +4,7 @@ namespace BeerRecipeCore.Formulas
 {
     public static class FermentableUtility
     {
-        public static float GetPoundsRequired(int proportionOfGrist, float recipeSize, float abv,
+        public static float GetPoundsRequired(float proportionOfGrist, float recipeSize, float abv,
             int mashEfficiency, int optimumYield)
         {
             var og = GetOriginalGravity(abv);

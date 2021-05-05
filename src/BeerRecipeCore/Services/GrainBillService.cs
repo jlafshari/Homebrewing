@@ -11,7 +11,8 @@ namespace BeerRecipeCore.Services
     internal class GrainBillService
     {
         private const int MashEfficiency = 65;
-        private int _baseGrainProportionDifferential;
+        private float _baseGrainProportionDifferential;
+        private const float BaseGrainProportionDifferentialIncrement = 0.5f;
         
         internal List<IFermentableIngredient> GetGrainBill(RecipeGenerationInfo recipeGenerationInfo)
         {
@@ -49,7 +50,7 @@ namespace BeerRecipeCore.Services
                 new AdjustedCommonGrain(cg, GetAdjustedGrainProportion(cg, highestColorImpactGrain))).ToList();
         }
 
-        private int GetAdjustedGrainProportion(CommonGrain commonGrain, CommonGrain highestColorImpactGrain)
+        private float GetAdjustedGrainProportion(CommonGrain commonGrain, CommonGrain highestColorImpactGrain)
         {
             return commonGrain.Category == MaltCategory.Base ? commonGrain.ProportionOfGrist + _baseGrainProportionDifferential :
                 commonGrain == highestColorImpactGrain ? commonGrain.ProportionOfGrist - _baseGrainProportionDifferential :
@@ -83,10 +84,10 @@ namespace BeerRecipeCore.Services
             switch (colorComparison)
             {
                 case > 0:
-                    _baseGrainProportionDifferential++;
+                    _baseGrainProportionDifferential += BaseGrainProportionDifferentialIncrement;
                     break;
                 case < 0:
-                    _baseGrainProportionDifferential--;
+                    _baseGrainProportionDifferential -= BaseGrainProportionDifferentialIncrement;
                     break;
             }
         }
@@ -97,6 +98,6 @@ namespace BeerRecipeCore.Services
             return colorBasedOnGrainBill - recipeGenerationInfo.ColorSrm;
         }
 
-        private record AdjustedCommonGrain(CommonGrain CommonGrain, int AdjustedGristProportion);
+        private record AdjustedCommonGrain(CommonGrain CommonGrain, float AdjustedGristProportion);
     }
 }
