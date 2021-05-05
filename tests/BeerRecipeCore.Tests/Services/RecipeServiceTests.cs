@@ -56,6 +56,7 @@ namespace BeerRecipeCore.Tests.Services
         [InlineData(85, 13, 2, 16, 5.5f)]
         [InlineData(85, 10, 5, 8, 5)]
         [InlineData(85, 10, 5, 13, 5.5f)]
+        [InlineData(85, 10, 5, 6, 6.0f)]
         public void CanGenerateRecipeWithBaseAndRoastedAndCaramelGrain(int baseMaltProportion, int caramelMaltProportion, int roastedMaltProportion,
             int expectedColorSrm, float expectedAbv)
         {
