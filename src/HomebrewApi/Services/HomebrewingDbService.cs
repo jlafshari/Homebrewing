@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using BeerRecipeCore;
+using BeerRecipeCore.Recipes;
 using BeerRecipeCore.Services;
 using HomebrewApi.Models;
 using HomebrewApi.Models.Dtos;

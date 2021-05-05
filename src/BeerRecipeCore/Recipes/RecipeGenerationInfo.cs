@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using BeerRecipeCore.Styles;
 
-namespace BeerRecipeCore
+namespace BeerRecipeCore.Recipes
 {
     public record RecipeGenerationInfo(float Size, float Abv, int ColorSrm, string Name)
     {

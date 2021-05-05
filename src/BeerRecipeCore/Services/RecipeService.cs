@@ -1,3 +1,5 @@
+using BeerRecipeCore.Recipes;
+
 namespace BeerRecipeCore.Services
 {
     public class RecipeService

@@ -7,6 +7,7 @@ using System.Xml.Linq;
 using BeerRecipeCore;
 using BeerRecipeCore.BeerXml;
 using BeerRecipeCore.Fermentables;
+using BeerRecipeCore.Recipes;
 using BeerRecipeCore.Styles;
 using Utility;
 

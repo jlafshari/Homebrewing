@@ -1,6 +1,7 @@
 using AutoMapper;
 using BeerRecipeCore;
 using BeerRecipeCore.Fermentables;
+using BeerRecipeCore.Recipes;
 using HomebrewApi.Models;
 using HomebrewApi.Models.Dtos;
 using Fermentable = HomebrewApi.Models.Fermentable;

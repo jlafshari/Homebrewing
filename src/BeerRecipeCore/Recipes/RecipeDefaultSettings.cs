@@ -1,4 +1,4 @@
-﻿namespace BeerRecipeCore
+﻿namespace BeerRecipeCore.Recipes
 {
     /// <summary>
     /// Default recipe settings based on a 5 gallon batch.

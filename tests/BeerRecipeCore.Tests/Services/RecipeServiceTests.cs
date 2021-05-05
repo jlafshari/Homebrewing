@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using BeerRecipeCore.Fermentables;
 using BeerRecipeCore.Formulas;
+using BeerRecipeCore.Recipes;
 using BeerRecipeCore.Services;
 using BeerRecipeCore.Styles;
 using Xunit;

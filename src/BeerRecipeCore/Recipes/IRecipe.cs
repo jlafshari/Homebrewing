@@ -6,7 +6,7 @@ using BeerRecipeCore.Mash;
 using BeerRecipeCore.Styles;
 using BeerRecipeCore.Yeast;
 
-namespace BeerRecipeCore
+namespace BeerRecipeCore.Recipes
 {
     public interface IRecipe
     {
