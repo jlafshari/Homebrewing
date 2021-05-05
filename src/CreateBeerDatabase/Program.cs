@@ -4,7 +4,6 @@ using System.Data.SQLite;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
-using BeerRecipeCore;
 using BeerRecipeCore.BeerXml;
 using BeerRecipeCore.Fermentables;
 using BeerRecipeCore.Recipes;

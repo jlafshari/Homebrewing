@@ -1,5 +1,4 @@
 using AutoMapper;
-using BeerRecipeCore;
 using BeerRecipeCore.Fermentables;
 using BeerRecipeCore.Recipes;
 using HomebrewApi.Models;
