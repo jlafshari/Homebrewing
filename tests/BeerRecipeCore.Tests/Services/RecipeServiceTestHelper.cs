@@ -1,4 +1,5 @@
 using BeerRecipeCore.Fermentables;
+using BeerRecipeCore.Yeast;
 
 namespace BeerRecipeCore.Tests.Services
 {
@@ -12,5 +13,8 @@ namespace BeerRecipeCore.Tests.Services
 
         internal static Fermentable ChocolateMalt => new("Chocolate Malt",
                 new FermentableCharacteristics(60f, 350f, 0) { GravityPoint = 28, MaltCategory = MaltCategory.Roasted }, "", "");
+
+        internal static Yeast.Yeast SafAleEnglishAleYeast => new("Safale English Ale",
+                new YeastCharacteristics(YeastType.Ale, Flocculation.Medium, YeastForm.Dry, 16, 22, 75), "", "DCL Labs", "");
     }
 }

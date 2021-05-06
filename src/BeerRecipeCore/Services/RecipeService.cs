@@ -1,4 +1,5 @@
 using BeerRecipeCore.Recipes;
+using BeerRecipeCore.Yeast;
 
 namespace BeerRecipeCore.Services
 {
@@ -21,7 +22,8 @@ namespace BeerRecipeCore.Services
                 Size = recipeGenerationInfo.Size,
                 BoilTime = RecipeDefaultSettings.BoilTime,
                 Style = recipeGenerationInfo.Style,
-                FermentableIngredients = grainBill
+                FermentableIngredients = grainBill,
+                YeastIngredient = new YeastIngredient(0, 0, recipeGenerationInfo.Style.CommonYeast)
             };
         }
     }

@@ -15,6 +15,13 @@ namespace HomebrewApi.Models
         public string StyleId { get; set; }
         public RecipeProjectedOutcome ProjectedOutcome { get; set; }
         public List<FermentableIngredient> FermentableIngredients { get; set; }
+        public YeastIngredient YeastIngredient { get; set; }
+    }
+
+    internal record YeastIngredient(float Weight, float Volume)
+    {
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string YeastId { get; set; }
     }
 
     internal record FermentableIngredient(float Amount)

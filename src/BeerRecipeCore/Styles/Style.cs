@@ -14,5 +14,7 @@ namespace BeerRecipeCore.Styles
         public string Examples { get; init; }
         
         public List<CommonGrain> CommonGrains { get; set; } = new();
+
+        public Yeast.Yeast CommonYeast { get; set; }
     }
 }

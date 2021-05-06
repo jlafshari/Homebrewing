@@ -9,5 +9,6 @@ namespace BeerRecipeCore.Styles
         public StyleClassification Classification { get; }
         public List<StyleThreshold> Thresholds { get; }
         public List<CommonGrain> CommonGrains { get; set; }
+        public Yeast.Yeast CommonYeast { get; set; }
     }
 }

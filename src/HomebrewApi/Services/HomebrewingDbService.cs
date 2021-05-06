@@ -70,6 +70,7 @@ namespace HomebrewApi.Services
         {
             var styleForBeerRecipeCore = _mapper.Map<Style, BeerRecipeCore.Styles.Style>(style);
             LoadFermentables(styleForBeerRecipeCore, style.CommonGrains);
+            styleForBeerRecipeCore.CommonYeast = GetYeast(style.CommonYeastId);
             var recipeGenerationInfo = _mapper.Map<RecipeGenerationInfo>(recipeGenerationInfoDto);
             recipeGenerationInfo.Style = styleForBeerRecipeCore;
             return recipeGenerationInfo;
@@ -80,6 +81,8 @@ namespace HomebrewApi.Services
             var recipeToInsert = _mapper.Map<Recipe>(generatedRecipe);
             recipeToInsert.ProjectedOutcome = _mapper.Map<RecipeProjectedOutcome>(recipeGenerationInfoDto);
             recipeToInsert.StyleId = recipeGenerationInfoDto.StyleId;
+            recipeToInsert.YeastIngredient = _mapper.Map<YeastIngredient>(generatedRecipe.YeastIngredient);
+            recipeToInsert.YeastIngredient.YeastId = style.CommonYeastId;
             for (int i = 0; i < recipeToInsert.FermentableIngredients.Count; i++)
             {
                 recipeToInsert.FermentableIngredients[i].FermentableId = style.CommonGrains[i].FermentableId;
@@ -143,6 +146,14 @@ namespace HomebrewApi.Services
             var filter = Builders<Fermentable>.Filter.Eq(r => r.Id, fermentableId);
             var fermentableFromDb = fermentableCollection.FindSync(filter).ToEnumerable().SingleOrDefault();
             return _mapper.Map<Fermentable, BeerRecipeCore.Fermentables.Fermentable>(fermentableFromDb);
+        }
+
+        private BeerRecipeCore.Yeast.Yeast GetYeast(string yeastId)
+        {
+            var yeastCollection = _database.GetCollection<Yeast>(YeastCollectionName);
+            var filter = Builders<Yeast>.Filter.Eq(y => y.Id, yeastId);
+            var yeastFromDb = yeastCollection.FindSync(filter).ToEnumerable().SingleOrDefault();
+            return _mapper.Map<Yeast, BeerRecipeCore.Yeast.Yeast>(yeastFromDb);
         }
         
         private List<RecipeDto> GetRecipes(FilterDefinition<Recipe> filter)

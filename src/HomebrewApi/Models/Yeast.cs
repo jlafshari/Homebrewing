@@ -1,4 +1,3 @@
-using BeerRecipeCore.Yeast;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 

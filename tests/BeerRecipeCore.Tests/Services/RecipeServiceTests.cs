@@ -36,19 +36,14 @@ namespace BeerRecipeCore.Tests.Services
                         Fermentable = RecipeServiceTestHelper.VictoryMalt,
                         ProportionOfGrist = caramelMaltProportion
                     }
-                }
+                },
+                CommonYeast = RecipeServiceTestHelper.SafAleEnglishAleYeast
             };
             var recipeGenerationInfo = new RecipeGenerationInfo(size, expectedAbv, expectedColorSrm, "FSB") { Style = style };
 
             var recipe = _recipeService.GenerateRecipe(recipeGenerationInfo);
 
-            AssertRecipeHasGrains(recipe);
-            
-            AssertAllGrainAmountsAreAboveZero(recipe);
-            
-            AssertColorIsWithinOneSrm(recipe, size, expectedColorSrm);
-
-            AssertAbvIsEqual(recipe, size, expectedAbv);
+            AssertRecipeHasExpectedValues(expectedColorSrm, expectedAbv, recipe, size, style.CommonYeast);
         }
 
         [Theory]
@@ -80,19 +75,28 @@ namespace BeerRecipeCore.Tests.Services
                         Fermentable = RecipeServiceTestHelper.ChocolateMalt,
                         ProportionOfGrist = roastedMaltProportion
                     }
-                }
+                },
+                CommonYeast = RecipeServiceTestHelper.SafAleEnglishAleYeast
             };
             var recipeGenerationInfo = new RecipeGenerationInfo(size, expectedAbv, expectedColorSrm, "Brown Ale") { Style = style };
             
             var recipe = _recipeService.GenerateRecipe(recipeGenerationInfo);
 
+            AssertRecipeHasExpectedValues(expectedColorSrm, expectedAbv, recipe, size, style.CommonYeast);
+        }
+
+        private static void AssertRecipeHasExpectedValues(int expectedColorSrm, float expectedAbv, IRecipe recipe, float size, Yeast.Yeast styleCommonYeast)
+        {
             AssertRecipeHasGrains(recipe);
-            
+
             AssertAllGrainAmountsAreAboveZero(recipe);
-            
+
             AssertColorIsWithinOneSrm(recipe, size, expectedColorSrm);
 
             AssertAbvIsEqual(recipe, size, expectedAbv);
+            
+            Assert.NotNull(recipe.YeastIngredient);
+            Assert.Equal(recipe.YeastIngredient.YeastInfo.Name, styleCommonYeast.Name);
         }
 
         private static void AssertRecipeHasGrains(IRecipe recipe)
