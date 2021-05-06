@@ -16,6 +16,7 @@ namespace HomebrewApi.Services
         private readonly IMapper _mapper;
         private const string StyleCollectionName = "Styles";
         private const string FermentableCollectionName = "Fermentables";
+        private const string YeastCollectionName = "Yeasts";
         private const string RecipeCollectionName = "Recipes";
         private readonly IMongoDatabase _database;
         private readonly RecipeService _recipeService;
@@ -48,6 +49,12 @@ namespace HomebrewApi.Services
             InsertRecipe(recipeToInsert);
             var recipeDto = GetRecipeDto(recipeToInsert, new List<StyleDto> { _mapper.Map<StyleDto>(style) });
             return recipeDto;
+        }
+
+        public void CreateYeast(Yeast yeast)
+        {
+            var yeastCollection = _database.GetCollection<Yeast>(YeastCollectionName);
+            yeastCollection.InsertOne(yeast);
         }
 
         private Recipe GenerateRecipe(RecipeGenerationInfoDto recipeGenerationInfoDto, Style style)

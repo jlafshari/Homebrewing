@@ -48,18 +48,18 @@ namespace BeerRecipeCore.BeerXml
 
         public static Yeast.Yeast GetYeast(XElement yeastEntry)
         {
-            string name = GetNameFromRecord(yeastEntry);
-            string type = yeastEntry.GetChildElementValue("TYPE");
-            string form = yeastEntry.GetChildElementValue("FORM");
-            string laboratory = yeastEntry.GetChildElementValue("LABORATORY");
-            string productId = yeastEntry.GetChildElementValue("PRODUCT_ID");
-            float minTemperature = Convert.ToSingle(yeastEntry.GetChildElementValue("MIN_TEMPERATURE"));
-            float maxTemperature = Convert.ToSingle(yeastEntry.GetChildElementValue("MAX_TEMPERATURE"));
-            string flocculation = yeastEntry.GetChildElementValue("FLOCCULATION");
-            float attenuation = Convert.ToSingle(yeastEntry.GetChildElementValue("ATTENUATION"));
-            string notes = GetNotesFromRecord(yeastEntry);
+            var name = GetNameFromRecord(yeastEntry);
+            var type = EnumConverter.Parse<YeastType>(yeastEntry.GetChildElementValue("TYPE"));
+            var form = EnumConverter.Parse<YeastForm>(yeastEntry.GetChildElementValue("FORM"));
+            var laboratory = yeastEntry.GetChildElementValue("LABORATORY");
+            var productId = yeastEntry.GetChildElementValue("PRODUCT_ID");
+            var minTemperature = Convert.ToSingle(yeastEntry.GetChildElementValue("MIN_TEMPERATURE"));
+            var maxTemperature = Convert.ToSingle(yeastEntry.GetChildElementValue("MAX_TEMPERATURE"));
+            var flocculation = EnumConverter.Parse<Flocculation>(yeastEntry.GetChildElementValue("FLOCCULATION"));
+            var attenuation = Convert.ToSingle(yeastEntry.GetChildElementValue("ATTENUATION"));
+            var notes = GetNotesFromRecord(yeastEntry);
 
-            YeastCharacteristics characteristics = new YeastCharacteristics(type, flocculation, form) { Attenuation = attenuation, MinTemperature = minTemperature, MaxTemperature = maxTemperature };
+            var characteristics = new YeastCharacteristics(type, flocculation, form, minTemperature, maxTemperature, attenuation);
             return new Yeast.Yeast(name, characteristics, notes, laboratory, productId);
         }
 
