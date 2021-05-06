@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using BeerRecipeCore.Fermentables;
 using BeerRecipeCore.Formulas;
 using BeerRecipeCore.Recipes;
 using BeerRecipeCore.Services;
@@ -29,12 +28,12 @@ namespace BeerRecipeCore.Tests.Services
                 {
                     new()
                     {
-                        Fermentable = MarisOtter,
+                        Fermentable = RecipeServiceTestHelper.MarisOtter,
                         ProportionOfGrist = baseMaltProportion
                     },
                     new()
                     {
-                        Fermentable = VictoryMalt,
+                        Fermentable = RecipeServiceTestHelper.VictoryMalt,
                         ProportionOfGrist = caramelMaltProportion
                     }
                 }
@@ -68,17 +67,17 @@ namespace BeerRecipeCore.Tests.Services
                 {
                     new()
                     {
-                        Fermentable = MarisOtter,
+                        Fermentable = RecipeServiceTestHelper.MarisOtter,
                         ProportionOfGrist = baseMaltProportion
                     },
                     new()
                     {
-                        Fermentable = VictoryMalt,
+                        Fermentable = RecipeServiceTestHelper.VictoryMalt,
                         ProportionOfGrist = caramelMaltProportion
                     },
                     new()
                     {
-                        Fermentable = ChocolateMalt,
+                        Fermentable = RecipeServiceTestHelper.ChocolateMalt,
                         ProportionOfGrist = roastedMaltProportion
                     }
                 }
@@ -118,17 +117,5 @@ namespace BeerRecipeCore.Tests.Services
             var actualAbv = Math.Round(AlcoholUtility.GetAlcoholByVolume(originalGravity, 1.010f), 1);
             Assert.True(Math.Abs(expectedAbv - actualAbv) < 0.1f);
         }
-
-        private static Fermentable VictoryMalt =>
-            new("Victory Malt",
-                new FermentableCharacteristics(73f, 25f, 50f) { GravityPoint = 34, MaltCategory = MaltCategory.Caramel }, "", "");
-
-        private static Fermentable MarisOtter =>
-            new("Maris Otter",
-                new FermentableCharacteristics(82.5f, 3f, 120f) { GravityPoint = 38, MaltCategory = MaltCategory.Base }, "", "");
-
-        private static Fermentable ChocolateMalt =>
-            new("Chocolate Malt",
-                new FermentableCharacteristics(60f, 350f, 0) { GravityPoint = 28, MaltCategory = MaltCategory.Roasted }, "", "");
     }
 }
