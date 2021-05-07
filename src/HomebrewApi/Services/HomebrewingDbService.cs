@@ -168,6 +168,8 @@ namespace HomebrewApi.Services
         {
             var recipe = _mapper.Map<Recipe, RecipeDto>(r);
             recipe.StyleName = styles.FirstOrDefault(s => s.Id == r.StyleId)?.Name;
+            var yeast = GetYeast(r.YeastIngredient.YeastId);
+            recipe.YeastIngredient = _mapper.Map<YeastIngredientDto>(yeast);
             foreach (var fermentableIngredient in r.FermentableIngredients)
             {
                 var fermentable = GetFermentable(fermentableIngredient.FermentableId);

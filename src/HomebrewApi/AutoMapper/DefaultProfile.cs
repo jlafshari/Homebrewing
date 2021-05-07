@@ -19,7 +19,8 @@ namespace HomebrewApi.AutoMapper
             CreateMap<RecipeGenerationInfoDto, RecipeProjectedOutcome>();
             CreateMap<RecipeGenerationInfoDto, RecipeGenerationInfo>();
             CreateMap<Recipe, RecipeDto>()
-                .ForMember(s => s.FermentableIngredients, opt => opt.Ignore());
+                .ForMember(s => s.FermentableIngredients, opt => opt.Ignore())
+                .ForMember(s => s.YeastIngredient, opt => opt.Ignore());
 
             CreateMap<Style, BeerRecipeCore.Styles.Style>()
                 .ForMember(s => s.CommonGrains, opt => opt.Ignore())
@@ -33,6 +34,7 @@ namespace HomebrewApi.AutoMapper
             CreateMap<Yeast, BeerRecipeCore.Yeast.Yeast>();
             CreateMap<YeastCharacteristics, BeerRecipeCore.Yeast.YeastCharacteristics>();
             CreateMap<IYeastIngredient, YeastIngredient>();
+            CreateMap<BeerRecipeCore.Yeast.Yeast, YeastIngredientDto>();
         }
     }
 }
