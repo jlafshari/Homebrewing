@@ -23,11 +23,4 @@ namespace HomebrewApi.Models
         [BsonRepresentation(BsonType.ObjectId)]
         public string YeastId { get; set; }
     }
-
-    internal record FermentableIngredient(float Amount)
-    {
-        [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
-        public string FermentableId { get; set; }
-    }
 }
