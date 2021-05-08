@@ -45,6 +45,37 @@ namespace BeerRecipeCore.Tests.Services
 
             AssertRecipeHasExpectedValues(expectedColorSrm, expectedAbv, recipe, size, style.CommonYeast);
         }
+        
+        [Theory]
+        [InlineData(98, 2, 6, 5.0f)]
+        public void CanGeneratePaleAleRecipeWithBaseAndCrystalGrain(int baseMaltProportion, int caramelMaltProportion,
+            int expectedColorSrm, float expectedAbv)
+        {
+            const float size = 5f;
+            var style = new Style("ESB", new StyleCategory("", 1, StyleType.Ale),
+                new StyleClassification("E", "test"), new List<StyleThreshold>())
+            {
+                CommonGrains = new List<CommonGrain>
+                {
+                    new()
+                    {
+                        Fermentable = RecipeServiceTestHelper.TwoRow,
+                        ProportionOfGrist = baseMaltProportion
+                    },
+                    new()
+                    {
+                        Fermentable = RecipeServiceTestHelper.Crystal20LMalt,
+                        ProportionOfGrist = caramelMaltProportion
+                    }
+                },
+                CommonYeast = RecipeServiceTestHelper.SafAleEnglishAleYeast
+            };
+            var recipeGenerationInfo = new RecipeGenerationInfo(size, expectedAbv, expectedColorSrm, "FSB") { Style = style };
+
+            var recipe = _recipeService.GenerateRecipe(recipeGenerationInfo);
+
+            AssertRecipeHasExpectedValues(expectedColorSrm, expectedAbv, recipe, size, style.CommonYeast);
+        }
 
         [Theory]
         [InlineData(85, 13, 2, 16, 5.5f)]

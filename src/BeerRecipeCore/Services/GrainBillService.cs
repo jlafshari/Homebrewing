@@ -77,7 +77,7 @@ namespace BeerRecipeCore.Services
             IReadOnlyCollection<IFermentableIngredient> fermentableIngredients, float size)
         {
             if (fermentableIngredients.Count == 0) return null;
-            return styleCommonGrains.ToDictionary(g => g, g =>
+            return styleCommonGrains.Where(g => g.Category != MaltCategory.Base).ToDictionary(g => g, g =>
                 {
                     var fermentableIngredient = fermentableIngredients.SingleOrDefault(f => f.FermentableInfo == g.Fermentable);
                     return fermentableIngredient != null ? ColorUtility.GetMaltColorUnit(fermentableIngredient, size) : 0;
