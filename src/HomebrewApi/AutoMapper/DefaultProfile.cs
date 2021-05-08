@@ -1,7 +1,6 @@
 using AutoMapper;
 using BeerRecipeCore.Fermentables;
 using BeerRecipeCore.Recipes;
-using BeerRecipeCore.Yeast;
 using HomebrewApi.Models;
 using HomebrewApi.Models.Dtos;
 using Fermentable = HomebrewApi.Models.Fermentable;
@@ -33,7 +32,6 @@ namespace HomebrewApi.AutoMapper
 
             CreateMap<Yeast, BeerRecipeCore.Yeast.Yeast>();
             CreateMap<YeastCharacteristics, BeerRecipeCore.Yeast.YeastCharacteristics>();
-            CreateMap<IYeastIngredient, YeastIngredient>();
             CreateMap<BeerRecipeCore.Yeast.Yeast, YeastIngredientDto>();
         }
     }

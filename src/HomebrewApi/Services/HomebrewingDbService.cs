@@ -81,8 +81,7 @@ namespace HomebrewApi.Services
             var recipeToInsert = _mapper.Map<Recipe>(generatedRecipe);
             recipeToInsert.ProjectedOutcome = _mapper.Map<RecipeProjectedOutcome>(recipeGenerationInfoDto);
             recipeToInsert.StyleId = recipeGenerationInfoDto.StyleId;
-            recipeToInsert.YeastIngredient = _mapper.Map<YeastIngredient>(generatedRecipe.YeastIngredient);
-            recipeToInsert.YeastIngredient.YeastId = style.CommonYeastId;
+            recipeToInsert.YeastId = style.CommonYeastId;
             for (int i = 0; i < recipeToInsert.FermentableIngredients.Count; i++)
             {
                 recipeToInsert.FermentableIngredients[i].FermentableId = style.CommonGrains[i].FermentableId;
@@ -168,7 +167,7 @@ namespace HomebrewApi.Services
         {
             var recipe = _mapper.Map<Recipe, RecipeDto>(r);
             recipe.StyleName = styles.FirstOrDefault(s => s.Id == r.StyleId)?.Name;
-            var yeast = GetYeast(r.YeastIngredient.YeastId);
+            var yeast = GetYeast(r.YeastId);
             recipe.YeastIngredient = _mapper.Map<YeastIngredientDto>(yeast);
             foreach (var fermentableIngredient in r.FermentableIngredients)
             {
