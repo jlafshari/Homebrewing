@@ -87,7 +87,7 @@ namespace BeerRecipeCore.Services
                 .Key;
         }
 
-        private bool DoesGrainBillColorMatchDesiredColor(RecipeGenerationInfo recipeGenerationInfo, IEnumerable<IFermentableIngredient> grainBill)
+        private bool DoesGrainBillColorMatchDesiredColor(RecipeGenerationInfo recipeGenerationInfo, IReadOnlyCollection<IFermentableIngredient> grainBill)
         {
             var colorComparison = GetColorComparisonOfGrainBillToDesiredColor(recipeGenerationInfo, grainBill);
             UpdateBaseGrainProportionDifferential(colorComparison);
@@ -108,7 +108,7 @@ namespace BeerRecipeCore.Services
             }
         }
 
-        private static float GetColorComparisonOfGrainBillToDesiredColor(RecipeGenerationInfo recipeGenerationInfo, IEnumerable<IFermentableIngredient> grainBill)
+        private static float GetColorComparisonOfGrainBillToDesiredColor(RecipeGenerationInfo recipeGenerationInfo, IReadOnlyCollection<IFermentableIngredient> grainBill)
         {
             var colorBasedOnGrainBill = (float) ColorUtility.GetColorInSrm(grainBill, recipeGenerationInfo.Size);
             return colorBasedOnGrainBill - recipeGenerationInfo.ColorSrm;

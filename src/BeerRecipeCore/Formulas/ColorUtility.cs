@@ -7,7 +7,7 @@ namespace BeerRecipeCore.Formulas
 {
     public static class ColorUtility
     {
-        public static double GetColorInSrm(IEnumerable<IFermentableIngredient> fermentables, float recipeVolumeInGallons)
+        public static double GetColorInSrm(IReadOnlyCollection<IFermentableIngredient> fermentables, float recipeVolumeInGallons)
         {
             // calculate MCU from each fermentable
             var totalMcu = fermentables.Sum(fermentable => GetMaltColorUnit(fermentable, recipeVolumeInGallons));
