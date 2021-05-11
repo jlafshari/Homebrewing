@@ -65,6 +65,30 @@ namespace HomebrewApi.Services
             hopsCollection.InsertOne(hops);
         }
 
+        public List<RecipeDto> GetRecipes()
+        {
+            var filter = Builders<Recipe>.Filter.Where(_ => true);
+            return GetRecipes(filter);
+        }
+
+        public RecipeDto GetRecipe(string recipeId)
+        {
+            var filter = Builders<Recipe>.Filter.Eq(r => r.Id, recipeId);
+            return GetRecipes(filter).SingleOrDefault();
+        }
+
+        public void DeleteRecipe(string recipeId)
+        {
+            var recipeCollection = _database.GetCollection<Recipe>(RecipeCollectionName);
+            recipeCollection.DeleteOne(r => r.Id == recipeId);
+        }
+
+        public void CreateFermentable(Fermentable fermentable)
+        {
+            var fermentableCollection = _database.GetCollection<Fermentable>(FermentableCollectionName);
+            fermentableCollection.InsertOne(fermentable);
+        }
+
         private Recipe GenerateRecipe(RecipeGenerationInfoDto recipeGenerationInfoDto, Style style)
         {
             var recipeGenerationInfo = GetRecipeGenerationInfo(recipeGenerationInfoDto, style);
@@ -109,30 +133,6 @@ namespace HomebrewApi.Services
             var styleCollection = _database.GetCollection<Style>(StyleCollectionName);
             var style = styleCollection.FindSync(s => s.Id == styleId).SingleOrDefault();
             return style;
-        }
-
-        public List<RecipeDto> GetRecipes()
-        {
-            var filter = Builders<Recipe>.Filter.Where(_ => true);
-            return GetRecipes(filter);
-        }
-
-        public RecipeDto GetRecipe(string recipeId)
-        {
-            var filter = Builders<Recipe>.Filter.Eq(r => r.Id, recipeId);
-            return GetRecipes(filter).SingleOrDefault();
-        }
-
-        public void DeleteRecipe(string recipeId)
-        {
-            var recipeCollection = _database.GetCollection<Recipe>(RecipeCollectionName);
-            recipeCollection.DeleteOne(r => r.Id == recipeId);
-        }
-
-        public void CreateFermentable(Fermentable fermentable)
-        {
-            var fermentableCollection = _database.GetCollection<Fermentable>(FermentableCollectionName);
-            fermentableCollection.InsertOne(fermentable);
         }
 
         private void LoadFermentables(BeerRecipeCore.Styles.Style style, List<CommonGrain> commonGrains)
