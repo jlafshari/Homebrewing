@@ -13,6 +13,4 @@ namespace HomebrewApi.Models
         public string Notes { get; init; }
         public string Origin { get; init; }
     }
-
-    public record HopsCharacteristics(float AlphaAcid, float BetaAcid, float Hsi);
 }
