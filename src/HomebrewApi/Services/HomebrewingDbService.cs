@@ -100,12 +100,17 @@ namespace HomebrewApi.Services
 
         private RecipeGenerationInfo GetRecipeGenerationInfo(RecipeGenerationInfoDto recipeGenerationInfoDto, Style style)
         {
+            var recipeGenerationInfo = _mapper.Map<RecipeGenerationInfo>(recipeGenerationInfoDto);
+            recipeGenerationInfo.Style = GetBeerRecipeCoreStyle(style);
+            return recipeGenerationInfo;
+        }
+
+        private BeerRecipeCore.Styles.Style GetBeerRecipeCoreStyle(Style style)
+        {
             var styleForBeerRecipeCore = _mapper.Map<Style, BeerRecipeCore.Styles.Style>(style);
             LoadFermentables(styleForBeerRecipeCore, style.CommonGrains);
             styleForBeerRecipeCore.CommonYeast = GetYeast(style.CommonYeastId);
-            var recipeGenerationInfo = _mapper.Map<RecipeGenerationInfo>(recipeGenerationInfoDto);
-            recipeGenerationInfo.Style = styleForBeerRecipeCore;
-            return recipeGenerationInfo;
+            return styleForBeerRecipeCore;
         }
 
         private Recipe ConvertRecipeToDbRecipe(RecipeGenerationInfoDto recipeGenerationInfoDto, Style style, IRecipe generatedRecipe)
