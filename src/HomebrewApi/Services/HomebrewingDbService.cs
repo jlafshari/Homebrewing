@@ -7,7 +7,6 @@ using HomebrewApi.Models;
 using HomebrewApi.Models.Dtos;
 using MongoDB.Driver;
 using CommonGrain = HomebrewApi.Models.CommonGrain;
-using Hops = HomebrewApi.Models.Hops;
 using Style = HomebrewApi.Models.Style;
 
 namespace HomebrewApi.Services
@@ -18,7 +17,7 @@ namespace HomebrewApi.Services
         private const string StyleCollectionName = "Styles";
         private const string FermentableCollectionName = "Fermentables";
         private const string YeastCollectionName = "Yeasts";
-        private const string HopsCollectionName = "Hops";
+        private const string HopCollectionName = "Hops";
         private const string RecipeCollectionName = "Recipes";
         private readonly IMongoDatabase _database;
         private readonly RecipeService _recipeService;
@@ -59,10 +58,10 @@ namespace HomebrewApi.Services
             yeastCollection.InsertOne(yeast);
         }
 
-        public void CreateHops(Hops hops)
+        public void CreateHop(Hop hop)
         {
-            var hopsCollection = _database.GetCollection<Hops>(HopsCollectionName);
-            hopsCollection.InsertOne(hops);
+            var hopCollection = _database.GetCollection<Hop>(HopCollectionName);
+            hopCollection.InsertOne(hop);
         }
 
         public List<RecipeDto> GetRecipes()
