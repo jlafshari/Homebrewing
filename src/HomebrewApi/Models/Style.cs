@@ -15,6 +15,7 @@ namespace HomebrewApi.Models
         public StyleClassification Classification { get; init; }
         public List<StyleThreshold> Thresholds { get; init; }
         public List<CommonGrain> CommonGrains { get; init; } = new();
+        public List<CommonHop> CommonHops { get; init; } = new();
         [BsonRepresentation(BsonType.ObjectId)]
         public string CommonYeastId { get; init; }
     }
