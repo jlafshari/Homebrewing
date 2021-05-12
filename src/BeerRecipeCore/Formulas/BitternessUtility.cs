@@ -12,15 +12,15 @@ namespace BeerRecipeCore.Formulas
         /// <param name="hops">The hops used in the recipe.</param>
         /// <param name="recipeVolumeInGallons">The size of the recipe in gallons.</param>
         /// <param name="boilGravity">The specific gravity of the recipe before boiling.</param>
-        public static int GetBitterness(IEnumerable<IHopsIngredient> hops, float recipeVolumeInGallons, float boilGravity)
+        public static int GetBitterness(IEnumerable<IHopIngredient> hops, float recipeVolumeInGallons, float boilGravity)
         {
             float totalBitterness = 0;
 
-            foreach (IHopsIngredient hopIngredient in hops)
+            foreach (IHopIngredient hopIngredient in hops)
             {
                 float hopUtilization = GetHopUtilization(hopIngredient.Time, boilGravity);
 
-                float alphaAcid = hopIngredient.HopsInfo.Characteristics.AlphaAcid;
+                float alphaAcid = hopIngredient.HopInfo.Characteristics.AlphaAcid;
                 totalBitterness += hopUtilization * alphaAcid * hopIngredient.Amount * c_ibuEnglishUnitsConstant / recipeVolumeInGallons;
             }
 

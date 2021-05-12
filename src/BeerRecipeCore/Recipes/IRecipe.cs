@@ -20,7 +20,7 @@ namespace BeerRecipeCore.Recipes
         /// </summary>
         int BoilTime { get; set; }
         IStyle Style { get; set; }
-        ObservableCollection<IHopsIngredient> HopsIngredients { get; }
+        ObservableCollection<IHopIngredient> HopIngredients { get; }
         List<IFermentableIngredient> FermentableIngredients { get; }
         IYeastIngredient YeastIngredient { get; set; }
         MashProfile MashProfile { get; set; }

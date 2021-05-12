@@ -26,8 +26,8 @@
         public const float YeastWeight = 0.1f;
 
         /// <summary>
-        /// The amount of hops used, in ounces.
+        /// The amount of hop used, in ounces.
         /// </summary>
-        public const float HopsAmount = 1.0f;
+        public const float HopAmount = 1.0f;
     }
 }

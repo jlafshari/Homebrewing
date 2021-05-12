@@ -1,6 +1,6 @@
 ﻿namespace BeerRecipeCore.Hops
 {
-    public enum HopsUse
+    public enum HopUse
     {
         Boil,
         DryHop,

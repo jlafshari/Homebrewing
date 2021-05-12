@@ -1,6 +1,6 @@
 ﻿namespace BeerRecipeCore.Hops
 {
-    public enum HopsForm
+    public enum HopForm
     {
         Pellet,
         Plug,

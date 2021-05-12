@@ -13,7 +13,7 @@ namespace BeerRecipeCore.Recipes
         public float Size { get; set; }
         public int BoilTime { get; set; }
         public IStyle Style { get; set; }
-        public ObservableCollection<IHopsIngredient> HopsIngredients { get; }
+        public ObservableCollection<IHopIngredient> HopIngredients { get; }
         public List<IFermentableIngredient> FermentableIngredients { get; init; }
         public IYeastIngredient YeastIngredient { get; set; }
         public MashProfile MashProfile { get; set; }

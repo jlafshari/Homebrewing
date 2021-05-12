@@ -12,16 +12,16 @@ namespace BeerRecipeCore.BeerXml
 {
     public static class BeerXmlImportUtility
     {
-        public static Hops.Hops GetHops(XElement hopsEntry)
+        public static Hop GetHop(XElement hopEntry)
         {
-            string name = GetNameFromRecord(hopsEntry);
-            string origin = hopsEntry.GetChildElementValue("ORIGIN");
-            float alphaAcid = Convert.ToSingle(hopsEntry.GetChildElementValue("ALPHA"));
-            float betaAcid = Convert.ToSingle(hopsEntry.GetChildElementValue("BETA"));
-            string notes = GetNotesFromRecord(hopsEntry);
-            float hsi = Convert.ToSingle(hopsEntry.GetChildElementValue("HSI"));
-            var hopsCharacteristics = new HopsCharacteristics(alphaAcid, betaAcid, hsi);
-            return new Hops.Hops(name, hopsCharacteristics, notes, origin);
+            var name = GetNameFromRecord(hopEntry);
+            var origin = hopEntry.GetChildElementValue("ORIGIN");
+            var alphaAcid = Convert.ToSingle(hopEntry.GetChildElementValue("ALPHA"));
+            var betaAcid = Convert.ToSingle(hopEntry.GetChildElementValue("BETA"));
+            var notes = GetNotesFromRecord(hopEntry);
+            var hsi = Convert.ToSingle(hopEntry.GetChildElementValue("HSI"));
+            var hopCharacteristics = new HopCharacteristics(alphaAcid, betaAcid, hsi);
+            return new Hop(name, hopCharacteristics, notes, origin);
         }
 
         public static Fermentable GetFermentable(XElement fermentableEntry)

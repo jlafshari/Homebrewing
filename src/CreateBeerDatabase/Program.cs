@@ -71,7 +71,7 @@ namespace CreateBeerDatabase
             var hopEntries = hops.Descendants("HOP").ToList();
             foreach (XElement hopEntry in hopEntries)
             {
-                var hopsInfo = BeerXmlImportUtility.GetHops(hopEntry);
+                var hopsInfo = BeerXmlImportUtility.GetHop(hopEntry);
 
                 var insertCommand = connection.CreateCommand();
                 insertCommand.CommandText = "INSERT INTO Hops (name, alpha, notes, beta, hsi, origin)"
@@ -215,7 +215,7 @@ namespace CreateBeerDatabase
             "CREATE TABLE MashProfiles (id INTEGER PRIMARY KEY, grainStartingTemperature INTEGER, waterToGrainRatio NUMERIC)",
             "CREATE TABLE GravityReadings (id INTEGER PRIMARY KEY, specificGravity NUMERIC, date TEXT)",
             
-            "CREATE TABLE HopsIngredients (id INTEGER PRIMARY KEY, amount NUMERIC, time NUMERIC, dryHopTime NUMERIC, type VARCHAR(10), form VARCHAR(10), use VARCHAR(10), hopsInfo INTEGER, FOREIGN KEY(hopsInfo) REFERENCES Hops(id))",
+            "CREATE TABLE HopIngredients (id INTEGER PRIMARY KEY, amount NUMERIC, time NUMERIC, dryHopTime NUMERIC, type VARCHAR(10), form VARCHAR(10), use VARCHAR(10), hopsInfo INTEGER, FOREIGN KEY(hopsInfo) REFERENCES Hops(id))",
             "CREATE TABLE FermentableIngredients (id INTEGER PRIMARY KEY, amount NUMERIC, fermentableInfo INTEGER, FOREIGN KEY(fermentableInfo) REFERENCES Fermentables(id))",
             "CREATE TABLE YeastIngredients (id INTEGER PRIMARY KEY, weight NUMERIC, volume NUMERIC, yeastInfo INTEGER, FOREIGN KEY(yeastInfo) REFERENCES Yeasts(id))",
             "CREATE TABLE MiscellaneousIngredientInRecipe (id INTEGER PRIMARY KEY, time NUMERIC, amount NUMERIC, amountIsWeight INT, miscellaneousIngredientInfo INTEGER, FOREIGN KEY(miscellaneousIngredientInfo) REFERENCES MiscellaneousIngredients(id))",
@@ -223,7 +223,7 @@ namespace CreateBeerDatabase
             "CREATE TABLE Settings (id INTEGER PRIMARY KEY, recipeSize NUMERIC, boilTime INTEGER, extractionEfficiency NUMERIC, yeastWeight NUMERIC, hopsAmount NUMERIC)",
             
             // junction tables
-            "CREATE TABLE HopsInRecipe (id INTEGER PRIMARY KEY, hopsIngredient INTEGER, recipe INTEGER, FOREIGN KEY(hopsIngredient) REFERENCES HopsIngredients(id), FOREIGN KEY(recipe) REFERENCES Recipes(id))",
+            "CREATE TABLE HopsInRecipe (id INTEGER PRIMARY KEY, hopsIngredient INTEGER, recipe INTEGER, FOREIGN KEY(hopsIngredient) REFERENCES HopIngredients(id), FOREIGN KEY(recipe) REFERENCES Recipes(id))",
             "CREATE TABLE FermentablesInRecipe (id INTEGER PRIMARY KEY, fermentableIngredient INTEGER, recipe INTEGER, FOREIGN KEY(fermentableIngredient) REFERENCES FermentableIngredients(id), FOREIGN KEY(recipe) REFERENCES Recipes(id))",
             "CREATE TABLE MiscellaneousIngredientsInRecipe (id INTEGER PRIMARY KEY, miscellaneousIngredient INTEGER, recipe INTEGER, FOREIGN KEY(miscellaneousIngredient) REFERENCES MiscellaneousIngredientInRecipe(id), FOREIGN KEY(recipe) REFERENCES Recipes(id))",
             "CREATE TABLE ThresholdsInStyle (id INTEGER PRIMARY KEY, threshold INT, style INT, FOREIGN KEY(threshold) REFERENCES StyleThresholds(id), FOREIGN KEY(style) REFERENCES Styles(id))",
