@@ -6,6 +6,7 @@ namespace HomebrewApi.Models.Dtos
     {
         public string StyleName { get; set; }
         public List<FermentableIngredientDto> FermentableIngredients { get; } = new();
+        public List<HopIngredientDto> HopIngredients { get; set; } = new();
         public YeastIngredientDto YeastIngredient { get; set; }
     }
 }

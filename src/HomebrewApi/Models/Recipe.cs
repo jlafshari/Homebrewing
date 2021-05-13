@@ -15,6 +15,7 @@ namespace HomebrewApi.Models
         public string StyleId { get; set; }
         public RecipeProjectedOutcome ProjectedOutcome { get; set; }
         public List<FermentableIngredient> FermentableIngredients { get; set; }
+        public List<HopIngredient> HopIngredients { get; set; }
         [BsonRepresentation(BsonType.ObjectId)]
         public string YeastId { get; set; }
     }

@@ -108,6 +108,7 @@ namespace HomebrewApi.Services
         {
             var styleForBeerRecipeCore = _mapper.Map<Style, BeerRecipeCore.Styles.Style>(style);
             LoadFermentables(styleForBeerRecipeCore, style.CommonGrains);
+            LoadHops(styleForBeerRecipeCore, style.CommonHops);
             styleForBeerRecipeCore.CommonYeast = GetYeast(style.CommonYeastId);
             return styleForBeerRecipeCore;
         }
@@ -121,6 +122,11 @@ namespace HomebrewApi.Services
             for (int i = 0; i < recipeToInsert.FermentableIngredients.Count; i++)
             {
                 recipeToInsert.FermentableIngredients[i].FermentableId = style.CommonGrains[i].FermentableId;
+            }
+
+            for (int i = 0; i < recipeToInsert.HopIngredients.Count; i++)
+            {
+                recipeToInsert.HopIngredients[i].HopId = style.CommonHops[i].HopId;
             }
 
             return recipeToInsert;
@@ -151,12 +157,30 @@ namespace HomebrewApi.Services
             }
         }
 
+        private void LoadHops(BeerRecipeCore.Styles.Style style, List<CommonHop> commonHops)
+        {
+            foreach (var commonHop in commonHops)
+            {
+                var beerRecipeCoreCommonHop = _mapper.Map<CommonHop, BeerRecipeCore.Styles.CommonHop>(commonHop);
+                beerRecipeCoreCommonHop.Hop = GetHop(commonHop.HopId);
+                style.CommonHops.Add(beerRecipeCoreCommonHop);
+            }
+        }
+
         private BeerRecipeCore.Fermentables.Fermentable GetFermentable(string fermentableId)
         {
             var fermentableCollection = _database.GetCollection<Fermentable>(FermentableCollectionName);
             var filter = Builders<Fermentable>.Filter.Eq(r => r.Id, fermentableId);
             var fermentableFromDb = fermentableCollection.FindSync(filter).ToEnumerable().SingleOrDefault();
             return _mapper.Map<Fermentable, BeerRecipeCore.Fermentables.Fermentable>(fermentableFromDb);
+        }
+
+        private BeerRecipeCore.Hops.Hop GetHop(string hopId)
+        {
+            var hopCollection = _database.GetCollection<Hop>(HopCollectionName);
+            var filter = Builders<Hop>.Filter.Eq(r => r.Id, hopId);
+            var hopFromDb = hopCollection.FindSync(filter).ToEnumerable().SingleOrDefault();
+            return _mapper.Map<Hop, BeerRecipeCore.Hops.Hop>(hopFromDb);
         }
 
         private BeerRecipeCore.Yeast.Yeast GetYeast(string yeastId)
@@ -182,6 +206,7 @@ namespace HomebrewApi.Services
             var yeast = GetYeast(r.YeastId);
             recipe.YeastIngredient = _mapper.Map<YeastIngredientDto>(yeast);
             recipe.FermentableIngredients.AddRange(GetFermentableIngredientDtos(r.FermentableIngredients));
+            recipe.HopIngredients.AddRange(GetHopIngredientDtos(r.HopIngredients));
             return recipe;
         }
 
@@ -191,6 +216,15 @@ namespace HomebrewApi.Services
             {
                 var fermentable = GetFermentable(fermentableIngredient.FermentableId);
                 yield return new FermentableIngredientDto(fermentableIngredient.Amount, fermentable.Name);
+            }
+        }
+
+        private IEnumerable<HopIngredientDto> GetHopIngredientDtos(List<HopIngredient> hopIngredients)
+        {
+            foreach (var hopIngredient in hopIngredients)
+            {
+                var hop = GetHop(hopIngredient.HopId);
+                yield return new HopIngredientDto(hop.Name, hopIngredient.Amount, hopIngredient.BoilAdditionTime);
             }
         }
     }
