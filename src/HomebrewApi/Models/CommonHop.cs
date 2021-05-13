@@ -1,10 +1,9 @@
-using BeerRecipeCore.Hops;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace HomebrewApi.Models
 {
-    public record CommonHop(HopFlavorType HopFlavorType, int BoilAdditionTime)
+    public record CommonHop(int BoilAdditionTime)
     {
         [BsonRepresentation(BsonType.ObjectId)]
         public string HopId { get; init; }

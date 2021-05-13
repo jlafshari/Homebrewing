@@ -145,7 +145,6 @@ namespace BeerRecipeCore.Tests.Services
                     {
                         BoilAdditionTime = 60,
                         Hop = new Hop("Fuggles", new HopCharacteristics(4.5f, 4.0f, 10), "", ""),
-                        HopFlavorType = HopFlavorType.Bittering,
                         IbuContributionPercentage = 100
                     }
                 }
@@ -185,14 +184,12 @@ namespace BeerRecipeCore.Tests.Services
                     {
                         BoilAdditionTime = 60,
                         Hop = new Hop("Fuggles", new HopCharacteristics(4.5f, 4.0f, 10), "", ""),
-                        HopFlavorType = HopFlavorType.Bittering,
                         IbuContributionPercentage = 80
                     },
                     new()
                     {
                         BoilAdditionTime = 15,
                         Hop = new Hop("Cascade", new HopCharacteristics(5.5f, 4.3f, 10), "", ""),
-                        HopFlavorType = HopFlavorType.Aroma,
                         IbuContributionPercentage = 20
                     }
                 }

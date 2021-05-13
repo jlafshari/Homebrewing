@@ -19,7 +19,6 @@ namespace BeerRecipeCore.Services
                 hopIngredients.Add(new HopIngredient
                 {
                     HopInfo = commonHop.Hop,
-                    FlavorType = commonHop.HopFlavorType,
                     Time = commonHop.BoilAdditionTime,
                     Amount = GetHopAmount(commonHop, recipeGenerationInfo, originalGravity)
                 });
