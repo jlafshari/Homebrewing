@@ -4,7 +4,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace HomebrewApi.Models
 {
-    public record CommonHop(HopFlavorType HopFlavorType)
+    public record CommonHop(HopFlavorType HopFlavorType, int BoilAdditionTime)
     {
         [BsonRepresentation(BsonType.ObjectId)]
         public string HopId { get; init; }

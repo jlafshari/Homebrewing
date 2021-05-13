@@ -27,7 +27,7 @@ namespace BeerRecipeCore.Formulas
             return (int) Math.Round((double) totalBitterness);
         }
 
-        private static float GetHopUtilization(int boilTimeInMinutes, float boilGravity)
+        public static float GetHopUtilization(int boilTimeInMinutes, float boilGravity)
         {
             float bignessFactor = 1.65f * (float) Math.Pow(0.000125, boilGravity - 1);
             float boilTimeFactor = (1 - (float) Math.Pow(Math.E, -0.04 * boilTimeInMinutes)) / 4.15f;

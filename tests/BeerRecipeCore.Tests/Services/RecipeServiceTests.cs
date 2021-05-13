@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using BeerRecipeCore.Formulas;
+using BeerRecipeCore.Hops;
 using BeerRecipeCore.Recipes;
 using BeerRecipeCore.Services;
 using BeerRecipeCore.Styles;
@@ -39,13 +40,13 @@ namespace BeerRecipeCore.Tests.Services
                 },
                 CommonYeast = RecipeServiceTestHelper.SafAleEnglishAleYeast
             };
-            var recipeGenerationInfo = new RecipeGenerationInfo(size, expectedAbv, expectedColorSrm, "FSB") { Style = style };
+            var recipeGenerationInfo = new RecipeGenerationInfo(size, expectedAbv, expectedColorSrm, 0, "FSB") { Style = style };
 
             var recipe = _recipeService.GenerateRecipe(recipeGenerationInfo);
 
             AssertRecipeHasExpectedValues(expectedColorSrm, expectedAbv, recipe, size, style.CommonYeast);
         }
-        
+
         [Theory]
         [InlineData(98, 2, 6, 5.0f)]
         public void CanGeneratePaleAleRecipeWithBaseAndCrystalGrain(int baseMaltProportion, int caramelMaltProportion,
@@ -70,7 +71,7 @@ namespace BeerRecipeCore.Tests.Services
                 },
                 CommonYeast = RecipeServiceTestHelper.SafAleEnglishAleYeast
             };
-            var recipeGenerationInfo = new RecipeGenerationInfo(size, expectedAbv, expectedColorSrm, "FSB") { Style = style };
+            var recipeGenerationInfo = new RecipeGenerationInfo(size, expectedAbv, expectedColorSrm, 0, "FSB") { Style = style };
 
             var recipe = _recipeService.GenerateRecipe(recipeGenerationInfo);
 
@@ -109,11 +110,105 @@ namespace BeerRecipeCore.Tests.Services
                 },
                 CommonYeast = RecipeServiceTestHelper.SafAleEnglishAleYeast
             };
-            var recipeGenerationInfo = new RecipeGenerationInfo(size, expectedAbv, expectedColorSrm, "Brown Ale") { Style = style };
+            var recipeGenerationInfo = new RecipeGenerationInfo(size, expectedAbv, expectedColorSrm, 0, "Brown Ale") { Style = style };
             
             var recipe = _recipeService.GenerateRecipe(recipeGenerationInfo);
 
             AssertRecipeHasExpectedValues(expectedColorSrm, expectedAbv, recipe, size, style.CommonYeast);
+        }
+
+        [Fact]
+        public void CanGenerateRecipe_WithExpectedBitterness_GivenSingleHopAddition()
+        {
+            const float size = 5f;
+            const int expectedIbu = 20;
+            var style = new Style("ESB", new StyleCategory("", 1, StyleType.Ale),
+                new StyleClassification("E", "test"), new List<StyleThreshold>())
+            {
+                CommonGrains = new List<CommonGrain>
+                {
+                    new()
+                    {
+                        Fermentable = RecipeServiceTestHelper.MarisOtter,
+                        ProportionOfGrist = 85
+                    },
+                    new()
+                    {
+                        Fermentable = RecipeServiceTestHelper.VictoryMalt,
+                        ProportionOfGrist = 15
+                    }
+                },
+                CommonYeast = RecipeServiceTestHelper.SafAleEnglishAleYeast,
+                CommonHops = new List<CommonHop>
+                {
+                    new()
+                    {
+                        BoilAdditionTime = 60,
+                        Hop = new Hop("Fuggles", new HopCharacteristics(4.5f, 4.0f, 10), "", ""),
+                        HopFlavorType = HopFlavorType.Bittering,
+                        IbuContributionPercentage = 100
+                    }
+                }
+            };
+            var recipeGenerationInfo = new RecipeGenerationInfo(size, 5.5f, 8, expectedIbu, "FSB") { Style = style };
+
+            var recipe = _recipeService.GenerateRecipe(recipeGenerationInfo);
+            
+            AssertRecipeHasExpectedValuesForBitterness(style, recipe, size, expectedIbu);
+        }
+        
+        [Fact]
+        public void CanGenerateRecipe_WithExpectedBitterness_GivenTwoHopAdditions()
+        {
+            const float size = 5f;
+            const int expectedIbu = 30;
+            var style = new Style("ESB", new StyleCategory("", 1, StyleType.Ale),
+                new StyleClassification("E", "test"), new List<StyleThreshold>())
+            {
+                CommonGrains = new List<CommonGrain>
+                {
+                    new()
+                    {
+                        Fermentable = RecipeServiceTestHelper.MarisOtter,
+                        ProportionOfGrist = 85
+                    },
+                    new()
+                    {
+                        Fermentable = RecipeServiceTestHelper.VictoryMalt,
+                        ProportionOfGrist = 15
+                    }
+                },
+                CommonYeast = RecipeServiceTestHelper.SafAleEnglishAleYeast,
+                CommonHops = new List<CommonHop>
+                {
+                    new()
+                    {
+                        BoilAdditionTime = 60,
+                        Hop = new Hop("Fuggles", new HopCharacteristics(4.5f, 4.0f, 10), "", ""),
+                        HopFlavorType = HopFlavorType.Bittering,
+                        IbuContributionPercentage = 80
+                    },
+                    new()
+                    {
+                        BoilAdditionTime = 15,
+                        Hop = new Hop("Cascade", new HopCharacteristics(5.5f, 4.3f, 10), "", ""),
+                        HopFlavorType = HopFlavorType.Aroma,
+                        IbuContributionPercentage = 20
+                    }
+                }
+            };
+            var recipeGenerationInfo = new RecipeGenerationInfo(size, 5.5f, 8, expectedIbu, "FSB") { Style = style };
+
+            var recipe = _recipeService.GenerateRecipe(recipeGenerationInfo);
+            
+            AssertRecipeHasExpectedValuesForBitterness(style, recipe, size, expectedIbu);
+        }
+
+        private static void AssertRecipeHasExpectedValuesForBitterness(Style style, IRecipe recipe, float size, int expectedIbu)
+        {
+            Assert.Equal(style.CommonHops.Count, recipe.HopIngredients.Count);
+            Assert.True(recipe.HopIngredients.All(f => f.Amount > 0));
+            AssertIbuIsEqual(recipe, size, expectedIbu);
         }
 
         private static void AssertRecipeHasExpectedValues(int expectedColorSrm, float expectedAbv, IRecipe recipe, float size, Yeast.Yeast styleCommonYeast)
@@ -125,7 +220,7 @@ namespace BeerRecipeCore.Tests.Services
             AssertColorIsWithinOneSrm(recipe, size, expectedColorSrm);
 
             AssertAbvIsEqual(recipe, size, expectedAbv);
-            
+
             Assert.NotNull(recipe.YeastIngredient);
             Assert.Equal(recipe.YeastIngredient.YeastInfo.Name, styleCommonYeast.Name);
         }
@@ -151,6 +246,13 @@ namespace BeerRecipeCore.Tests.Services
             var originalGravity = AlcoholUtility.GetOriginalGravity(recipe.FermentableIngredients, size, 65);
             var actualAbv = Math.Round(AlcoholUtility.GetAlcoholByVolume(originalGravity, 1.010f), 1);
             Assert.True(Math.Abs(expectedAbv - actualAbv) < 0.1f);
+        }
+
+        private static void AssertIbuIsEqual(IRecipe recipe, float size, int expectedIbu)
+        {
+            var originalGravity = AlcoholUtility.GetOriginalGravity(recipe.FermentableIngredients, size, 65);
+            var actualIbu = BitternessUtility.GetBitterness(recipe.HopIngredients, size, originalGravity);
+            Assert.True(Math.Abs(actualIbu - expectedIbu) <= 1);
         }
     }
 }

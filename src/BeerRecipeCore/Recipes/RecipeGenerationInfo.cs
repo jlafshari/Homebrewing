@@ -3,7 +3,7 @@ using BeerRecipeCore.Styles;
 
 namespace BeerRecipeCore.Recipes
 {
-    public record RecipeGenerationInfo(float Size, float Abv, int ColorSrm, string Name)
+    public record RecipeGenerationInfo(float Size, float Abv, int ColorSrm, int Ibu, string Name)
     {
         public IStyle Style { get; set; }
         public List<CommonGrain> CommonGrains => Style.CommonGrains;
