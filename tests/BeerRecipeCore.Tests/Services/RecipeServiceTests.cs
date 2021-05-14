@@ -13,6 +13,7 @@ namespace BeerRecipeCore.Tests.Services
     public class RecipeServiceTests
     {
         private readonly RecipeService _recipeService = new();
+        private const float RecipeSize = 5f;
         
         [Theory]
         [InlineData(85, 15, 8, 5.5f)]
@@ -21,30 +22,21 @@ namespace BeerRecipeCore.Tests.Services
         public void CanGenerateRecipeWithBaseAndCaramelGrain(int baseMaltProportion, int caramelMaltProportion,
             int expectedColorSrm, float expectedAbv)
         {
-            const float size = 5f;
             var style = new Style("ESB", new StyleCategory("", 1, StyleType.Ale),
                 new StyleClassification("E", "test"), new List<StyleThreshold>())
             {
                 CommonGrains = new List<CommonGrain>
                 {
-                    new()
-                    {
-                        Fermentable = RecipeServiceTestHelper.MarisOtter,
-                        ProportionOfGrist = baseMaltProportion
-                    },
-                    new()
-                    {
-                        Fermentable = RecipeServiceTestHelper.VictoryMalt,
-                        ProportionOfGrist = caramelMaltProportion
-                    }
+                    new() { Fermentable = RecipeServiceTestHelper.MarisOtter, ProportionOfGrist = baseMaltProportion },
+                    new() { Fermentable = RecipeServiceTestHelper.VictoryMalt, ProportionOfGrist = caramelMaltProportion }
                 },
                 CommonYeast = RecipeServiceTestHelper.SafAleEnglishAleYeast
             };
-            var recipeGenerationInfo = new RecipeGenerationInfo(size, expectedAbv, expectedColorSrm, 0, "FSB") { Style = style };
+            var recipeGenerationInfo = new RecipeGenerationInfo(RecipeSize, expectedAbv, expectedColorSrm, 0, "FSB") { Style = style };
 
             var recipe = _recipeService.GenerateRecipe(recipeGenerationInfo);
 
-            AssertRecipeHasExpectedValues(expectedColorSrm, expectedAbv, recipe, size, style.CommonYeast);
+            AssertRecipeHasExpectedValues(expectedColorSrm, expectedAbv, recipe, RecipeSize, style.CommonYeast);
         }
 
         [Theory]
@@ -52,30 +44,21 @@ namespace BeerRecipeCore.Tests.Services
         public void CanGeneratePaleAleRecipeWithBaseAndCrystalGrain(int baseMaltProportion, int caramelMaltProportion,
             int expectedColorSrm, float expectedAbv)
         {
-            const float size = 5f;
             var style = new Style("ESB", new StyleCategory("", 1, StyleType.Ale),
                 new StyleClassification("E", "test"), new List<StyleThreshold>())
             {
                 CommonGrains = new List<CommonGrain>
                 {
-                    new()
-                    {
-                        Fermentable = RecipeServiceTestHelper.TwoRow,
-                        ProportionOfGrist = baseMaltProportion
-                    },
-                    new()
-                    {
-                        Fermentable = RecipeServiceTestHelper.Crystal20LMalt,
-                        ProportionOfGrist = caramelMaltProportion
-                    }
+                    new() { Fermentable = RecipeServiceTestHelper.TwoRow, ProportionOfGrist = baseMaltProportion },
+                    new() { Fermentable = RecipeServiceTestHelper.Crystal20LMalt, ProportionOfGrist = caramelMaltProportion }
                 },
                 CommonYeast = RecipeServiceTestHelper.SafAleEnglishAleYeast
             };
-            var recipeGenerationInfo = new RecipeGenerationInfo(size, expectedAbv, expectedColorSrm, 0, "FSB") { Style = style };
+            var recipeGenerationInfo = new RecipeGenerationInfo(RecipeSize, expectedAbv, expectedColorSrm, 0, "FSB") { Style = style };
 
             var recipe = _recipeService.GenerateRecipe(recipeGenerationInfo);
 
-            AssertRecipeHasExpectedValues(expectedColorSrm, expectedAbv, recipe, size, style.CommonYeast);
+            AssertRecipeHasExpectedValues(expectedColorSrm, expectedAbv, recipe, RecipeSize, style.CommonYeast);
         }
 
         [Theory]
@@ -86,57 +69,35 @@ namespace BeerRecipeCore.Tests.Services
         public void CanGenerateRecipeWithBaseAndRoastedAndCaramelGrain(int baseMaltProportion, int caramelMaltProportion, int roastedMaltProportion,
             int expectedColorSrm, float expectedAbv)
         {
-            const float size = 5f;
             var style = new Style("ESB", new StyleCategory("", 1, StyleType.Ale),
                 new StyleClassification("E", "test"), new List<StyleThreshold>())
             {
                 CommonGrains = new List<CommonGrain>
                 {
-                    new()
-                    {
-                        Fermentable = RecipeServiceTestHelper.MarisOtter,
-                        ProportionOfGrist = baseMaltProportion
-                    },
-                    new()
-                    {
-                        Fermentable = RecipeServiceTestHelper.VictoryMalt,
-                        ProportionOfGrist = caramelMaltProportion
-                    },
-                    new()
-                    {
-                        Fermentable = RecipeServiceTestHelper.ChocolateMalt,
-                        ProportionOfGrist = roastedMaltProportion
-                    }
+                    new() { Fermentable = RecipeServiceTestHelper.MarisOtter, ProportionOfGrist = baseMaltProportion },
+                    new() { Fermentable = RecipeServiceTestHelper.VictoryMalt, ProportionOfGrist = caramelMaltProportion },
+                    new() { Fermentable = RecipeServiceTestHelper.ChocolateMalt, ProportionOfGrist = roastedMaltProportion }
                 },
                 CommonYeast = RecipeServiceTestHelper.SafAleEnglishAleYeast
             };
-            var recipeGenerationInfo = new RecipeGenerationInfo(size, expectedAbv, expectedColorSrm, 0, "Brown Ale") { Style = style };
+            var recipeGenerationInfo = new RecipeGenerationInfo(RecipeSize, expectedAbv, expectedColorSrm, 0, "Brown Ale") { Style = style };
             
             var recipe = _recipeService.GenerateRecipe(recipeGenerationInfo);
 
-            AssertRecipeHasExpectedValues(expectedColorSrm, expectedAbv, recipe, size, style.CommonYeast);
+            AssertRecipeHasExpectedValues(expectedColorSrm, expectedAbv, recipe, RecipeSize, style.CommonYeast);
         }
 
         [Fact]
         public void CanGenerateRecipe_WithExpectedBitterness_GivenSingleHopAddition()
         {
-            const float size = 5f;
             const int expectedIbu = 20;
             var style = new Style("ESB", new StyleCategory("", 1, StyleType.Ale),
                 new StyleClassification("E", "test"), new List<StyleThreshold>())
             {
                 CommonGrains = new List<CommonGrain>
                 {
-                    new()
-                    {
-                        Fermentable = RecipeServiceTestHelper.MarisOtter,
-                        ProportionOfGrist = 85
-                    },
-                    new()
-                    {
-                        Fermentable = RecipeServiceTestHelper.VictoryMalt,
-                        ProportionOfGrist = 15
-                    }
+                    new() { Fermentable = RecipeServiceTestHelper.MarisOtter, ProportionOfGrist = 85 },
+                    new() { Fermentable = RecipeServiceTestHelper.VictoryMalt, ProportionOfGrist = 15 }
                 },
                 CommonYeast = RecipeServiceTestHelper.SafAleEnglishAleYeast,
                 CommonHops = new List<CommonHop>
@@ -149,33 +110,24 @@ namespace BeerRecipeCore.Tests.Services
                     }
                 }
             };
-            var recipeGenerationInfo = new RecipeGenerationInfo(size, 5.5f, 8, expectedIbu, "FSB") { Style = style };
+            var recipeGenerationInfo = new RecipeGenerationInfo(RecipeSize, 5.5f, 8, expectedIbu, "FSB") { Style = style };
 
             var recipe = _recipeService.GenerateRecipe(recipeGenerationInfo);
             
-            AssertRecipeHasExpectedValuesForBitterness(style, recipe, size, expectedIbu);
+            AssertRecipeHasExpectedValuesForBitterness(style, recipe, RecipeSize, expectedIbu);
         }
         
         [Fact]
         public void CanGenerateRecipe_WithExpectedBitterness_GivenTwoHopAdditions()
         {
-            const float size = 5f;
             const int expectedIbu = 30;
             var style = new Style("ESB", new StyleCategory("", 1, StyleType.Ale),
                 new StyleClassification("E", "test"), new List<StyleThreshold>())
             {
                 CommonGrains = new List<CommonGrain>
                 {
-                    new()
-                    {
-                        Fermentable = RecipeServiceTestHelper.MarisOtter,
-                        ProportionOfGrist = 85
-                    },
-                    new()
-                    {
-                        Fermentable = RecipeServiceTestHelper.VictoryMalt,
-                        ProportionOfGrist = 15
-                    }
+                    new() { Fermentable = RecipeServiceTestHelper.MarisOtter, ProportionOfGrist = 85 },
+                    new() { Fermentable = RecipeServiceTestHelper.VictoryMalt, ProportionOfGrist = 15 }
                 },
                 CommonYeast = RecipeServiceTestHelper.SafAleEnglishAleYeast,
                 CommonHops = new List<CommonHop>
@@ -194,11 +146,11 @@ namespace BeerRecipeCore.Tests.Services
                     }
                 }
             };
-            var recipeGenerationInfo = new RecipeGenerationInfo(size, 5.5f, 8, expectedIbu, "FSB") { Style = style };
+            var recipeGenerationInfo = new RecipeGenerationInfo(RecipeSize, 5.5f, 8, expectedIbu, "FSB") { Style = style };
 
             var recipe = _recipeService.GenerateRecipe(recipeGenerationInfo);
             
-            AssertRecipeHasExpectedValuesForBitterness(style, recipe, size, expectedIbu);
+            AssertRecipeHasExpectedValuesForBitterness(style, recipe, RecipeSize, expectedIbu);
         }
 
         private static void AssertRecipeHasExpectedValuesForBitterness(Style style, IRecipe recipe, float size, int expectedIbu)
