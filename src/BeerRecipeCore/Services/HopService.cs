@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using BeerRecipeCore.Fermentables;
 using BeerRecipeCore.Formulas;
@@ -31,7 +32,9 @@ namespace BeerRecipeCore.Services
         {
             var ibuContribution = (float) commonHop.IbuContributionPercentage / 100 * recipeGenerationInfo.Ibu;
             var hopUtilizationPercentage = BitternessUtility.GetHopUtilization(commonHop.BoilAdditionTime, originalGravity) * 100;
-            return recipeGenerationInfo.Size * ibuContribution / (hopUtilizationPercentage * commonHop.Hop.Characteristics.AlphaAcid) / 0.7489f;
+            return (float) Math.Round(recipeGenerationInfo.Size * ibuContribution / (hopUtilizationPercentage * commonHop.Hop.Characteristics.AlphaAcid) / 0.7489f, HopAmountDecimalDigits);
         }
+
+        private const int HopAmountDecimalDigits = 1;
     }
 }

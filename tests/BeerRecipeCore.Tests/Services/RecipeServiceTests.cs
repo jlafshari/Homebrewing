@@ -249,7 +249,7 @@ namespace BeerRecipeCore.Tests.Services
         {
             var originalGravity = AlcoholUtility.GetOriginalGravity(recipe.FermentableIngredients, size, 65);
             var actualIbu = BitternessUtility.GetBitterness(recipe.HopIngredients, size, originalGravity);
-            Assert.True(Math.Abs(actualIbu - expectedIbu) <= 1);
+            Assert.True(Math.Abs(actualIbu - expectedIbu) <= 2);
         }
     }
 }
