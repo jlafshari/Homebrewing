@@ -22,16 +22,12 @@ namespace BeerRecipeCore.Tests.Services
         public void CanGenerateRecipeWithBaseAndCaramelGrain(int baseMaltProportion, int caramelMaltProportion,
             int expectedColorSrm, float expectedAbv)
         {
-            var style = new Style("ESB", new StyleCategory("", 1, StyleType.Ale),
-                new StyleClassification("E", "test"), new List<StyleThreshold>())
+            var commonGrains = new List<CommonGrain>
             {
-                CommonGrains = new List<CommonGrain>
-                {
-                    new() { Fermentable = RecipeServiceTestHelper.MarisOtter, ProportionOfGrist = baseMaltProportion },
-                    new() { Fermentable = RecipeServiceTestHelper.VictoryMalt, ProportionOfGrist = caramelMaltProportion }
-                },
-                CommonYeast = RecipeServiceTestHelper.SafAleEnglishAleYeast
+                new() { Fermentable = RecipeServiceTestHelper.MarisOtter, ProportionOfGrist = baseMaltProportion },
+                new() { Fermentable = RecipeServiceTestHelper.VictoryMalt, ProportionOfGrist = caramelMaltProportion }
             };
+            var style = RecipeServiceTestHelper.GetStyle("ESB", commonGrains);
             var recipeGenerationInfo = new RecipeGenerationInfo(RecipeSize, expectedAbv, expectedColorSrm, 0, "FSB") { Style = style };
 
             var recipe = _recipeService.GenerateRecipe(recipeGenerationInfo);
@@ -44,16 +40,12 @@ namespace BeerRecipeCore.Tests.Services
         public void CanGeneratePaleAleRecipeWithBaseAndCrystalGrain(int baseMaltProportion, int caramelMaltProportion,
             int expectedColorSrm, float expectedAbv)
         {
-            var style = new Style("ESB", new StyleCategory("", 1, StyleType.Ale),
-                new StyleClassification("E", "test"), new List<StyleThreshold>())
+            var commonGrains = new List<CommonGrain>
             {
-                CommonGrains = new List<CommonGrain>
-                {
-                    new() { Fermentable = RecipeServiceTestHelper.TwoRow, ProportionOfGrist = baseMaltProportion },
-                    new() { Fermentable = RecipeServiceTestHelper.Crystal20LMalt, ProportionOfGrist = caramelMaltProportion }
-                },
-                CommonYeast = RecipeServiceTestHelper.SafAleEnglishAleYeast
+                new() { Fermentable = RecipeServiceTestHelper.TwoRow, ProportionOfGrist = baseMaltProportion },
+                new() { Fermentable = RecipeServiceTestHelper.Crystal20LMalt, ProportionOfGrist = caramelMaltProportion }
             };
+            var style = RecipeServiceTestHelper.GetStyle("ESB", commonGrains);
             var recipeGenerationInfo = new RecipeGenerationInfo(RecipeSize, expectedAbv, expectedColorSrm, 0, "FSB") { Style = style };
 
             var recipe = _recipeService.GenerateRecipe(recipeGenerationInfo);
@@ -69,17 +61,13 @@ namespace BeerRecipeCore.Tests.Services
         public void CanGenerateRecipeWithBaseAndRoastedAndCaramelGrain(int baseMaltProportion, int caramelMaltProportion, int roastedMaltProportion,
             int expectedColorSrm, float expectedAbv)
         {
-            var style = new Style("ESB", new StyleCategory("", 1, StyleType.Ale),
-                new StyleClassification("E", "test"), new List<StyleThreshold>())
+            var commonGrains = new List<CommonGrain>
             {
-                CommonGrains = new List<CommonGrain>
-                {
-                    new() { Fermentable = RecipeServiceTestHelper.MarisOtter, ProportionOfGrist = baseMaltProportion },
-                    new() { Fermentable = RecipeServiceTestHelper.VictoryMalt, ProportionOfGrist = caramelMaltProportion },
-                    new() { Fermentable = RecipeServiceTestHelper.ChocolateMalt, ProportionOfGrist = roastedMaltProportion }
-                },
-                CommonYeast = RecipeServiceTestHelper.SafAleEnglishAleYeast
+                new() { Fermentable = RecipeServiceTestHelper.MarisOtter, ProportionOfGrist = baseMaltProportion },
+                new() { Fermentable = RecipeServiceTestHelper.VictoryMalt, ProportionOfGrist = caramelMaltProportion },
+                new() { Fermentable = RecipeServiceTestHelper.ChocolateMalt, ProportionOfGrist = roastedMaltProportion }
             };
+            var style = RecipeServiceTestHelper.GetStyle("ESB", commonGrains);
             var recipeGenerationInfo = new RecipeGenerationInfo(RecipeSize, expectedAbv, expectedColorSrm, 0, "Brown Ale") { Style = style };
             
             var recipe = _recipeService.GenerateRecipe(recipeGenerationInfo);
@@ -90,26 +78,22 @@ namespace BeerRecipeCore.Tests.Services
         [Fact]
         public void CanGenerateRecipe_WithExpectedBitterness_GivenSingleHopAddition()
         {
-            const int expectedIbu = 20;
-            var style = new Style("ESB", new StyleCategory("", 1, StyleType.Ale),
-                new StyleClassification("E", "test"), new List<StyleThreshold>())
+            var commonGrains = new List<CommonGrain>
             {
-                CommonGrains = new List<CommonGrain>
+                new() { Fermentable = RecipeServiceTestHelper.MarisOtter, ProportionOfGrist = 85 },
+                new() { Fermentable = RecipeServiceTestHelper.VictoryMalt, ProportionOfGrist = 15 }
+            };
+            var commonHops = new List<CommonHop>
+            {
+                new()
                 {
-                    new() { Fermentable = RecipeServiceTestHelper.MarisOtter, ProportionOfGrist = 85 },
-                    new() { Fermentable = RecipeServiceTestHelper.VictoryMalt, ProportionOfGrist = 15 }
-                },
-                CommonYeast = RecipeServiceTestHelper.SafAleEnglishAleYeast,
-                CommonHops = new List<CommonHop>
-                {
-                    new()
-                    {
-                        BoilAdditionTime = 60,
-                        Hop = new Hop("Fuggles", new HopCharacteristics(4.5f, 4.0f, 10), "", ""),
-                        IbuContributionPercentage = 100
-                    }
+                    BoilAdditionTime = 60,
+                    Hop = new Hop("Fuggles", new HopCharacteristics(4.5f, 4.0f, 10), "", ""),
+                    IbuContributionPercentage = 100
                 }
             };
+            var style = RecipeServiceTestHelper.GetStyle("ESB", commonGrains, commonHops);
+            const int expectedIbu = 20;
             var recipeGenerationInfo = new RecipeGenerationInfo(RecipeSize, 5.5f, 8, expectedIbu, "FSB") { Style = style };
 
             var recipe = _recipeService.GenerateRecipe(recipeGenerationInfo);
@@ -120,32 +104,28 @@ namespace BeerRecipeCore.Tests.Services
         [Fact]
         public void CanGenerateRecipe_WithExpectedBitterness_GivenTwoHopAdditions()
         {
-            const int expectedIbu = 30;
-            var style = new Style("ESB", new StyleCategory("", 1, StyleType.Ale),
-                new StyleClassification("E", "test"), new List<StyleThreshold>())
+            var commonGrains = new List<CommonGrain>
             {
-                CommonGrains = new List<CommonGrain>
+                new() { Fermentable = RecipeServiceTestHelper.MarisOtter, ProportionOfGrist = 85 },
+                new() { Fermentable = RecipeServiceTestHelper.VictoryMalt, ProportionOfGrist = 15 }
+            };
+            var commonHops = new List<CommonHop>
+            {
+                new()
                 {
-                    new() { Fermentable = RecipeServiceTestHelper.MarisOtter, ProportionOfGrist = 85 },
-                    new() { Fermentable = RecipeServiceTestHelper.VictoryMalt, ProportionOfGrist = 15 }
+                    BoilAdditionTime = 60,
+                    Hop = new Hop("Fuggles", new HopCharacteristics(4.5f, 4.0f, 10), "", ""),
+                    IbuContributionPercentage = 80
                 },
-                CommonYeast = RecipeServiceTestHelper.SafAleEnglishAleYeast,
-                CommonHops = new List<CommonHop>
+                new()
                 {
-                    new()
-                    {
-                        BoilAdditionTime = 60,
-                        Hop = new Hop("Fuggles", new HopCharacteristics(4.5f, 4.0f, 10), "", ""),
-                        IbuContributionPercentage = 80
-                    },
-                    new()
-                    {
-                        BoilAdditionTime = 15,
-                        Hop = new Hop("Cascade", new HopCharacteristics(5.5f, 4.3f, 10), "", ""),
-                        IbuContributionPercentage = 20
-                    }
+                    BoilAdditionTime = 15,
+                    Hop = new Hop("Cascade", new HopCharacteristics(5.5f, 4.3f, 10), "", ""),
+                    IbuContributionPercentage = 20
                 }
             };
+            var style = RecipeServiceTestHelper.GetStyle("ESB", commonGrains, commonHops);
+            const int expectedIbu = 30;
             var recipeGenerationInfo = new RecipeGenerationInfo(RecipeSize, 5.5f, 8, expectedIbu, "FSB") { Style = style };
 
             var recipe = _recipeService.GenerateRecipe(recipeGenerationInfo);
