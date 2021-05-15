@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using BeerRecipeCore.Fermentables;
+using BeerRecipeCore.Hops;
 using BeerRecipeCore.Styles;
 using BeerRecipeCore.Yeast;
 
@@ -22,6 +23,14 @@ namespace BeerRecipeCore.Tests.Services
             return style;
         }
 
+        internal static CommonHop GetCommonHop(Hop hop, int boilAdditionTime, int ibuContributionPercentage) =>
+            new()
+            {
+                BoilAdditionTime = boilAdditionTime,
+                Hop = hop,
+                IbuContributionPercentage = ibuContributionPercentage
+            };
+
         internal static Fermentable VictoryMalt => new("Victory Malt",
             new FermentableCharacteristics(73f, 25f, 50f) { GravityPoint = 34, MaltCategory = MaltCategory.Caramel }, "", "");
 
@@ -37,7 +46,11 @@ namespace BeerRecipeCore.Tests.Services
         internal static Fermentable Crystal20LMalt => new("Crystal 20L Malt",
             new FermentableCharacteristics(75f, 20f, 0) { GravityPoint = 35, MaltCategory = MaltCategory.Caramel }, "", "");
 
-        internal static Yeast.Yeast SafAleEnglishAleYeast => new("Safale English Ale",
+        internal static Hop Fuggles => new("Fuggles", new HopCharacteristics(4.5f, 4.0f, 10), "", "");
+
+        internal static Hop Cascade => new Hop("Cascade", new HopCharacteristics(5.5f, 4.3f, 10), "", "");
+
+        private static Yeast.Yeast SafAleEnglishAleYeast => new("Safale English Ale",
             new YeastCharacteristics(YeastType.Ale, Flocculation.Medium, YeastForm.Dry, 16, 22, 75), "", "DCL Labs", "");
     }
 }

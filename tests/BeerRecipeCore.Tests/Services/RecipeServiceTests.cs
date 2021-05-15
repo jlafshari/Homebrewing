@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using BeerRecipeCore.Formulas;
-using BeerRecipeCore.Hops;
 using BeerRecipeCore.Recipes;
 using BeerRecipeCore.Services;
 using BeerRecipeCore.Styles;
@@ -67,7 +66,7 @@ namespace BeerRecipeCore.Tests.Services
                 new() { Fermentable = RecipeServiceTestHelper.VictoryMalt, ProportionOfGrist = caramelMaltProportion },
                 new() { Fermentable = RecipeServiceTestHelper.ChocolateMalt, ProportionOfGrist = roastedMaltProportion }
             };
-            var style = RecipeServiceTestHelper.GetStyle("ESB", commonGrains);
+            var style = RecipeServiceTestHelper.GetStyle("Brown Ale", commonGrains);
             var recipeGenerationInfo = new RecipeGenerationInfo(RecipeSize, expectedAbv, expectedColorSrm, 0, "Brown Ale") { Style = style };
             
             var recipe = _recipeService.GenerateRecipe(recipeGenerationInfo);
@@ -85,12 +84,7 @@ namespace BeerRecipeCore.Tests.Services
             };
             var commonHops = new List<CommonHop>
             {
-                new()
-                {
-                    BoilAdditionTime = 60,
-                    Hop = new Hop("Fuggles", new HopCharacteristics(4.5f, 4.0f, 10), "", ""),
-                    IbuContributionPercentage = 100
-                }
+                RecipeServiceTestHelper.GetCommonHop(RecipeServiceTestHelper.Fuggles, 60, 100)
             };
             var style = RecipeServiceTestHelper.GetStyle("ESB", commonGrains, commonHops);
             const int expectedIbu = 20;
@@ -111,18 +105,8 @@ namespace BeerRecipeCore.Tests.Services
             };
             var commonHops = new List<CommonHop>
             {
-                new()
-                {
-                    BoilAdditionTime = 60,
-                    Hop = new Hop("Fuggles", new HopCharacteristics(4.5f, 4.0f, 10), "", ""),
-                    IbuContributionPercentage = 80
-                },
-                new()
-                {
-                    BoilAdditionTime = 15,
-                    Hop = new Hop("Cascade", new HopCharacteristics(5.5f, 4.3f, 10), "", ""),
-                    IbuContributionPercentage = 20
-                }
+                RecipeServiceTestHelper.GetCommonHop(RecipeServiceTestHelper.Fuggles, 60, 80),
+                RecipeServiceTestHelper.GetCommonHop(RecipeServiceTestHelper.Cascade, 15, 20)
             };
             var style = RecipeServiceTestHelper.GetStyle("ESB", commonGrains, commonHops);
             const int expectedIbu = 30;
