@@ -5,18 +5,16 @@ namespace BeerRecipeCore.Services
 {
     public class RecipeService
     {
-        private readonly GrainBillService _grainBillService;
         private readonly HopService _hopService;
 
         public RecipeService()
         {
-            _grainBillService = new GrainBillService();
             _hopService = new HopService();
         }
         
         public IRecipe GenerateRecipe(RecipeGenerationInfo recipeGenerationInfo)
         {
-            var grainBill = _grainBillService.GetGrainBill(recipeGenerationInfo);
+            var grainBill = new GrainBillService().GetGrainBill(recipeGenerationInfo);
             var hopIngredients = _hopService.GetHopIngredients(recipeGenerationInfo, grainBill);
 
             return new Recipe
