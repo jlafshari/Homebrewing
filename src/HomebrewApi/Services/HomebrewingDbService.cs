@@ -48,7 +48,7 @@ namespace HomebrewApi.Services
             var style = GetStyle(recipeGenerationInfoDto.StyleId);
             var recipeToInsert = GenerateRecipe(recipeGenerationInfoDto, style);
             InsertRecipe(recipeToInsert);
-            var recipeDto = GetRecipeDto(recipeToInsert, new List<StyleDto> { _mapper.Map<StyleDto>(style) });
+            var recipeDto = GetRecipeDto(recipeToInsert, style.Name);
             return recipeDto;
         }
 
@@ -195,14 +195,15 @@ namespace HomebrewApi.Services
         {
             var styles = GetBeerStyles();
             var recipeCollection = _database.GetCollection<Recipe>(RecipeCollectionName);
-            var recipes = recipeCollection.FindSync(filter).ToEnumerable().Select(r => GetRecipeDto(r, styles)).ToList();
+            var recipes = recipeCollection.FindSync(filter).ToEnumerable()
+                .Select(r => GetRecipeDto(r, styles.FirstOrDefault(s => s.Id == r.StyleId)?.Name)).ToList();
             return recipes;
         }
 
-        private RecipeDto GetRecipeDto(Recipe r, IEnumerable<StyleDto> styles)
+        private RecipeDto GetRecipeDto(Recipe r, string styleName)
         {
             var recipe = _mapper.Map<Recipe, RecipeDto>(r);
-            recipe.StyleName = styles.FirstOrDefault(s => s.Id == r.StyleId)?.Name;
+            recipe.StyleName = styleName;
             var yeast = GetYeast(r.YeastId);
             recipe.YeastIngredient = _mapper.Map<YeastIngredientDto>(yeast);
             recipe.FermentableIngredients.AddRange(GetFermentableIngredientDtos(r.FermentableIngredients));
