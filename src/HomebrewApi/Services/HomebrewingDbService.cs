@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
@@ -5,6 +6,7 @@ using BeerRecipeCore.Recipes;
 using BeerRecipeCore.Services;
 using HomebrewApi.Models;
 using HomebrewApi.Models.Dtos;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using CommonGrain = HomebrewApi.Models.CommonGrain;
 using Style = HomebrewApi.Models.Style;
@@ -72,12 +74,18 @@ namespace HomebrewApi.Services
 
         public RecipeDto GetRecipe(string recipeId)
         {
+            if (!IsIdValid(recipeId))
+                throw new ArgumentException("Invalid parameter", nameof(recipeId));
+
             var filter = Builders<Recipe>.Filter.Eq(r => r.Id, recipeId);
             return GetRecipes(filter).SingleOrDefault();
         }
 
         public void DeleteRecipe(string recipeId)
         {
+            if (!IsIdValid(recipeId))
+                throw new ArgumentException("Invalid parameter", nameof(recipeId));
+
             var recipeCollection = _database.GetCollection<Recipe>(RecipeCollectionName);
             recipeCollection.DeleteOne(r => r.Id == recipeId);
         }
@@ -227,6 +235,11 @@ namespace HomebrewApi.Services
                 var hop = GetHop(hopIngredient.HopId);
                 yield return new HopIngredientDto(hop.Name, hopIngredient.Amount, hopIngredient.BoilAdditionTime);
             }
+        }
+
+        private static bool IsIdValid(string id)
+        {
+            return ObjectId.TryParse(id, out _);
         }
     }
 }

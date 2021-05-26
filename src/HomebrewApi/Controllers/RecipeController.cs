@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using HomebrewApi.Models.Dtos;
 using HomebrewApi.Services;
@@ -26,9 +27,17 @@ namespace HomebrewApi.Controllers
         }
 
         [HttpGet("{recipeId}")]
-        public RecipeDto GetRecipe([FromRoute] string recipeId)
+        public ActionResult<RecipeDto> GetRecipe([FromRoute] string recipeId)
         {
-            return _homebrewingDbService.GetRecipe(recipeId);
+            try
+            {
+                return _homebrewingDbService.GetRecipe(recipeId);
+            }
+            catch (ArgumentException e)
+            {
+                _logger.LogError(e, "Invalid recipe ID!");
+                return new BadRequestObjectResult(new { message = "Invalid recipe ID!" });
+            }
         }
 
         [HttpPost("GenerateRecipe")]
@@ -38,9 +47,18 @@ namespace HomebrewApi.Controllers
         }
 
         [HttpDelete("{recipeId}")]
-        public void DeleteRecipe([FromRoute] string recipeId)
+        public ActionResult DeleteRecipe([FromRoute] string recipeId)
         {
-            _homebrewingDbService.DeleteRecipe(recipeId);
+            try
+            {
+                _homebrewingDbService.DeleteRecipe(recipeId);
+                return new OkResult();
+            }
+            catch (ArgumentException e)
+            {
+                _logger.LogError(e, "Invalid recipe ID!");
+                return new BadRequestObjectResult(new { message = "Invalid recipe ID!" });
+            }
         }
     }
 }
