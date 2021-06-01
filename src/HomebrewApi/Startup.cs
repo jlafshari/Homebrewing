@@ -1,3 +1,4 @@
+using System;
 using AutoMapper;
 using HomebrewApi.AutoMapper;
 using HomebrewApi.Models;
@@ -7,7 +8,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 
 namespace HomebrewApi
@@ -24,9 +24,12 @@ namespace HomebrewApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<HomebrewingDatabaseSettings>(Configuration.GetSection(nameof(HomebrewingDatabaseSettings)));
-            services.AddSingleton<IHomebrewingDatabaseSettings>(sp =>
-                sp.GetRequiredService<IOptions<HomebrewingDatabaseSettings>>().Value);
+            var settings = new HomebrewingDatabaseSettings
+            {
+                ConnectionString = Environment.GetEnvironmentVariable("MongoDbConnectionString"),
+                DatabaseName = Environment.GetEnvironmentVariable("DatabaseName")
+            };
+            services.AddSingleton<IHomebrewingDatabaseSettings>(settings);
 
             services.AddSingleton<HomebrewingDbService>();
 
