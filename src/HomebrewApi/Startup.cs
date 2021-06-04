@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Okta.AspNetCore;
 
 namespace HomebrewApi
 {
@@ -40,6 +41,19 @@ namespace HomebrewApi
             services.AddSingleton(mapperConfig.CreateMapper());
             
             services.AddAutoMapper(typeof(Startup));
+            
+            services.AddAuthentication(options =>
+                {
+                    options.DefaultAuthenticateScheme = OktaDefaults.ApiAuthenticationScheme;
+                    options.DefaultChallengeScheme = OktaDefaults.ApiAuthenticationScheme;
+                    options.DefaultSignInScheme = OktaDefaults.ApiAuthenticationScheme;
+                })
+                .AddOktaWebApi(new OktaWebApiOptions
+                {
+                    OktaDomain = Configuration["Okta:OktaDomain"]
+                });
+
+            services.AddAuthorization();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
@@ -59,6 +73,8 @@ namespace HomebrewApi
             }
 
             app.UseRouting();
+            
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

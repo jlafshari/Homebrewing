@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using HomebrewApi.Models.Dtos;
 using HomebrewApi.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -9,6 +10,7 @@ namespace HomebrewApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize]
     public class RecipeController : ControllerBase
     {
         private ILogger<RecipeController> _logger;
