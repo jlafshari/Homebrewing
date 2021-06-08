@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using HomebrewApi.Models.Dtos;
 using HomebrewApi.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -25,7 +26,8 @@ namespace HomebrewApi.Controllers
         [HttpGet("GetAll")]
         public List<RecipeDto> GetRecipes()
         {
-            return _homebrewingDbService.GetRecipes();
+            var userId = GetUserId();
+            return _homebrewingDbService.GetRecipes(userId);
         }
 
         [HttpGet("{recipeId}")]
@@ -61,6 +63,11 @@ namespace HomebrewApi.Controllers
                 _logger.LogError(e, "Invalid recipe ID!");
                 return new BadRequestObjectResult(new { message = "Invalid recipe ID!" });
             }
+        }
+
+        private string GetUserId()
+        {
+            return User.Claims.FirstOrDefault(x => x.Type == "uid")?.Value;
         }
     }
 }

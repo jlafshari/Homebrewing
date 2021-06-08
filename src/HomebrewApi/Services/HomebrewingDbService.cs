@@ -66,9 +66,9 @@ namespace HomebrewApi.Services
             hopCollection.InsertOne(hop);
         }
 
-        public List<RecipeDto> GetRecipes()
+        public List<RecipeDto> GetRecipes(string userId)
         {
-            var filter = Builders<Recipe>.Filter.Where(_ => true);
+            var filter = Builders<Recipe>.Filter.Eq(r => r.UserId, userId);
             return GetRecipes(filter);
         }
 

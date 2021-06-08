@@ -18,5 +18,6 @@ namespace HomebrewApi.Models
         public List<HopIngredient> HopIngredients { get; set; }
         [BsonRepresentation(BsonType.ObjectId)]
         public string YeastId { get; set; }
+        public string UserId { get; init; }
     }
 }
