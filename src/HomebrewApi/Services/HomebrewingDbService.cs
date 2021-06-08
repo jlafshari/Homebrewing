@@ -45,10 +45,11 @@ namespace HomebrewApi.Services
                 .Select(s => _mapper.Map<StyleDto>(s)).ToList();
         }
 
-        public RecipeDto GenerateRecipe(RecipeGenerationInfoDto recipeGenerationInfoDto)
+        public RecipeDto GenerateRecipe(RecipeGenerationInfoDto recipeGenerationInfoDto, string userId)
         {
             var style = GetStyle(recipeGenerationInfoDto.StyleId);
             var recipeToInsert = GenerateRecipe(recipeGenerationInfoDto, style);
+            recipeToInsert.UserId = userId;
             InsertRecipe(recipeToInsert);
             var recipeDto = GetRecipeDto(recipeToInsert, style.Name);
             return recipeDto;

@@ -47,7 +47,8 @@ namespace HomebrewApi.Controllers
         [HttpPost("GenerateRecipe")]
         public RecipeDto GenerateRecipe(RecipeGenerationInfoDto recipeGenerationInfoDto)
         {
-            return _homebrewingDbService.GenerateRecipe(recipeGenerationInfoDto);
+            var userId = GetUserId();
+            return _homebrewingDbService.GenerateRecipe(recipeGenerationInfoDto, userId);
         }
 
         [HttpDelete("{recipeId}")]
