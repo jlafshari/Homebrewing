@@ -73,22 +73,23 @@ namespace HomebrewApi.Services
             return GetRecipes(filter);
         }
 
-        public RecipeDto GetRecipe(string recipeId)
+        public RecipeDto GetRecipe(string recipeId, string userId)
         {
             if (!IsIdValid(recipeId))
                 throw new ArgumentException("Invalid parameter", nameof(recipeId));
 
-            var filter = Builders<Recipe>.Filter.Eq(r => r.Id, recipeId);
+            var filter = Builders<Recipe>.Filter.Eq(r => r.Id, recipeId) & Builders<Recipe>.Filter.Eq(r => r.UserId, userId);
             return GetRecipes(filter).SingleOrDefault();
         }
 
-        public void DeleteRecipe(string recipeId)
+        public void DeleteRecipe(string recipeId, string userId)
         {
             if (!IsIdValid(recipeId))
                 throw new ArgumentException("Invalid parameter", nameof(recipeId));
 
             var recipeCollection = _database.GetCollection<Recipe>(RecipeCollectionName);
-            recipeCollection.DeleteOne(r => r.Id == recipeId);
+            var filter = Builders<Recipe>.Filter.Eq(r => r.Id, recipeId) & Builders<Recipe>.Filter.Eq(r => r.UserId, userId);
+            recipeCollection.DeleteOne(filter);
         }
 
         public void CreateFermentable(Fermentable fermentable)

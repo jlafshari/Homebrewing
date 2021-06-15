@@ -35,7 +35,8 @@ namespace HomebrewApi.Controllers
         {
             try
             {
-                return _homebrewingDbService.GetRecipe(recipeId);
+                var userId = GetUserId();
+                return _homebrewingDbService.GetRecipe(recipeId, userId);
             }
             catch (ArgumentException e)
             {
@@ -56,7 +57,8 @@ namespace HomebrewApi.Controllers
         {
             try
             {
-                _homebrewingDbService.DeleteRecipe(recipeId);
+                var userId = GetUserId();
+                _homebrewingDbService.DeleteRecipe(recipeId, userId);
                 return new OkResult();
             }
             catch (ArgumentException e)
