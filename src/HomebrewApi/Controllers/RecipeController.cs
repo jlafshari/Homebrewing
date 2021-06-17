@@ -26,6 +26,7 @@ namespace HomebrewApi.Controllers
         [HttpGet("GetAll")]
         public List<RecipeDto> GetRecipes()
         {
+            _logger.LogInformation($"Entering {nameof(GetRecipes)}");
             var userId = GetUserId();
             return _homebrewingDbService.GetRecipes(userId);
         }
@@ -35,6 +36,7 @@ namespace HomebrewApi.Controllers
         {
             try
             {
+                _logger.LogInformation($"Entering {nameof(GetRecipe)}");
                 var userId = GetUserId();
                 return _homebrewingDbService.GetRecipe(recipeId, userId);
             }
@@ -48,6 +50,7 @@ namespace HomebrewApi.Controllers
         [HttpPost("GenerateRecipe")]
         public RecipeDto GenerateRecipe(RecipeGenerationInfoDto recipeGenerationInfoDto)
         {
+            _logger.LogInformation($"Entering {nameof(GenerateRecipe)}");
             var userId = GetUserId();
             return _homebrewingDbService.GenerateRecipe(recipeGenerationInfoDto, userId);
         }
@@ -57,6 +60,7 @@ namespace HomebrewApi.Controllers
         {
             try
             {
+                _logger.LogInformation($"Entering {nameof(DeleteRecipe)}");
                 var userId = GetUserId();
                 _homebrewingDbService.DeleteRecipe(recipeId, userId);
                 return new OkResult();

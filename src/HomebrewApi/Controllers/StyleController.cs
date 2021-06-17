@@ -13,7 +13,7 @@ namespace HomebrewApi.Controllers
     [Authorize]
     public class StyleController : ControllerBase
     {
-        private ILogger<StyleController> _logger;
+        private readonly ILogger<StyleController> _logger;
         private readonly HomebrewingDbService _homebrewingDbService;
 
         public StyleController(ILogger<StyleController> logger, HomebrewingDbService homebrewingDbService)
@@ -25,12 +25,14 @@ namespace HomebrewApi.Controllers
         [HttpGet("GetAll")]
         public List<StyleDto> GetBeerStyles()
         {
+            _logger.LogInformation($"Entering {nameof(GetBeerStyles)}");
             return _homebrewingDbService.GetBeerStyles();
         }
 
         [HttpPost]
         public void CreateBeerStyle(Style beerStyle)
         {
+            _logger.LogInformation($"Entering {nameof(CreateBeerStyle)}");
             _homebrewingDbService.CreateBeerStyle(beerStyle);
         }
     }
