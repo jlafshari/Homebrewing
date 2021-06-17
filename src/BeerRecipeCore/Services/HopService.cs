@@ -10,7 +10,7 @@ namespace BeerRecipeCore.Services
 {
     internal class HopService
     {
-        internal List<IHopIngredient> GetHopIngredients(RecipeGenerationInfo recipeGenerationInfo,
+        internal static List<IHopIngredient> GetHopIngredients(RecipeGenerationInfo recipeGenerationInfo,
             List<IFermentableIngredient> fermentableIngredients)
         {
             var originalGravity = AlcoholUtility.GetOriginalGravity(fermentableIngredients, recipeGenerationInfo.Size);
@@ -28,7 +28,7 @@ namespace BeerRecipeCore.Services
             return hopIngredients;
         }
 
-        private float GetHopAmount(CommonHop commonHop, RecipeGenerationInfo recipeGenerationInfo, float originalGravity)
+        private static float GetHopAmount(CommonHop commonHop, RecipeGenerationInfo recipeGenerationInfo, float originalGravity)
         {
             var ibuContribution = (float) commonHop.IbuContributionPercentage / 100 * recipeGenerationInfo.Ibu;
             var hopUtilizationPercentage = BitternessUtility.GetHopUtilization(commonHop.BoilAdditionTime, originalGravity) * 100;

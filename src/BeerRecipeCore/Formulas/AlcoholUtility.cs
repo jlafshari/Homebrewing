@@ -25,26 +25,16 @@ namespace BeerRecipeCore.Formulas
         }
 
         /// <summary>
-        /// Gets the estimated original gravity using a default extraction efficiency.
-        /// </summary>
-        /// <param name="fermentableIngredients">The fermentable ingredients in the recipe.</param>
-        /// <param name="recipeSize">The recipe size in gallons.</param>
-        public static float GetOriginalGravity(IEnumerable<IFermentableIngredient> fermentableIngredients, float recipeSize)
-        {
-            return GetOriginalGravity(fermentableIngredients, recipeSize, RecipeDefaultSettings.ExtractionEfficiency);
-        }
-
-        /// <summary>
         /// Gets the estimated original gravity.
         /// </summary>
         /// <param name="fermentableIngredients">The fermentable ingredients in the recipe.</param>
         /// <param name="recipeSize">The recipe size in gallons.</param>
         /// <param name="extractionEfficiency">The expected extraction efficiency percentage.</param>
-        public static float GetOriginalGravity(IEnumerable<IFermentableIngredient> fermentableIngredients, float recipeSize, float extractionEfficiency)
+        public static float GetOriginalGravity(IEnumerable<IFermentableIngredient> fermentableIngredients, float recipeSize, float extractionEfficiency = RecipeDefaultSettings.ExtractionEfficiency)
         {
-            float gravityPoints = GetGravityPoint(fermentableIngredients);
-            float pointsPerPound = (gravityPoints / recipeSize) * (extractionEfficiency / 100f);
-            pointsPerPound = (float) Math.Round((double) pointsPerPound);
+            var gravityPoints = GetGravityPoint(fermentableIngredients);
+            var pointsPerPound = (gravityPoints / recipeSize) * (extractionEfficiency / 100f);
+            pointsPerPound = (float) Math.Round(pointsPerPound);
             return 1f + (pointsPerPound / 1000f);
         }
 
@@ -56,8 +46,8 @@ namespace BeerRecipeCore.Formulas
         public static float GetFinalGravity(float originalGravity, float attenuation)
         {
             float gravityUnit = GetGravityUnit(originalGravity);
-            float finalGravity = 1f + ((gravityUnit * (1f - (attenuation / 100f))) / 1000f);
-            return (float) Math.Round((double) finalGravity, 3);
+            var finalGravity = 1f + ((gravityUnit * (1f - (attenuation / 100f))) / 1000f);
+            return (float) Math.Round(finalGravity, 3);
         }
 
         /// <summary>

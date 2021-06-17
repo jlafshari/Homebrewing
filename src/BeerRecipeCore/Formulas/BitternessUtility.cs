@@ -16,21 +16,21 @@ namespace BeerRecipeCore.Formulas
         {
             float totalBitterness = 0;
 
-            foreach (IHopIngredient hopIngredient in hops)
+            foreach (var hopIngredient in hops)
             {
-                float hopUtilization = GetHopUtilization(hopIngredient.Time, boilGravity);
+                var hopUtilization = GetHopUtilization(hopIngredient.Time, boilGravity);
 
-                float alphaAcid = hopIngredient.HopInfo.Characteristics.AlphaAcid;
+                var alphaAcid = hopIngredient.HopInfo.Characteristics.AlphaAcid;
                 totalBitterness += hopUtilization * alphaAcid * hopIngredient.Amount * c_ibuEnglishUnitsConstant / recipeVolumeInGallons;
             }
 
-            return (int) Math.Round((double) totalBitterness);
+            return (int) Math.Round(totalBitterness);
         }
 
         public static float GetHopUtilization(int boilTimeInMinutes, float boilGravity)
         {
-            float bignessFactor = 1.65f * (float) Math.Pow(0.000125, boilGravity - 1);
-            float boilTimeFactor = (1 - (float) Math.Pow(Math.E, -0.04 * boilTimeInMinutes)) / 4.15f;
+            var bignessFactor = 1.65f * (float) Math.Pow(0.000125, boilGravity - 1);
+            var boilTimeFactor = (1 - (float) Math.Pow(Math.E, -0.04 * boilTimeInMinutes)) / 4.15f;
             return bignessFactor * boilTimeFactor;
         }
 

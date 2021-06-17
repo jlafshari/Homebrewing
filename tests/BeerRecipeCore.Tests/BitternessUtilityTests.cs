@@ -22,7 +22,7 @@ namespace BeerRecipeCore.Tests
             goldingsInRecipe.Setup(h => h.Time).Returns(15);
 
             var hopsUsed = new List<IHopIngredient> { fugglesInRecipe.Object, goldingsInRecipe.Object };
-            int bitterness = BitternessUtility.GetBitterness(hopsUsed, 5f, 1.054f);
+            var bitterness = BitternessUtility.GetBitterness(hopsUsed, 5f, 1.054f);
             Assert.Equal(23, bitterness);
         }
     }

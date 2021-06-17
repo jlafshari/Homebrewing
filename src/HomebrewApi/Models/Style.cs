@@ -14,7 +14,9 @@ namespace HomebrewApi.Models
         public StyleCategory Category { get; init; }
         public StyleClassification Classification { get; init; }
         public List<StyleThreshold> Thresholds { get; init; }
+        // ReSharper disable once AutoPropertyCanBeMadeGetOnly.Global
         public List<CommonGrain> CommonGrains { get; init; } = new();
+        // ReSharper disable once AutoPropertyCanBeMadeGetOnly.Global
         public List<CommonHop> CommonHops { get; init; } = new();
         [BsonRepresentation(BsonType.ObjectId)]
         public string CommonYeastId { get; init; }

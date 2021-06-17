@@ -9,7 +9,7 @@ namespace BeerRecipeCore.Mash
             GrainStartingTemperature = grainStartingTemperature;
         }
 
-        public Collection<MashStep> MashSteps { get; private set; } = new Collection<MashStep>();
+        public Collection<MashStep> MashSteps { get; private set; } = new();
 
         /// <summary>
         /// The initial temperature of the grain, in degrees Fahrenheit.

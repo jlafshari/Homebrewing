@@ -14,7 +14,7 @@ namespace HomebrewApi.Controllers
     [Authorize]
     public class RecipeController : ControllerBase
     {
-        private ILogger<RecipeController> _logger;
+        private readonly ILogger<RecipeController> _logger;
         private readonly HomebrewingDbService _homebrewingDbService;
 
         public RecipeController(ILogger<RecipeController> logger, HomebrewingDbService homebrewingDbService)

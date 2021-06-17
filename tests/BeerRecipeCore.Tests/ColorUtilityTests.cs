@@ -16,7 +16,7 @@ namespace BeerRecipeCore.Tests
             crystal60InRecipe.Setup(f => f.FermentableInfo).Returns(new Fermentable("Caramel/Crystal Malt - 60L",
                 new FermentableCharacteristics(74, 60, 0) { Type = FermentableType.Grain }, "Test Notes", "US"));
 
-            double crystal60Color = ColorUtility.GetColorInSrm(new[] { crystal60InRecipe.Object }, 5);
+            var crystal60Color = ColorUtility.GetColorInSrm(new[] { crystal60InRecipe.Object }, 5);
             Assert.Equal(5.1, crystal60Color);
 
             var marisOtterInRecipe = new Mock<IFermentableIngredient>();
@@ -24,8 +24,8 @@ namespace BeerRecipeCore.Tests
             marisOtterInRecipe.Setup(f => f.FermentableInfo).Returns(new Fermentable("Pale Malt, Maris Otter",
                 new FermentableCharacteristics(82.5f, 3, 120) { Type = FermentableType.Grain }, "Test Notes", "US"));
 
-            var fermentablesUsed = new List<IFermentableIngredient>() { marisOtterInRecipe.Object, crystal60InRecipe.Object };
-            double colorInSrm = ColorUtility.GetColorInSrm(fermentablesUsed, 5);
+            var fermentablesUsed = new List<IFermentableIngredient> { marisOtterInRecipe.Object, crystal60InRecipe.Object };
+            var colorInSrm = ColorUtility.GetColorInSrm(fermentablesUsed, 5);
             Assert.Equal(7.6, colorInSrm);
         }
     }

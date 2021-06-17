@@ -129,12 +129,12 @@ namespace HomebrewApi.Services
             recipeToInsert.ProjectedOutcome = _mapper.Map<RecipeProjectedOutcome>(recipeGenerationInfoDto);
             recipeToInsert.StyleId = recipeGenerationInfoDto.StyleId;
             recipeToInsert.YeastId = style.CommonYeastId;
-            for (int i = 0; i < recipeToInsert.FermentableIngredients.Count; i++)
+            for (var i = 0; i < recipeToInsert.FermentableIngredients.Count; i++)
             {
                 recipeToInsert.FermentableIngredients[i].FermentableId = style.CommonGrains[i].FermentableId;
             }
 
-            for (int i = 0; i < recipeToInsert.HopIngredients.Count; i++)
+            for (var i = 0; i < recipeToInsert.HopIngredients.Count; i++)
             {
                 recipeToInsert.HopIngredients[i].HopId = style.CommonHops[i].HopId;
             }

@@ -65,25 +65,25 @@ namespace BeerRecipeCore.BeerXml
 
         public static Style GetStyle(XElement styleEntry)
         {
-            string name = GetNameFromRecord(styleEntry);
-            List<StyleThreshold> thresholds = new List<StyleThreshold>()
+            var name = GetNameFromRecord(styleEntry);
+            var thresholds = new List<StyleThreshold>
             {
-                new StyleThreshold("og", Convert.ToSingle(styleEntry.GetChildElementValue("OG_MIN")), Convert.ToSingle(styleEntry.GetChildElementValue("OG_MAX"))),
-                new StyleThreshold("fg", Convert.ToSingle(styleEntry.GetChildElementValue("FG_MIN")), Convert.ToSingle(styleEntry.GetChildElementValue("FG_MAX"))),
-                new StyleThreshold("ibu", Convert.ToSingle(styleEntry.GetChildElementValue("IBU_MIN")), Convert.ToSingle(styleEntry.GetChildElementValue("IBU_MAX"))),
-                new StyleThreshold("color", Convert.ToSingle(styleEntry.GetChildElementValue("COLOR_MIN")), Convert.ToSingle(styleEntry.GetChildElementValue("COLOR_MAX"))),
-                new StyleThreshold("carb", Convert.ToSingle(styleEntry.GetChildElementValue("CARB_MIN")), Convert.ToSingle(styleEntry.GetChildElementValue("CARB_MAX"))),
-                new StyleThreshold("abv", Convert.ToSingle(styleEntry.GetChildElementValue("ABV_MIN")), Convert.ToSingle(styleEntry.GetChildElementValue("ABV_MAX"))),
+                new("og", Convert.ToSingle(styleEntry.GetChildElementValue("OG_MIN")), Convert.ToSingle(styleEntry.GetChildElementValue("OG_MAX"))),
+                new("fg", Convert.ToSingle(styleEntry.GetChildElementValue("FG_MIN")), Convert.ToSingle(styleEntry.GetChildElementValue("FG_MAX"))),
+                new("ibu", Convert.ToSingle(styleEntry.GetChildElementValue("IBU_MIN")), Convert.ToSingle(styleEntry.GetChildElementValue("IBU_MAX"))),
+                new("color", Convert.ToSingle(styleEntry.GetChildElementValue("COLOR_MIN")), Convert.ToSingle(styleEntry.GetChildElementValue("COLOR_MAX"))),
+                new("carb", Convert.ToSingle(styleEntry.GetChildElementValue("CARB_MIN")), Convert.ToSingle(styleEntry.GetChildElementValue("CARB_MAX"))),
+                new("abv", Convert.ToSingle(styleEntry.GetChildElementValue("ABV_MIN")), Convert.ToSingle(styleEntry.GetChildElementValue("ABV_MAX")))
             };
 
-            string categoryName = styleEntry.GetChildElementValue("CATEGORY");
-            int categoryNumber = Convert.ToInt32(styleEntry.GetChildElementValue("CATEGORY_NUMBER"));
+            var categoryName = styleEntry.GetChildElementValue("CATEGORY");
+            var categoryNumber = Convert.ToInt32(styleEntry.GetChildElementValue("CATEGORY_NUMBER"));
             var type = EnumConverter.Parse<StyleType>(styleEntry.GetChildElementValue("TYPE"));
             var category = new StyleCategory(categoryName, categoryNumber, type);
             
-            string styleLetter = styleEntry.GetChildElementValue("STYLE_LETTER");
-            string styleGuide = styleEntry.GetChildElementValue("STYLE_GUIDE");
-            StyleClassification classification = new StyleClassification(styleLetter, styleGuide);
+            var styleLetter = styleEntry.GetChildElementValue("STYLE_LETTER");
+            var styleGuide = styleEntry.GetChildElementValue("STYLE_GUIDE");
+            var classification = new StyleClassification(styleLetter, styleGuide);
 
             return new Style(name, category, classification, thresholds)
             {
@@ -101,7 +101,7 @@ namespace BeerRecipeCore.BeerXml
 
         private static string GetNotesFromRecord(XElement entry)
         {
-            string notes = entry.GetChildElementValue("NOTES");
+            var notes = entry.GetChildElementValue("NOTES");
             notes = notes.Trim();
             notes = notes.Replace("  ", " ");
             return notes;
