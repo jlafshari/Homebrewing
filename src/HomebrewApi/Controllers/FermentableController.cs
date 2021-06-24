@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using HomebrewApi.Models;
+using HomebrewApi.Models.Dtos;
 using HomebrewApi.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -25,6 +27,13 @@ namespace HomebrewApi.Controllers
         {
             _logger.LogInformation("Creating fermentable '{name}'", fermentable.Name);
             _homebrewingDbService.CreateFermentable(fermentable);
+        }
+
+        [HttpGet("GetAll")]
+        public List<FermentableDto> GetFermentables()
+        {
+            _logger.LogInformation($"Entering {nameof(GetFermentables)}");
+            return _homebrewingDbService.GetFermentables();
         }
     }
 }

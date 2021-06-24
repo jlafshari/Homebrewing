@@ -34,6 +34,7 @@ namespace HomebrewApi.AutoMapper
             CreateMap<Fermentable, BeerRecipeCore.Fermentables.Fermentable>();
             CreateMap<FermentableCharacteristics, BeerRecipeCore.Fermentables.FermentableCharacteristics>();
             CreateMap<IFermentableIngredient, FermentableIngredient>();
+            CreateMap<Fermentable, FermentableDto>();
 
             CreateMap<Hop, BeerRecipeCore.Hops.Hop>();
             CreateMap<HopCharacteristics, BeerRecipeCore.Hops.HopCharacteristics>();

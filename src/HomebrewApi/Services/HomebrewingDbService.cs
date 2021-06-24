@@ -98,6 +98,13 @@ namespace HomebrewApi.Services
             fermentableCollection.InsertOne(fermentable);
         }
 
+        public List<FermentableDto> GetFermentables()
+        {
+            var fermentableCollection = _database.GetCollection<Fermentable>(FermentableCollectionName);
+            return fermentableCollection.FindSync(s => true).ToEnumerable()
+                .Select(s => _mapper.Map<FermentableDto>(s)).ToList();
+        }
+
         private Recipe GenerateRecipe(RecipeGenerationInfoDto recipeGenerationInfoDto, Style style)
         {
             var recipeGenerationInfo = GetRecipeGenerationInfo(recipeGenerationInfoDto, style);
