@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using HomebrewApi.Models;
 using HomebrewApi.Models.Dtos;
@@ -34,6 +35,21 @@ namespace HomebrewApi.Controllers
         {
             _logger.LogInformation($"Entering {nameof(GetFermentables)}");
             return _homebrewingDbService.GetFermentables();
+        }
+
+        [HttpGet("{fermentableId}")]
+        public ActionResult<FermentableDto> GetFermentable([FromRoute] string fermentableId)
+        {
+            try
+            {
+                _logger.LogInformation($"Entering {nameof(GetFermentable)}");
+                return _homebrewingDbService.GetFermentableDto(fermentableId);
+            }
+            catch (ArgumentException e)
+            {
+                _logger.LogError(e, "Invalid fermentable ID!");
+                return new BadRequestObjectResult(new { message = "Invalid fermentable ID!" });
+            }
         }
     }
 }
