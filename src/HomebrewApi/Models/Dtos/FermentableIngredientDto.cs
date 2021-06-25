@@ -1,4 +1,4 @@
 namespace HomebrewApi.Models.Dtos
 {
-    public record FermentableIngredientDto(float Amount, string Name);
+    public record FermentableIngredientDto(float Amount, string Name, string FermentableId);
 }

@@ -241,7 +241,7 @@ namespace HomebrewApi.Services
             foreach (var fermentableIngredient in fermentableIngredients)
             {
                 var fermentable = GetFermentable(fermentableIngredient.FermentableId);
-                yield return new FermentableIngredientDto(fermentableIngredient.Amount, fermentable.Name);
+                yield return new FermentableIngredientDto(fermentableIngredient.Amount, fermentable.Name, fermentableIngredient.FermentableId);
             }
         }
 
