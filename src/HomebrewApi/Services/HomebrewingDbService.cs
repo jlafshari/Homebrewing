@@ -55,6 +55,21 @@ namespace HomebrewApi.Services
             return recipeDto;
         }
 
+        public bool UpdateRecipe(string recipeId, RecipeUpdateInfoDto recipeUpdateInfoDto, string userId)
+        {
+            var recipeCollection = _database.GetCollection<Recipe>(RecipeCollectionName);
+            var filter = Builders<Recipe>.Filter.Eq(r => r.Id, recipeId) & Builders<Recipe>.Filter.Eq(r => r.UserId, userId);
+            var update = Builders<Recipe>.Update.Set(r => r.Name, recipeUpdateInfoDto.Name)
+                .PullFilter(r => r.FermentableIngredients, r => true);
+            var updateResult = recipeCollection.UpdateOne(filter, update);
+            
+            var fermentableIngredients = recipeUpdateInfoDto.FermentableIngredients.Select(f => new FermentableIngredient(f.Amount) { FermentableId = f.FermentableId }).ToList();
+            var updateIngredients = Builders<Recipe>.Update.PushEach(r => r.FermentableIngredients, fermentableIngredients);
+            recipeCollection.UpdateOne(filter, updateIngredients);
+            
+            return updateResult.IsAcknowledged && updateResult.ModifiedCount > 0;
+        }
+
         public void CreateYeast(Yeast yeast)
         {
             var yeastCollection = _database.GetCollection<Yeast>(YeastCollectionName);

@@ -55,6 +55,18 @@ namespace HomebrewApi.Controllers
             return _homebrewingDbService.GenerateRecipe(recipeGenerationInfoDto, userId);
         }
 
+        [HttpPatch("{recipeId}")]
+        public ActionResult UpdateRecipe([FromRoute] string recipeId, RecipeUpdateInfoDto recipeUpdateInfoDto)
+        {
+            _logger.LogInformation($"Entering {nameof(UpdateRecipe)}");
+            var userId = GetUserId();
+            if (_homebrewingDbService.UpdateRecipe(recipeId, recipeUpdateInfoDto, userId))
+                return Ok();
+
+            _logger.LogError("Invalid recipe ID!");
+            return new BadRequestObjectResult(new { message = "Invalid recipe ID!" });
+        }
+
         [HttpDelete("{recipeId}")]
         public ActionResult DeleteRecipe([FromRoute] string recipeId)
         {
