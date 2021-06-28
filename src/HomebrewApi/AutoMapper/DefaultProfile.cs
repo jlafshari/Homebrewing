@@ -6,6 +6,7 @@ using HomebrewApi.Models;
 using HomebrewApi.Models.Dtos;
 using Fermentable = HomebrewApi.Models.Fermentable;
 using FermentableCharacteristics = HomebrewApi.Models.FermentableCharacteristics;
+using FermentableIngredient = HomebrewApi.Models.FermentableIngredient;
 using Hop = HomebrewApi.Models.Hop;
 using HopCharacteristics = HomebrewApi.Models.HopCharacteristics;
 using Yeast = HomebrewApi.Models.Yeast;

@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
+using BeerRecipeCore.Fermentables;
+using BeerRecipeCore.Formulas;
 using BeerRecipeCore.Recipes;
 using BeerRecipeCore.Services;
 using HomebrewApi.Models;
@@ -9,6 +11,8 @@ using HomebrewApi.Models.Dtos;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using CommonGrain = HomebrewApi.Models.CommonGrain;
+using Fermentable = HomebrewApi.Models.Fermentable;
+using FermentableIngredient = HomebrewApi.Models.FermentableIngredient;
 using Style = HomebrewApi.Models.Style;
 
 namespace HomebrewApi.Services
@@ -57,17 +61,39 @@ namespace HomebrewApi.Services
 
         public bool UpdateRecipe(string recipeId, RecipeUpdateInfoDto recipeUpdateInfoDto, string userId)
         {
+            var recipeProjectedOutcome = GetRecipeProjectedOutcome(recipeId, recipeUpdateInfoDto, userId);
+
             var recipeCollection = _database.GetCollection<Recipe>(RecipeCollectionName);
             var filter = Builders<Recipe>.Filter.Eq(r => r.Id, recipeId) & Builders<Recipe>.Filter.Eq(r => r.UserId, userId);
             var update = Builders<Recipe>.Update.Set(r => r.Name, recipeUpdateInfoDto.Name)
+                .Set(r => r.ProjectedOutcome, recipeProjectedOutcome)
                 .PullFilter(r => r.FermentableIngredients, r => true);
             var updateResult = recipeCollection.UpdateOne(filter, update);
             
-            var fermentableIngredients = recipeUpdateInfoDto.FermentableIngredients.Select(f => new FermentableIngredient(f.Amount) { FermentableId = f.FermentableId }).ToList();
+            var fermentableIngredients = recipeUpdateInfoDto.FermentableIngredients.Select(f => new FermentableIngredient(f.Amount)
+            {
+                FermentableId = f.FermentableId
+            }).ToList();
             var updateIngredients = Builders<Recipe>.Update.PushEach(r => r.FermentableIngredients, fermentableIngredients);
             recipeCollection.UpdateOne(filter, updateIngredients);
             
             return updateResult.IsAcknowledged && updateResult.ModifiedCount > 0;
+        }
+
+        private RecipeProjectedOutcome GetRecipeProjectedOutcome(string recipeId, RecipeUpdateInfoDto recipeUpdateInfoDto, string userId)
+        {
+            var originalRecipe = GetRecipe(recipeId, userId);
+            var fermentableIngredients = GetFermentables(recipeUpdateInfoDto.FermentableIngredients).ToList();
+            var og = AlcoholUtility.GetOriginalGravity(fermentableIngredients, originalRecipe.Size);
+            var yeast = GetYeast(originalRecipe.YeastId);
+            var fg = AlcoholUtility.GetFinalGravity(og, yeast.Characteristics.Attenuation);
+            
+            return new RecipeProjectedOutcome
+            {
+                Abv = AlcoholUtility.GetAlcoholByVolume(og, fg),
+                ColorSrm = (int) Math.Round(ColorUtility.GetColorInSrm(fermentableIngredients, originalRecipe.Size), 0, MidpointRounding.ToEven),
+                Ibu = originalRecipe.ProjectedOutcome.Ibu //TODO: update IBU when hops are updated
+            };
         }
 
         public void CreateYeast(Yeast yeast)
@@ -85,16 +111,16 @@ namespace HomebrewApi.Services
         public List<RecipeDto> GetRecipes(string userId)
         {
             var filter = Builders<Recipe>.Filter.Eq(r => r.UserId, userId);
-            return GetRecipes(filter);
+            return GetRecipeDtos(filter);
         }
 
-        public RecipeDto GetRecipe(string recipeId, string userId)
+        public RecipeDto GetRecipeDto(string recipeId, string userId)
         {
             if (!IsIdValid(recipeId))
                 throw new ArgumentException("Invalid parameter", nameof(recipeId));
 
             var filter = Builders<Recipe>.Filter.Eq(r => r.Id, recipeId) & Builders<Recipe>.Filter.Eq(r => r.UserId, userId);
-            return GetRecipes(filter).SingleOrDefault();
+            return GetRecipeDtos(filter).SingleOrDefault();
         }
 
         public void DeleteRecipe(string recipeId, string userId)
@@ -118,6 +144,18 @@ namespace HomebrewApi.Services
             var fermentableCollection = _database.GetCollection<Fermentable>(FermentableCollectionName);
             return fermentableCollection.FindSync(s => true).ToEnumerable()
                 .Select(s => _mapper.Map<FermentableDto>(s)).ToList();
+        }
+
+        private IEnumerable<IFermentableIngredient> GetFermentables(List<FermentableIngredientDto> fermentableIngredients)
+        {
+            foreach (var (amount, _, fermentableId) in fermentableIngredients)
+            {
+                var fermentable = GetFermentable(fermentableId);
+                yield return new BeerRecipeCore.Fermentables.FermentableIngredient
+                {
+                    Amount = amount, FermentableInfo = fermentable
+                };
+            }
         }
 
         public FermentableDto GetFermentableDto(string fermentableId)
@@ -231,7 +269,15 @@ namespace HomebrewApi.Services
             return _mapper.Map<Yeast, BeerRecipeCore.Yeast.Yeast>(yeastFromDb);
         }
         
-        private List<RecipeDto> GetRecipes(FilterDefinition<Recipe> filter)
+        private Recipe GetRecipe(string recipeId, string userId)
+        {
+            var recipeCollection = _database.GetCollection<Recipe>(RecipeCollectionName);
+            var filter = Builders<Recipe>.Filter.Eq(r => r.Id, recipeId) & Builders<Recipe>.Filter.Eq(r => r.UserId, userId);
+            var recipe = recipeCollection.FindSync(filter).ToEnumerable().FirstOrDefault();
+            return recipe;
+        }
+
+        private List<RecipeDto> GetRecipeDtos(FilterDefinition<Recipe> filter)
         {
             var styles = GetBeerStyles();
             var recipeCollection = _database.GetCollection<Recipe>(RecipeCollectionName);

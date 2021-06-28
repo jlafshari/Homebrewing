@@ -38,7 +38,7 @@ namespace HomebrewApi.Controllers
             {
                 _logger.LogInformation($"Entering {nameof(GetRecipe)}");
                 var userId = GetUserId();
-                return _homebrewingDbService.GetRecipe(recipeId, userId);
+                return _homebrewingDbService.GetRecipeDto(recipeId, userId);
             }
             catch (ArgumentException e)
             {
