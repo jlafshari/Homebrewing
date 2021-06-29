@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using BeerRecipeCore.Fermentables;
 using BeerRecipeCore.Formulas;
 using BeerRecipeCore.Recipes;
 using BeerRecipeCore.Services;
@@ -115,6 +116,36 @@ namespace BeerRecipeCore.Tests.Services
             var recipe = _recipeService.GenerateRecipe(recipeGenerationInfo);
             
             AssertRecipeHasExpectedValuesForBitterness(style, recipe, RecipeSize, expectedIbu);
+        }
+
+        [Fact]
+        public void CanGetRecipeProjectedOutcome_ReturnsExpectedAbvAndColor()
+        {
+            var fermentableIngredients = new List<IFermentableIngredient>
+            {
+                new FermentableIngredient
+                {
+                    Amount = 8,
+                    FermentableInfo = new Fermentable("Pale Malt, Maris Otter",
+                        new FermentableCharacteristics(82.5f, 3, 120) { Type = FermentableType.Grain, GravityPoint = 38 }, "Test Notes", "US")
+                },
+                new FermentableIngredient
+                {
+                    Amount = 1,
+                    FermentableInfo = new Fermentable("Chocolate Malt",
+                        new FermentableCharacteristics(60, 350, 0) { Type = FermentableType.Grain, GravityPoint = 28 }, "Test Notes", "US")
+                },
+                new FermentableIngredient
+                {
+                    Amount = 0.50f,
+                    FermentableInfo = new Fermentable("Caramel/Crystal Malt - 60L",
+                        new FermentableCharacteristics(74, 60, 0) { Type = FermentableType.Grain, GravityPoint = 34 }, "Test Notes", "US")
+                }
+            };
+
+            var projectedOutcome = _recipeService.GetRecipeProjectedOutcome(5.0f, fermentableIngredients, RecipeServiceTestHelper.SafAleEnglishAleYeast, 0);
+            Assert.Equal(4.21f, projectedOutcome.Abv);
+            Assert.Equal(30, projectedOutcome.ColorSrm);
         }
 
         private static void AssertRecipeHasExpectedValuesForBitterness(Style style, IRecipe recipe, float size, int expectedIbu)

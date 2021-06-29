@@ -50,7 +50,7 @@ namespace BeerRecipeCore.Tests.Services
 
         internal static Hop Cascade => new("Cascade", new HopCharacteristics(5.5f, 4.3f, 10), "", "");
 
-        private static Yeast.Yeast SafAleEnglishAleYeast => new("Safale English Ale",
+        internal static Yeast.Yeast SafAleEnglishAleYeast => new("Safale English Ale",
             new YeastCharacteristics(YeastType.Ale, Flocculation.Medium, YeastForm.Dry, 16, 22, 75), "", "DCL Labs", "");
     }
 }
