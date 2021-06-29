@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using BeerRecipeCore.Recipes;
 
 namespace HomebrewApi.Models.Dtos
 {

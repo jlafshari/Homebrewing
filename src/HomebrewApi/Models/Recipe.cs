@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using BeerRecipeCore.Recipes;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 

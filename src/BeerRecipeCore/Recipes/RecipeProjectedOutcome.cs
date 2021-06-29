@@ -1,4 +1,4 @@
-namespace HomebrewApi.Models
+namespace BeerRecipeCore.Recipes
 {
     public class RecipeProjectedOutcome
     {

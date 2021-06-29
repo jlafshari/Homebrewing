@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using BeerRecipeCore.Fermentables;
-using BeerRecipeCore.Formulas;
 using BeerRecipeCore.Recipes;
 using BeerRecipeCore.Services;
 using HomebrewApi.Models;
@@ -83,17 +82,11 @@ namespace HomebrewApi.Services
         private RecipeProjectedOutcome GetRecipeProjectedOutcome(string recipeId, RecipeUpdateInfoDto recipeUpdateInfoDto, string userId)
         {
             var originalRecipe = GetRecipe(recipeId, userId);
-            var fermentableIngredients = GetFermentables(recipeUpdateInfoDto.FermentableIngredients).ToList();
-            var og = AlcoholUtility.GetOriginalGravity(fermentableIngredients, originalRecipe.Size);
+            var brcFermentableIngredients = GetFermentableIngredients(recipeUpdateInfoDto.FermentableIngredients).ToList();
             var yeast = GetYeast(originalRecipe.YeastId);
-            var fg = AlcoholUtility.GetFinalGravity(og, yeast.Characteristics.Attenuation);
-            
-            return new RecipeProjectedOutcome
-            {
-                Abv = AlcoholUtility.GetAlcoholByVolume(og, fg),
-                ColorSrm = (int) Math.Round(ColorUtility.GetColorInSrm(fermentableIngredients, originalRecipe.Size), 0, MidpointRounding.ToEven),
-                Ibu = originalRecipe.ProjectedOutcome.Ibu //TODO: update IBU when hops are updated
-            };
+            var recipeProjectedOutcome = _recipeService.GetRecipeProjectedOutcome(originalRecipe.Size,
+                brcFermentableIngredients, yeast, originalRecipe.ProjectedOutcome.Ibu);
+            return recipeProjectedOutcome;
         }
 
         public void CreateYeast(Yeast yeast)
@@ -146,7 +139,7 @@ namespace HomebrewApi.Services
                 .Select(s => _mapper.Map<FermentableDto>(s)).ToList();
         }
 
-        private IEnumerable<IFermentableIngredient> GetFermentables(List<FermentableIngredientDto> fermentableIngredients)
+        private IEnumerable<IFermentableIngredient> GetFermentableIngredients(List<FermentableIngredientDto> fermentableIngredients)
         {
             foreach (var (amount, _, fermentableId) in fermentableIngredients)
             {
