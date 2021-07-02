@@ -38,6 +38,7 @@ namespace HomebrewApi.AutoMapper
             CreateMap<Fermentable, FermentableDto>()
                 .ForMember(s => s.Color, opt => opt.MapFrom(src => src.Characteristics.Color))
                 .ForMember(s => s.MaltCategory, opt => opt.MapFrom(src => src.Characteristics.MaltCategory));
+            CreateMap<FermentableIngredientDto, FermentableIngredient>();
 
             CreateMap<Hop, BeerRecipeCore.Hops.Hop>();
             CreateMap<HopCharacteristics, BeerRecipeCore.Hops.HopCharacteristics>();

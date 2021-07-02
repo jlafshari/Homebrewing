@@ -70,10 +70,8 @@ namespace HomebrewApi.Services
                 .PullFilter(r => r.HopIngredients, r => true);
             var updateResult = recipeCollection.UpdateOne(filter, update);
             
-            var fermentableIngredients = recipeUpdateInfoDto.FermentableIngredients.Select(f => new FermentableIngredient(f.Amount)
-            {
-                FermentableId = f.FermentableId
-            }).ToList();
+            var fermentableIngredients = recipeUpdateInfoDto.FermentableIngredients
+                .Select(f => _mapper.Map<FermentableIngredient>(f)).ToList();
             var hopIngredients = recipeUpdateInfoDto.HopIngredients.Select(h => _mapper.Map<HopIngredient>(h)).ToList();
             var updateIngredients = Builders<Recipe>.Update
                 .PushEach(r => r.FermentableIngredients, fermentableIngredients)
