@@ -44,6 +44,7 @@ namespace HomebrewApi.AutoMapper
             CreateMap<IHopIngredient, HopIngredient>()
                 .ForMember(s => s.BoilAdditionTime, opt => opt.MapFrom(src => src.Time));
             CreateMap<CommonHop, BeerRecipeCore.Styles.CommonHop>();
+            CreateMap<HopIngredientDto, HopIngredient>();
 
             CreateMap<Yeast, BeerRecipeCore.Yeast.Yeast>();
             CreateMap<YeastCharacteristics, BeerRecipeCore.Yeast.YeastCharacteristics>();

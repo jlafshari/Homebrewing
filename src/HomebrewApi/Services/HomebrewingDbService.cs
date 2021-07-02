@@ -66,14 +66,18 @@ namespace HomebrewApi.Services
             var filter = Builders<Recipe>.Filter.Eq(r => r.Id, recipeId) & Builders<Recipe>.Filter.Eq(r => r.UserId, userId);
             var update = Builders<Recipe>.Update.Set(r => r.Name, recipeUpdateInfoDto.Name)
                 .Set(r => r.ProjectedOutcome, recipeProjectedOutcome)
-                .PullFilter(r => r.FermentableIngredients, r => true);
+                .PullFilter(r => r.FermentableIngredients, r => true)
+                .PullFilter(r => r.HopIngredients, r => true);
             var updateResult = recipeCollection.UpdateOne(filter, update);
             
             var fermentableIngredients = recipeUpdateInfoDto.FermentableIngredients.Select(f => new FermentableIngredient(f.Amount)
             {
                 FermentableId = f.FermentableId
             }).ToList();
-            var updateIngredients = Builders<Recipe>.Update.PushEach(r => r.FermentableIngredients, fermentableIngredients);
+            var hopIngredients = recipeUpdateInfoDto.HopIngredients.Select(h => _mapper.Map<HopIngredient>(h)).ToList();
+            var updateIngredients = Builders<Recipe>.Update
+                .PushEach(r => r.FermentableIngredients, fermentableIngredients)
+                .PushEach(r => r.HopIngredients, hopIngredients);
             recipeCollection.UpdateOne(filter, updateIngredients);
             
             return updateResult.IsAcknowledged && updateResult.ModifiedCount > 0;
@@ -304,7 +308,7 @@ namespace HomebrewApi.Services
             foreach (var hopIngredient in hopIngredients)
             {
                 var hop = GetHop(hopIngredient.HopId);
-                yield return new HopIngredientDto(hop.Name, hopIngredient.Amount, hopIngredient.BoilAdditionTime);
+                yield return new HopIngredientDto(hop.Name, hopIngredient.Amount, hopIngredient.BoilAdditionTime, hopIngredient.HopId);
             }
         }
 
