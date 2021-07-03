@@ -167,6 +167,14 @@ namespace HomebrewApi.Services
             return hopCollection.FindSync(s => true).ToEnumerable().Select(s => _mapper.Map<HopDto>(s)).ToList();
         }
 
+        public HopDto GetHopDto(string hopId)
+        {
+            var hopCollection = _database.GetCollection<Hop>(HopCollectionName);
+            var filter = Builders<Hop>.Filter.Eq(r => r.Id, hopId);
+            var hopFromDb = hopCollection.FindSync(filter).ToEnumerable().SingleOrDefault();
+            return hopFromDb != null ? _mapper.Map<HopDto>(hopFromDb) : null;
+        }
+
         private Recipe GenerateRecipe(RecipeGenerationInfoDto recipeGenerationInfoDto, Style style)
         {
             var recipeGenerationInfo = GetRecipeGenerationInfo(recipeGenerationInfoDto, style);

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using HomebrewApi.Models;
 using HomebrewApi.Models.Dtos;
@@ -34,6 +35,21 @@ namespace HomebrewApi.Controllers
         {
             _logger.LogInformation($"Entering {nameof(GetHops)}");
             return _homebrewingDbService.GetHops();
+        }
+
+        [HttpGet("{hopId}")]
+        public ActionResult<HopDto> GetHop([FromRoute] string hopId)
+        {
+            try
+            {
+                _logger.LogInformation($"Entering {nameof(GetHop)}");
+                return _homebrewingDbService.GetHopDto(hopId);
+            }
+            catch (ArgumentException e)
+            {
+                _logger.LogError(e, "Invalid hop ID!");
+                return new BadRequestObjectResult(new { message = "Invalid hop ID!" });
+            }
         }
     }
 }
