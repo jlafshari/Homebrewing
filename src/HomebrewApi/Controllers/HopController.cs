@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using HomebrewApi.Models;
+using HomebrewApi.Models.Dtos;
 using HomebrewApi.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -25,6 +27,13 @@ namespace HomebrewApi.Controllers
         {
             _logger.LogInformation("Creating hop: '{name}'", hop.Name);
             _homebrewingDbService.CreateHop(hop);
+        }
+
+        [HttpGet("GetAll")]
+        public List<HopDto> GetHops()
+        {
+            _logger.LogInformation($"Entering {nameof(GetHops)}");
+            return _homebrewingDbService.GetHops();
         }
     }
 }

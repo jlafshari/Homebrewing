@@ -161,6 +161,12 @@ namespace HomebrewApi.Services
             return fermentableFromDb != null ? _mapper.Map<FermentableDto>(fermentableFromDb) : null;
         }
 
+        public List<HopDto> GetHops()
+        {
+            var hopCollection = _database.GetCollection<Hop>(HopCollectionName);
+            return hopCollection.FindSync(s => true).ToEnumerable().Select(s => _mapper.Map<HopDto>(s)).ToList();
+        }
+
         private Recipe GenerateRecipe(RecipeGenerationInfoDto recipeGenerationInfoDto, Style style)
         {
             var recipeGenerationInfo = GetRecipeGenerationInfo(recipeGenerationInfoDto, style);
