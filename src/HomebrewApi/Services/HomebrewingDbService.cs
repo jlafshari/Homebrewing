@@ -72,7 +72,8 @@ namespace HomebrewApi.Services
             
             var fermentableIngredients = recipeUpdateInfoDto.FermentableIngredients
                 .Select(f => _mapper.Map<FermentableIngredient>(f)).ToList();
-            var hopIngredients = recipeUpdateInfoDto.HopIngredients.Select(h => _mapper.Map<HopIngredient>(h)).ToList();
+            var hopIngredients = recipeUpdateInfoDto.HopIngredients.Select(h => _mapper.Map<HopIngredient>(h))
+                .OrderByDescending(h => h.BoilAdditionTime).ToList();
             var updateIngredients = Builders<Recipe>.Update
                 .PushEach(r => r.FermentableIngredients, fermentableIngredients)
                 .PushEach(r => r.HopIngredients, hopIngredients);
