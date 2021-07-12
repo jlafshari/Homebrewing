@@ -45,7 +45,9 @@ namespace HomebrewApi.Services
         {
             var styleCollection = _database.GetCollection<Style>(StyleCollectionName);
             return styleCollection.FindSync(s => true).ToEnumerable()
-                .Select(s => _mapper.Map<StyleDto>(s)).ToList();
+                .Select(s => _mapper.Map<StyleDto>(s))
+                .OrderBy(s => s.Name)
+                .ToList();
         }
 
         public RecipeDto GenerateRecipe(RecipeGenerationInfoDto recipeGenerationInfoDto, string userId)
@@ -139,7 +141,9 @@ namespace HomebrewApi.Services
         {
             var fermentableCollection = _database.GetCollection<Fermentable>(FermentableCollectionName);
             return fermentableCollection.FindSync(s => true).ToEnumerable()
-                .Select(s => _mapper.Map<FermentableDto>(s)).ToList();
+                .Select(f => _mapper.Map<FermentableDto>(f))
+                .OrderBy(f => f.Name)
+                .ToList();
         }
 
         private IEnumerable<IFermentableIngredient> GetFermentableIngredients(List<FermentableIngredientDto> fermentableIngredients)
@@ -165,7 +169,10 @@ namespace HomebrewApi.Services
         public List<HopDto> GetHops()
         {
             var hopCollection = _database.GetCollection<Hop>(HopCollectionName);
-            return hopCollection.FindSync(s => true).ToEnumerable().Select(s => _mapper.Map<HopDto>(s)).ToList();
+            return hopCollection.FindSync(s => true).ToEnumerable()
+                .Select(f => _mapper.Map<HopDto>(f))
+                .OrderBy(h => h.Name)
+                .ToList();
         }
 
         public HopDto GetHopDto(string hopId)
